@@ -116,7 +116,7 @@ So, we write:
 
 $$P\left(-2.776 \leq \frac{5.3 - \mu}{0.174} \leq 2.776\right) = 0.95$$
 
-**Translation:** "Before I caught these fish, there was a 95% chance that my random sample would produce a pivot number between -2.776 and +2.776."
+**Translation:** "Before we caught these fish, there was a 95% chance that our random sample would produce a pivot number between -2.776 and +2.776."
 
 ### Step 3: Solve the inequality for the parameter $\mu$
 
@@ -166,7 +166,7 @@ Our interval would be:
 
 $$5.3 \pm (1.98 \times 0.039) = 5.22 \text{ to } 5.38$$
 
-With more data, your pivot becomes incredibly precise, the interval shrinks, and the t-distribution automatically converges to the Normal distribution. This perfectly demonstrates **asymptotics**.
+With more data, our pivot becomes incredibly precise, the interval shrinks, and the t-distribution automatically converges to the Normal distribution. This perfectly demonstrates **asymptotics**.
 
 
 
