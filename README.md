@@ -19,9 +19,17 @@ One uses a one-tailed test when the research question is: "Is the new treatment 
 It is assumed to be completely confident that the effect cannot go in the opposite direction, or we simply don't care about the opposite direction. We pile your entire 5% alpha into just one tail of the distribution.
 1. The Hypothesis: H0: New ≤ Old Vs. H1: New > Old (This is a "greater than" test)
 2. Where does the rejection region go? : The entire 5% (α = 0.05) is put in the right tail only.
-3. Confidence Interval: Crucially, a one-tail test gives us a one-sided confidence bound. Instead of 
+3. Confidence Interval: Crucially, a one-tailed test gives us a one-sided confidence bound. Instead of 
 ±, we get either:
-a. An upper bound: $\bar{x} + t_{0.05} \times SE$ 
+a. An upper bound: $\bar{x} + t_{0.05} \times SE$ (meaning: "We are 95% confident the true mean is less than this number").
+b. A lower bound: $\bar{x} - t_{0.05} \times SE$ (meaning: "We are 95% confident the true mean is greater than this number").
+Example: A company develops a new, cheaper medicine to kill sea lice. They only care if the new medicine kills more lice than the old expensive medicine. If it kills the same amount, they will switch to the cheaper one. If it kills fewer, they won't use it. They don't care if it kills way more than the old one (that's just a bonus); they are only testing for superiority. 
 
+### Two-Tailed Test ((The "Is it different?" Test)
+We use a two-tailed test when our research question is: "Is the new treatment different from the old one?"
 
-5. 
+We are looking for an effect in either direction. The new drug could be better (lower lice count) or worse (higher lice count). We just want to know if it has any effect at all. 
+1. The Hypothesis: H0: New = Old Vs. H1: New $\neq$ Old.
+2. Where does the rejection region go? You split your 5% alpha (α=0.05) equally between both tails of the distribution. So, 2.5% in the left tail, and 2.5% in the right tail.
+3. Confidence Interval: When calculating a 95% confidence interval, you use the t-critical value that leaves 2.5% in each tail. We get a range: Estimate±Margin of Error.
+Example: A company develops a new feed. You want to know if salmon fed this new feed grow to a different average weight than salmon fed the standard feed. You don't care if it's heavier or lighter (though heavier is nice); you just need to know if the feed changes growth at all. 
