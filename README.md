@@ -12,4 +12,16 @@ The Cumulative Distribution Function (CDF) calculates the probability that a ran
 While individual probabilities tell the chance of a single outcome, the CDF gives the accumulated (running total) probability up to a certain point. 
 The output is always between 0 and 1.
 
-  
+## One-Tailed Test Vs. Two-Tailed Test
+### One-Tailed Test (The "Is it better?" Test)
+One uses a one-tailed test when the research question is: "Is the new treatment strictly better (or strictly worse) than the old one?"
+
+It is assumed to be completely confident that the effect cannot go in the opposite direction, or we simply don't care about the opposite direction. We pile your entire 5% alpha into just one tail of the distribution.
+1. The Hypothesis: H0: New ≤ Old Vs. H1: New > Old (This is a "greater than" test)
+2. Where does the rejection region go? : The entire 5% (α = 0.05) is put in the right tail only.
+3. Confidence Interval: Crucially, a one-tail test gives us a one-sided confidence bound. Instead of 
+±, we get either:
+a. An upper bound: $\bar{x} + t_{0.05} \times SE$ 
+
+
+5. 
