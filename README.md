@@ -30,6 +30,6 @@ We use a two-tailed test when our research question is: "Is the new treatment di
 
 We are looking for an effect in either direction. The new drug could be better (lower lice count) or worse (higher lice count). We just want to know if it has any effect at all. 
 1. The Hypothesis: H0: New = Old Vs. H1: New $\neq$ Old.
-2. Where does the rejection region go? You split your 5% alpha (α=0.05) equally between both tails of the distribution. So, 2.5% in the left tail, and 2.5% in the right tail.
-3. Confidence Interval: When calculating a 95% confidence interval, you use the t-critical value that leaves 2.5% in each tail. We get a range: Estimate±Margin of Error.
-Example: A company develops a new feed. You want to know if salmon fed this new feed grow to a different average weight than salmon fed the standard feed. You don't care if it's heavier or lighter (though heavier is nice); you just need to know if the feed changes growth at all. 
+2. Where does the rejection region go? We split your 5% alpha (α=0.05) equally between both tails of the distribution. So, 2.5% in the left tail, and 2.5% in the right tail.
+3. Confidence Interval: When calculating a 95% confidence interval, we use the t-critical value that leaves 2.5% in each tail. We get a range: Estimate±Margin of Error.
+Example: A company develops a new feed. We want to know if salmon fed this new feed grow to a different average weight than salmon fed the standard feed. We don't care if it's heavier or lighter (though heavier is nice); We just need to know if the feed changes growth at all. 
