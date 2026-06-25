@@ -84,6 +84,89 @@ We have just derived the confidence interval!
 
 $P(\bar{x} - t \cdot SE \leq \mu \leq \bar{x} + t \cdot SE) = 0.95$
 
+### Example: We will calculate a 95% confidence interval for the true average weight of Atlantic salmon in a massive net-pen, using a tiny sample of just 5 fish.
+The Scenario
+You randomly catch 5 salmon, weigh them (in kg), and get the following results:
+
+Data: 
+4.8, 5.1, 5.3, 5.5, 5.8
+
+Sample size (n): 5
+
+Sample mean ($\bar{x}$): 
+(4.8+5.1+5.3+5.5+5.8)/5=5.3 kg
+
+Sample standard deviation (s): 0.39 kg 
+
+We want to know: What is the true average weight (μ) of all 10,000 salmon in the pen?
+
+For $n-1=4$ degrees of freedom.
+
+The standard error ($SE$) = $\frac{s}{\sqrt{n}} = \frac{0.39}{\sqrt{5}} = \frac{0.39}{2.236} \approx 0.174$.
+
+So our specific pivot is: $\frac{5.3 - \mu}{0.174}$. This random number will follow a $t$-distribution with $df=4$.
+
+### Step 2: Solve the probability that the pivot lies between fixed bounds
+
+We want 95% confidence. So we ask: "Between which two fixed numbers does this pivot fall 95% of the time?"
+
+We look up the t-table for $df=4$. For 95% confidence, we put 2.5% in the left tail and 2.5% in the right tail. The critical value is $t_{0.025} = 2.776$.
+
+So, we write:
+
+$$P\left(-2.776 \leq \frac{5.3 - \mu}{0.174} \leq 2.776\right) = 0.95$$
+
+**Translation:** "Before I caught these fish, there was a 95% chance that my random sample would produce a pivot number between -2.776 and +2.776."
+
+### Step 3: Solve the inequality for the parameter $\mu$
+
+Now we do algebra to isolate $\mu$ in the middle of the inequality.
+
+Start with:
+
+$$-2.776 \leq \frac{5.3 - \mu}{0.174} \leq 2.776$$
+
+Multiply all sides by 0.174 (the Standard Error):
+
+$$-2.776 \times 0.174 \leq 5.3 - \mu \leq 2.776 \times 0.174$$
+
+$$-0.483 \leq 5.3 - \mu \leq 0.483$$
+
+Subtract 5.3 from all sides:
+
+$$-5.3 - 0.483 \leq -\mu \leq -5.3 + 0.483$$
+
+$$-5.783 \leq -\mu \leq -4.817$$
+
+Multiply all sides by -1 (and remember to flip the inequality signs):
+
+$$5.783 \geq \mu \geq 4.817$$
+
+Rewrite it properly (lowest to highest):
+
+$$4.817 \leq \mu \leq 5.783$$
+
+### The Final Result
+
+Your 95% confidence interval is **4.82 kg to 5.78 kg**.
+
+**What do you tell the farm manager?**
+
+> *"Based on our sample of 5 fish, we are 95% confident that the true average weight of every salmon in this pen is between 4.82 kg and 5.78 kg."*
+
+### What if you had caught 100 fish instead?
+
+Let's say $n = 100$, $\bar{x} = 5.3$, $s = 0.39$.
+
+Standard Error = $\frac{0.39}{\sqrt{100}} = 0.039$.
+
+$df = 99$. The t-critical value is $\approx 1.98$ (almost identical to the Normal $1.96$).
+
+Our interval would be:
+
+$$5.3 \pm (1.98 \times 0.039) = 5.22 \text{ to } 5.38$$
+
+With more data, your pivot becomes incredibly precise, the interval shrinks, and the t-distribution automatically converges to the Normal distribution. This perfectly demonstrates **asymptotics**.
 
 
 
