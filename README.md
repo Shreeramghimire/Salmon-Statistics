@@ -290,3 +290,80 @@ Notice how massive that interval is (0.054 to 1.256)? **It's huge!**
 That is the harsh reality of the Chi-Squared distribution. It is incredibly volatile for small samples.
 
 To get a precise estimate of variance, you need massive sample sizes. The Chi-Squared distribution has a variance of $2 \times df$. For $df = 4$, the standard deviation is $\sqrt{8} \approx 2.8$, which is almost as large as the mean ($4$)! The uncertainty is enormous.
+
+## At what conditions do we use n as degree of freedom and use n-1 as degree of freedom?
+It depends entirely on whether We are using the **true population mean** ($\mu$) or if we had to **estimate the mean** ($\bar{x}$) from our data.
+
+Here is the **golden rule**:
+
+> **We use $df = n$** when we are working with the **TRUE** population mean ($\mu$) and we know it in advance.
+
+> **We use $df = n - 1$** when we have to **ESTIMATE** the population mean ($\bar{x}$) from our sample first.
+
+Let's break down exactly why this happens using your salmon farm.
+### 1. The Condition for df = n (You know the true mean $\mu$)
+
+Imagine you are a salmon farmer, and you have a magical, perfect scale that tells you the true average weight of every salmon in the ocean is exactly $\mu = 5.0$ kg.
+
+You randomly catch $n = 5$ salmon to test how much their weights vary around this known 5.0 kg mark. You calculate the variance using this formula:
+
+$$\text{Variance} = \frac{\sum_{i=1}^n (X_i - \mu)^2}{n}$$
+
+Because we are using the known center ($\mu$), none of our data points are "wasting" information. Every single one of the 5 salmon is completely free to be any weight it wants. They are all independent.
+
+**Degrees of freedom = n = 5.**
+
+In this case, if we square these 5 deviations and add them up, the resulting pivot strictly follows a Chi-Squared distribution with df = n.
+
+---
+
+### 2. The Condition for df = n - 1 (You estimate the mean $\bar{x}$)
+
+Now, let's be realistic. We do not know the true population mean ($\mu$). We have to catch 5 salmon, weigh them, and calculate the sample mean ($\bar{x}$) to guess what $\mu$ is.
+
+We calculate the sample variance using this formula:
+
+$$s^2 = \frac{\sum_{i=1}^n (X_i - \bar{x})^2}{n-1}$$
+
+**Why do we divide by $n-1$ here, and why does the Chi-Squared pivot use $n-1$?**
+
+Because we have lost a piece of information.
+
+**The Mathematical Proof:**
+
+When we calculate $\bar{x}$, you impose a constraint on your data:
+
+$$\sum_{i=1}^n (X_i - \bar{x}) = 0$$
+
+This means:
+- We have $n$ observations
+- But they must satisfy 1 constraint (the sum of deviations is zero)
+- Therefore, only $n-1$ observations are free to vary
+
+**The Salmon Example:**
+
+We catch 5 salmon. Their weights are: 4.8, 5.1, 5.3, 5.5, and ?
+
+We calculate the average of the first 4 weights:
+
+$$\frac{4.8 + 5.1 + 5.3 + 5.5}{4} = 5.175$$
+
+We decide you want your total sample mean to be exactly $\bar{x} = 5.3$ kg.
+
+**Question:** What must the weight of the 5th salmon be?
+
+**Answer:** It is forced. It must be exactly 5.8 kg. It cannot vary freely.
+
+In a sample of 5, once you know the sample mean ($\bar{x}$) and 4 of the weights, the 5th weight is completely determined. Only 4 of the salmon are truly free to vary.
+
+**Degrees of freedom = n - 1 = 4.**
+
+Because we lost that freedom, your sample variance ($s^2$) will, on average, be slightly smaller than the true population variance ($\sigma^2$). To fix this, we divide by $n-1$ (which makes $s^2$ a tiny bit bigger), and we use the Chi-Squared distribution with df = n - 1.
+
+---
+
+### Why Dividing by $n-1$ Fixes the Problem
+
+$$E[s^2] = E\left[\frac{\sum (X_i - \bar{x})^2}{n-1}\right] = \sigma^2$$
+
+Dividing by $n-1$ makes $s^2$ an **unbiased estimator** of $\sigma^2$!
