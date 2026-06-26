@@ -486,3 +486,94 @@ Because the Gamma distribution models positive, continuous, right-skewed data, i
 A Gaussian distribution is the famous **"bell curve"** (also called the **Normal distribution**).
 
 Gaussian data simply means data that, when plotted on a histogram, roughly follows that bell-shaped curve.
+
+### 1. What does Gaussian Data actually look like?
+
+If our data is Gaussian (Normally distributed), it follows three strict rules:
+
+- **It is Symmetric:** The left half of the histogram is a perfect mirror image of the right half. The mean, median, and mode are all exactly the same number.
+
+- **It follows the 68-95-99.7 Rule:**
+  - 68% of our data falls within $\pm 1$ standard deviation of the mean.
+  - 95% falls within $\pm 2$ standard deviations.
+  - 99.7% falls within $\pm 3$ standard deviations.
+
+- **It has no "tails":** The curve smoothly approaches zero as we go to infinity in both directions (meaning extreme outliers are incredibly rare).
+
+---
+
+### Example of Gaussian Data
+
+The weights of 1,000 adult salmon raised in the exact same pen, eating the exact same feed, at the exact same age.
+
+- Most will cluster around the average (say, 5.0 kg).
+- A few will be slightly lighter (4.5 kg) or slightly heavier (5.5 kg).
+- A very tiny fraction will be freakishly small (3.0 kg) or freakishly huge (7.0 kg).
+
+If we plot this, we get a beautiful, symmetric bell curve.
+
+---
+
+### 2. The Catch: Not everything is Gaussian!
+
+In nature and aquaculture, many things are not bell-shaped. Here are classic examples of non-Gaussian (often called "heavy-tailed" or "skewed") data in our salmon farm:
+
+- **Sea lice counts per fish:** Most fish have 0 or 1 louse, but a few fish are absolutely covered in 50 lice. The histogram is slammed against zero with a massive right tail. (This follows a Negative Binomial or Poisson distribution, not Gaussian!).
+
+- **Time until a fish dies:** We put a disease in a tank. Most fish die around day 5, but some die immediately, and a few tough fish survive for 20 days. The curve is skewed right. (This follows a Weibull or Gamma distribution).
+
+- **Daily revenue:** Most days we sell average fish, but once a month we sell a massive bulk order to a giant grocery chain. The data is full of extreme spikes.
+
+---
+
+### 3. Why does "Gaussian Data" matter so much?
+
+This is the most important part of our question. If our data is Gaussian, we get to use parametric tests (t-tests, ANOVAs, and the Chi-Squared variance tests we just discussed).
+
+- The math for these tests is easy and powerful.
+- The confidence intervals we calculated earlier rely on the assumption that our sample mean comes from a Gaussian distribution.
+
+But here is the magic (and why we don't need to panic!):
+
+> **Thanks to the Central Limit Theorem (Asymptotics!), our sample mean will become Gaussian even if our raw data is horribly non-Gaussian, as long as our sample size is large enough (usually $n > 30$).**
+
+- Raw sea lice counts (non-Gaussian): Weird, slammed against zero.
+- The average lice count from 100 samples (Gaussian): Perfectly bell-shaped!
+
+Because of this, we don't actually require the raw data to be Gaussian for most tests—we just require the sample means to be Gaussian, which happens automatically when $n$ is large.
+
+---
+
+### 4. How to check if our data is Gaussian (The Tools)
+
+Before we blindly use a t-test or a Chi-Squared test for variance on a small sample (say, $n = 10$), we should check if our data is roughly Gaussian. Here is how:
+
+**Method 1: The Histogram (Visual)**
+
+Plot our data. Does it look like a symmetric bell? Or is it squished to one side?
+
+**Method 2: The Q-Q Plot (The Statistician's Favorite)**
+
+This is a scatterplot where we plot our actual data against the theoretical quantiles of a perfect Gaussian distribution.
+
+- If the points fall roughly along a straight diagonal line → Our data is Gaussian.
+- If the points curve upwards like a J-shape, or form an S-shape → Our data is not Gaussian.
+
+**Method 3: The Shapiro-Wilk Test (Statistical)**
+
+This is a formal hypothesis test.
+
+$$H_0: \text{The data is Gaussian}$$
+
+- If the p-value is high ($> 0.05$), we fail to reject the null—we assume it is Gaussian.
+- If the p-value is low ($< 0.05$), we reject the null—our data is not Gaussian.
+
+---
+
+### 5. What do we do if our data is NOT Gaussian?
+
+If our raw data is violently non-Gaussian (like sea lice counts) and we have a small sample size (so the Central Limit Theorem can't save us), we have two choices:
+
+1. **Transform the data:** Take the logarithm (log) or square root of every data point. Often, log-transforming sea lice counts turns a skewed blob into a beautiful bell curve. We then run our t-test on the logged data.
+
+2. **Use a Non-Parametric test:** These are "distribution-free" tests (like the Wilcoxon test) that don't assume Gaussian data at all. They work by ranking our data instead of using the raw numbers. They are safer, but slightly less powerful.
