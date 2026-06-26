@@ -168,7 +168,29 @@ $$5.3 \pm (1.98 \times 0.039) = 5.22 \text{ to } 5.38$$
 
 With more data, our pivot becomes incredibly precise, the interval shrinks, and the t-distribution automatically converges to the Normal distribution. This perfectly demonstrates **asymptotics**.
 
+## Chi-Squared distribution
+Imagine we take a standard normal distribution (mean 0, variance 1), reach in, and grab a random number (like +0.5). We square it. Now we grab another, square it, and add it to the first. You do this $k$ times.
 
+The distribution of that sum of squared normal variables is the **Chi-Squared distribution** with $k$ degrees of freedom.
+
+$$\chi^2_k = Z_1^2 + Z_2^2 + \cdots + Z_k^2$$
+
+Where $Z_i \sim N(0, 1)$ are independent standard normal random variables.
+### Why is it skewed and stuck at 0?
+
+Because we are **squaring numbers**!
+
+| Feature | Explanation |
+|---------|-------------|
+| **Stuck at 0** | We can never get a negative number (hence support starts at $0$) |
+| **Pile-up near 0** | Most $Z$-scores are small (between $-1$ and $1$), so their squares are between $0$ and $1$. We get a massive pile-up of data just above $0$ |
+| **Right skew** | Occasionally, you randomly grab a $Z$-score of $+2.5$, square it to $6.25$, which drags the mean to the right. This creates that long right-skewed tail (stretching to infinity) |
+
+**Example:**
+
+$$Z = 0.5 \rightarrow Z^2 = 0.25 \quad \text{(small)}$$
+$$Z = 1.0 \rightarrow Z^2 = 1.00 \quad \text{(moderate)}$$
+$$Z = 2.5 \rightarrow Z^2 = 6.25 \quad \text{(large, rare)}$$
 
 
 
