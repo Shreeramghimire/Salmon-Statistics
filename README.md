@@ -481,3 +481,8 @@ Because the Gamma distribution models positive, continuous, right-skewed data, i
 - **Insurance claims:** Most claims are small, but occasionally there is a catastrophic, massive claim.
 
 - **Salmon growth rates:** If you measure how long it takes for a salmon to reach 5 kg, the times are positive, skewed (most take average time, a few take forever), and fit a Gamma distribution beautifully.
+
+## Gaussian Data and Gaussian Distribution
+A Gaussian distribution is the famous **"bell curve"** (also called the **Normal distribution**).
+
+Gaussian data simply means data that, when plotted on a histogram, roughly follows that bell-shaped curve.
