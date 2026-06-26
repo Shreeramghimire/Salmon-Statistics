@@ -377,3 +377,107 @@ This rule isn't just for Chi-Squared; it applies everywhere.
 - **Comparing two independent means (two-sample t-test):** You have to estimate two means ($\bar{x}_1$ and $\bar{x}_2$). You lose 2 degrees of freedom. **$df = n_1 + n_2 - 2$.**
 
 - **Linear Regression (Estimating a slope and intercept):** You have to estimate two parameters (the slope and the intercept) to draw your best-fit line. You lose 2 degrees of freedom. **$df = n - 2$.**
+
+## Gamma Distribution
+Gamma distribution is the bigger, more flexible parent of the Chi-Squared distribution.
+
+If the Chi-Squared distribution is a specific sports car, the Gamma distribution is the SUV that can be configured to do a hundred different things.
+### The Physical Meaning: "The Waiting Time" Distribution
+The Gamma distribution is the ultimate "waiting time" distribution.
+
+Imagine you are a salmon farmer, and you are waiting for sea lice to attach to a fish. Lice arrive randomly at a constant average rate (say, 2 lice per hour).
+
+How long do you wait for exactly 1 louse to arrive? That follows an Exponential distribution.
+
+How long do you wait for exactly 5 lice to arrive? That sum of 5 independent waiting times follows a Gamma distribution!
+
+In fact, the Exponential distribution is just a special case of the Gamma distribution (when the "shape" parameter equals 1).
+
+### The Parameters (The "Knobs" we can turn)
+
+The Gamma distribution has two parameters that control its shape, scale, and location. Statisticians use two different common parameterizations.
+
+The parameters are: **Shape ($\alpha$)** and **Rate ($\beta$)**.
+
+- **Shape ($\alpha$):** This dictates the "number of events" you are waiting for. It must be a positive number.
+
+- **Rate ($\beta$):** This dictates the "speed" at which events happen. A higher rate means events happen faster, so the waiting time shrinks.
+
+### The Probability Density Function (PDF)
+
+Here is the mathematical formula for the Gamma PDF (using the Shape/Rate parameterization):
+
+$$f(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\beta x} \quad \text{for } x > 0$$
+
+Let's decode this scary-looking equation:
+
+- **$x^{\alpha-1}$** : This controls the initial rise of the curve.
+  - If $\alpha = 1$, it's flat at the start (Exponential).
+  - If $\alpha > 1$, the curve starts at 0, rises to a peak, and then falls.
+
+- **$e^{-\beta x}$** : This is the "decay" factor that eventually drags the curve down to zero as $x$ gets large.
+
+- **$\Gamma(\alpha)$** : This is the **Gamma Function** (the distribution's namesake). It is just a mathematical constant in the denominator that ensures the total area under the curve equals 1. (Think of it as the factorial function for non-integers: $\Gamma(n) = (n-1)!$).
+
+### The Mean and Variance
+
+Just like the Chi-Squared distribution, the Gamma distribution is right-skewed (starts at 0, stretches to infinity). Its mean and variance are beautifully simple:
+
+$$\text{Mean} = \frac{\alpha}{\beta}$$
+
+$$\text{Variance} = \frac{\alpha}{\beta^2}$$
+
+---
+
+### Check this against the Chi-Squared
+
+A Chi-Squared distribution with $k$ degrees of freedom is actually a **Gamma distribution** with:
+
+$$\alpha = \frac{k}{2} \quad \text{and} \quad \beta = \frac{1}{2}$$
+
+Let's verify:
+
+**Mean:**
+$$\frac{\alpha}{\beta} = \frac{k/2}{1/2} = k$$
+
+(Matches the Chi-Squared mean of $k$!)
+
+**Variance:**
+$$\frac{\alpha}{\beta^2} = \frac{k/2}{(1/2)^2} = \frac{k/2}{1/4} = 2k$$
+
+(Matches the Chi-Squared variance of $2k$!)
+### How the Shape ($\alpha$) Changes the Graph
+
+This is the coolest part. The Gamma distribution can look completely different depending on the shape parameter:
+
+- **$\alpha = 1$:** The curve is a perfect Exponential decay. Highest at 0, drops off quickly. (Waiting for the first event).
+
+- **$\alpha = 2$:** The curve starts at 0, shoots up to a peak, and falls slowly. (Waiting for the second event. You cannot get 2 events at exactly time 0, so the curve starts at 0).
+
+- **$\alpha = 10$:** The curve looks almost perfectly like a Normal distribution (bell curve)! This is due to the Central Limit Theorem—summing up 10 waiting times gives you a symmetrical blob.
+
+### The Gamma Distribution and Your Salmon Data (The Connection!)
+
+Remember the Chi-Squared pivot we used for the confidence interval of variance?
+
+$$\frac{(n-1)s^2}{\sigma^2} \sim \chi^2_{n-1}$$
+
+Since a Chi-Squared is just a Gamma with $\alpha = (n-1)/2$ and $\beta = 1/2$, we can actually say:
+
+> **The sampling distribution of your sample variance follows a Gamma distribution!**
+
+This means:
+
+If you collected thousands of salmon samples, calculated the variance for each, and plotted them, the histogram would perfectly match a Gamma curve (which is heavily right-skewed for small samples, but looks Normal for large samples).
+
+This perfectly explains why your confidence intervals for variance are so wide for small samples—the Gamma/Chi-Squared distribution has a long tail stretching out to the right, meaning your sample variance can occasionally be wildly larger than the true variance.
+
+### Real-World Uses of Gamma (Outside of Variance)
+
+Because the Gamma distribution models positive, continuous, right-skewed data, it is used everywhere:
+
+- **Rainfall:** The amount of daily rainfall is never negative, often has many days with 0 rain, and occasionally has massive downpours. Gamma models this perfectly.
+
+- **Insurance claims:** Most claims are small, but occasionally there is a catastrophic, massive claim.
+
+- **Salmon growth rates:** If you measure how long it takes for a salmon to reach 5 kg, the times are positive, skewed (most take average time, a few take forever), and fit a Gamma distribution beautifully.
