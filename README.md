@@ -184,7 +184,7 @@ Because we are **squaring numbers**!
 |---------|-------------|
 | **Stuck at 0** | We can never get a negative number (hence support starts at $0$) |
 | **Pile-up near 0** | Most $Z$-scores are small (between $-1$ and $1$), so their squares are between $0$ and $1$. We get a massive pile-up of data just above $0$ |
-| **Right skew** | Occasionally, you randomly grab a $Z$-score of $+2.5$, square it to $6.25$, which drags the mean to the right. This creates that long right-skewed tail (stretching to infinity) |
+| **Right skew** | Occasionally, we randomly grab a $Z$-score of $+2.5$, square it to $6.25$, which drags the mean to the right. This creates that long right-skewed tail (stretching to infinity) |
 
 **Example:**
 
@@ -192,6 +192,95 @@ $$Z = 0.5 \rightarrow Z^2 = 0.25 \quad \text{(small)}$$
 $$Z = 1.0 \rightarrow Z^2 = 1.00 \quad \text{(moderate)}$$
 $$Z = 2.5 \rightarrow Z^2 = 6.25 \quad \text{(large, rare)}$$
 
+### The "Degrees of Freedom" (df) and its Mean/Variance
 
+We noted: Mean = df, Variance = 2 × df.
 
+**Why does this matter?** It tells you the "spread" of the distribution.
 
+- If $df = 2$, the mean is $2$, and the variance is $4$ (standard deviation = $2$). It is highly skewed.
+
+- If $df = 100$, the mean is $100$, and the variance is $200$ (standard deviation $\approx 14.14$).
+
+**Crucial observation:** As the degrees of freedom get larger, the mean and variance both grow, but the relative spread (the coefficient of variation) shrinks. The Chi-Squared distribution slowly morphs from a highly skewed lopsided blob into a shape that looks exactly like a Normal distribution (thanks to the Central Limit Theorem!). This is why we use it for small samples, but for huge samples, it behaves normally.
+
+### The Famous Pivot: $\frac{(n-1)s^2}{\sigma^2}$
+
+We wrote the formula perfectly:
+
+$$\chi^2_{n-1} = \frac{(n-1) \times s^2}{\sigma^2}$$
+
+Let's break this down into plain English, piece by piece, using salmon weights.
+
+- **$\sigma^2$** = The true population variance. This is the "ground truth" of how much all salmon in the entire ocean weigh differently from each other. (We will never, ever know this number).
+
+- **$s^2$** = The sample variance. This is the spread we calculated from our 5 randomly caught salmon.
+
+- **$n-1$** = Our degrees of freedom.
+
+- **$\frac{(n-1)s^2}{\sigma^2}$** = The ratio of "What we observed in our tiny sample" divided by "The hidden truth of the universe."
+
+---
+
+### What does this ratio actually mean?
+
+- If our sample variance ($s^2$) happens to be exactly equal to the true population variance ($\sigma^2$), then the ratio equals $n-1$ (which is the mean of the distribution).
+
+- If our sample, by bad luck, contains 5 salmon that are all almost exactly the same weight ($s^2$ is very small), then the ratio becomes small (less than $n-1$). The pivot falls into the left tail (near 0).
+
+- If our sample, by bad luck, contains one giant salmon and one tiny salmon ($s^2$ is huge), then the ratio becomes large. The pivot falls into the far right tail.
+
+### How we use this to build a Confidence Interval for Variance
+
+Remember the 3-step process we used for the t-distribution? We do exactly the same thing here, but because the Chi-Squared distribution is **skewed**, we can't use a symmetric $\pm$ like we did for the mean. We have to grab two different percentiles from the table.
+
+---
+
+#### Step 1: The Pivot
+
+$$\text{Pivot} = \frac{(n-1)s^2}{\sigma^2} \sim \chi^2_{n-1}$$
+
+---
+
+#### Step 2: Trap the pivot between two fixed bounds with 95% probability
+
+Because it's skewed, we cut off 2.5% in the left tail (call this $\chi^2_{0.975}$) and 2.5% in the right tail (call this $\chi^2_{0.025}$).
+
+We write:
+
+$$P\left(\chi^2_{0.975} \leq \frac{(n-1)s^2}{\sigma^2} \leq \chi^2_{0.025}\right) = 0.95$$
+
+---
+
+#### Step 3: Solve the inequality for $\sigma^2$ (The true variance)
+
+Using algebra, we flip the fractions to isolate $\sigma^2$ in the middle:
+
+$$\frac{(n-1)s^2}{\chi^2_{0.025}} \leq \sigma^2 \leq \frac{(n-1)s^2}{\chi^2_{0.975}}$$
+
+---
+
+### Salmon Example (Confidence Interval for Weight Variance)
+
+We caught 5 salmon ($df = 4$). We calculate the sample variance: $s^2 = 0.152$ (which is $0.39^2$).
+
+We want a 95% confidence interval for the true variance of salmon weights ($\sigma^2$).
+
+Look up the Chi-Squared table for $df = 4$:
+
+- The 2.5% quantile (left tail, $\chi^2_{0.975}$) = **0.484**
+- The 97.5% quantile (right tail, $\chi^2_{0.025}$) = **11.143**
+
+Plug these into our formula:
+
+**Lower bound:** 
+$$\frac{4 \times 0.152}{11.143} = \frac{0.608}{11.143} \approx 0.054$$
+
+**Upper bound:** 
+$$\frac{4 \times 0.152}{0.484} = \frac{0.608}{0.484} \approx 1.256$$
+
+---
+
+### Final Result
+
+We are **95% confident** that the true variance of salmon weights in the entire pen is between **0.054 kg** and **1.256 kg**.
