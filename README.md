@@ -577,3 +577,66 @@ If our raw data is violently non-Gaussian (like sea lice counts) and we have a s
 1. **Transform the data:** Take the logarithm (log) or square root of every data point. Often, log-transforming sea lice counts turns a skewed blob into a beautiful bell curve. We then run our t-test on the logged data.
 
 2. **Use a Non-Parametric test:** These are "distribution-free" tests (like the Wilcoxon test) that don't assume Gaussian data at all. They work by ranking our data instead of using the raw numbers. They are safer, but slightly less powerful.
+
+## t-distribution
+The t-distribution is a bell-shaped curve, just like the Normal distribution. However, it has one crucial difference: **It has fatter tails.**
+
+Imagine two archers:
+
+- The **Normal distribution** is a perfect, world-class archer. Their arrows always land within a tight 2-inch circle.
+
+- The **t-distribution** is a good, but inexperienced, archer. Their arrows usually land close to the bullseye, but because they are less consistent, they occasionally shoot an arrow wildly off into the 10-point ring or completely miss the target.
+
+Because the t-distribution has fatter tails, it pulls probability away from the center and pushes it out to the extremes. This means:
+
+> To capture 95% of the data, the t-distribution requires a wider interval than the Normal distribution.
+
+Mathematically, the t-distribution is the ratio of two things:
+
+1. A Standard Normal variable ($Z$).
+2. The square root of a Chi-Squared variable divided by its degrees of freedom ($\chi^2_{df}/df$).
+
+The formula looks like this:
+
+$$t = \frac{Z}{\sqrt{\chi^2_{df}/df}}$$
+
+### What does this mean in plain English?
+
+It means the t-distribution naturally arises whenever we are trying to estimate the mean of a population, but we don't know the true standard deviation ($\sigma$) and have to guess it using our sample's standard deviation ($s$).
+
+Because $s$ is a random guess (based on our sample), it introduces extra "noise" into our calculation. The t-distribution mathematically accounts for that extra noise by stretching out the tails.
+
+### The "Degrees of Freedom" (df) Knob
+
+The t-distribution has one single parameter: the Degrees of Freedom ($df$).
+
+- When $df$ is small (like $df = 2$): The tails are massively fat, and the peak is very flat. The curve looks more like a squashed, wide blob than a bell.
+
+- When $df$ gets larger (like $df = 30$): The tails shrink, the peak gets taller, and the curve looks almost exactly like a Normal distribution.
+
+- When $df = \infty$ (infinity): The t-distribution becomes identical to the Standard Normal distribution (mean 0, variance 1).
+### How it connects to your Salmon Farm (The Pivot)
+
+Remember the pivotal quantity we built for the confidence interval of the mean?
+
+$$\text{Pivot} = \frac{\bar{x} - \mu}{s/\sqrt{n}}$$
+
+This exact formula follows Gosset's t-distribution with $df = n - 1$.
+
+Because of this, we use the t-distribution to build confidence intervals for small samples:
+
+$$\bar{x} \pm t_{n-1, \alpha/2} \times \frac{s}{\sqrt{n}}$$
+
+---
+
+### The Salmon Example
+
+You catch $n = 5$ salmon, so $df = 4$.
+
+- If you wrongly used the Normal distribution, your 95% critical value would be **1.96**.
+- Because you correctly use Gosset's t-distribution with $df = 4$, your critical value is **2.776**.
+
+**Result:** The t-distribution forces you to build a much wider, more honest confidence interval. It basically says:
+
+> *"Hey, you only caught 5 fish! You better admit you are very uncertain!"*
+
