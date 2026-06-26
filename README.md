@@ -284,3 +284,9 @@ $$\frac{4 \times 0.152}{0.484} = \frac{0.608}{0.484} \approx 1.256$$
 ### Final Result
 
 We are **95% confident** that the true variance of salmon weights in the entire pen is between **0.054 kg** and **1.256 kg**.
+
+Notice how massive that interval is (0.054 to 1.256)? **It's huge!**
+
+That is the harsh reality of the Chi-Squared distribution. It is incredibly volatile for small samples.
+
+To get a precise estimate of variance, you need massive sample sizes. The Chi-Squared distribution has a variance of $2 \times df$. For $df = 4$, the standard deviation is $\sqrt{8} \approx 2.8$, which is almost as large as the mean ($4$)! The uncertainty is enormous.
