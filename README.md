@@ -367,3 +367,13 @@ Because we lost that freedom, your sample variance ($s^2$) will, on average, be 
 $$E[s^2] = E\left[\frac{\sum (X_i - \bar{x})^2}{n-1}\right] = \sigma^2$$
 
 Dividing by $n-1$ makes $s^2$ an **unbiased estimator** of $\sigma^2$!
+
+### The Same Rule Applies to the t-distribution!
+
+This rule isn't just for Chi-Squared; it applies everywhere.
+
+- **t-distribution for a single mean:** You have to estimate $\mu$ using $\bar{x}$. Therefore, you lose 1 degree of freedom. **$df = n - 1$.**
+
+- **Comparing two independent means (two-sample t-test):** You have to estimate two means ($\bar{x}_1$ and $\bar{x}_2$). You lose 2 degrees of freedom. **$df = n_1 + n_2 - 2$.**
+
+- **Linear Regression (Estimating a slope and intercept):** You have to estimate two parameters (the slope and the intercept) to draw your best-fit line. You lose 2 degrees of freedom. **$df = n - 2$.**
