@@ -301,7 +301,7 @@ Here is the **golden rule**:
 > **We use $df = n - 1$** when we have to **ESTIMATE** the population mean ($\bar{x}$) from our sample first.
 
 Let's break down exactly why this happens using your salmon farm.
-### 1. The Condition for df = n (You know the true mean $\mu$)
+### 1. The Condition for df = n (We know the true mean $\mu$)
 
 Imagine you are a salmon farmer, and you have a magical, perfect scale that tells you the true average weight of every salmon in the ocean is exactly $\mu = 5.0$ kg.
 
@@ -377,6 +377,8 @@ This rule isn't just for Chi-Squared; it applies everywhere.
 - **Comparing two independent means (two-sample t-test):** You have to estimate two means ($\bar{x}_1$ and $\bar{x}_2$). You lose 2 degrees of freedom. **$df = n_1 + n_2 - 2$.**
 
 - **Linear Regression (Estimating a slope and intercept):** You have to estimate two parameters (the slope and the intercept) to draw your best-fit line. You lose 2 degrees of freedom. **$df = n - 2$.**
+
+**Golden Rule: When we calculate variance, we have $n$ data points. But we already **"spent"** 1 piece of information to calculate $\bar{x}$. Therefore, only $n-1$ of our data points are actually free to vary. Because only $n-1$ pieces of information are contributing to the variance, we divide by $n-1$. Dividing by $n$ would be like saying we have more information than we actually do, which makes our estimate falsely precise (and biased).**
 
 ## Gamma Distribution
 Gamma distribution is the bigger, more flexible parent of the Chi-Squared distribution.
