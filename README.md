@@ -848,3 +848,36 @@ The ratio $\mu/\sigma$ protects us from these traps. It forces us to ask: *"Forg
 | $d = 1.5$ | Very Large | Massive, can't miss it |
 
 **The Bottom Line:** Cohen's $d$ tells us the **practical significance** of our results. It strips away sample size and tells us: *"Is this effect big enough to care about?"*
+
+## Parameter in Statistics
+A parameter is a fixed, usually unknown number that describes the entire population you are studying.
+
+It is the "DNA" of the population. We cannot see it, we cannot measure every single individual to find it, but it is the underlying truth that governs how your data behaves.
+
+### Salmon Example:
+
+- **Parameter ($\mu$):** The true average weight of all 1,000,000 salmon in the ocean. We will never catch all of them. It is a fixed number (say, 5.0 kg), but we don't know it.
+
+- **Statistic ($\bar{x}$):** The average weight of the 20 salmon we just caught in our net (say, 4.8 kg). We do know this number. We use 4.8 kg as our estimate (guess) for the hidden parameter $\mu$.
+
+Every probability distribution is defined by its **parameters**. The parameters are the **"knobs"** that change the shape, center, and spread of the distribution.
+
+| Distribution | Parameters (The Unknown Truths) | What they control |
+|--------------|--------------------------------|-------------------|
+| **Normal (Gaussian)** | $\mu$ (mean) and $\sigma$ (standard deviation) | $\mu$ = where the bell curve sits. $\sigma$ = how wide the bell curve is. |
+| **Binomial** | $n$ (trials) and $p$ (probability of success) | $p$ = the true underlying chance of something happening (e.g., the true mortality rate of salmon). |
+| **Poisson** | $\lambda$ (rate) | The true average number of events (e.g., sea lice) per unit of time/space. |
+| **Gamma** | $\alpha$ (shape) and $\beta$ (scale) | Controls the skewness and the spread of waiting times. |
+| **Linear Regression** | $\beta_0$ (intercept) and $\beta_1$ (slope) | The true relationship between two variables (e.g., how much weight increases for every extra cm of length). |
+
+In the **Frequentist** school of statistics (which we have been learning with t-tests and confidence intervals), we believe that **parameters are fixed, unchanging numbers**.
+
+The true average weight of the salmon is 5.0 kg. It doesn't change. It is a single, solid rock of truth.
+
+The only reason we don't know it is because we can't catch all the salmon. The randomness comes from our **sampling**, not from the parameter itself. If we catch a different set of 20 fish, our statistic ($\bar{x}$) changes, but the parameter ($\mu$) stays exactly the same.
+
+In modern machine learning or computer science, people often use the word **"parameter"** differently.
+
+- **In statistics:** A parameter is a fixed, hidden truth about nature.
+
+- **In AI (like neural networks):** A "parameter" is just a weight or a number inside the algorithm that gets updated as the computer learns. There might be billions of them, and they don't necessarily represent a biological "truth"—they are just mathematical knobs to make the computer spit out the right answer.
