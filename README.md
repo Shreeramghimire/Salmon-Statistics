@@ -911,3 +911,133 @@ In modern machine learning or computer science, people often use the word **"par
 - **In AI (like neural networks):** A "parameter" is just a weight or a number inside the algorithm that gets updated as the computer learns. There might be billions of them, and they don't necessarily represent a biological "truth"—they are just mathematical knobs to make the computer spit out the right answer.
 
 **Golden rule: The parameter is the target. The statistic is the arrow you shoot at it. You never hit the bullseye perfectly, but you try to get as close as possible.** 
+
+## Maximum Likelihood Estimation (MLE)
+### Maximum Likelihood Estimation (MLE)
+
+It is the single most important tool in a statistician's toolbox. If statistics is about finding the "hidden truth" (the parameters) from our data, MLE is the mathematical search engine that finds the most plausible value for that truth.
+
+MLE is a method that finds the value of the unknown parameter (e.g., the true average weight) that makes the data we actually observed as likely as possible.
+
+---
+
+### The Intuition: The Blindfolded Archer
+
+Imagine we are blindfolded and throw a dart at a wall. We hear it hit the wall. We take off the blindfold and see the dart stuck in the wall.
+
+Now, someone asks us: *"Where do you think the bullseye (the center of the target) is located?"*
+
+We would point directly at the dart.
+
+**Why?** Because if the bullseye were anywhere else, the probability of our dart landing exactly where it did would be lower. The spot where the dart landed is the Maximum Likelihood Estimate for the bullseye.
+
+**In statistics:**
+
+- **The dart** = Our sample data (the 5 salmon we caught).
+- **The bullseye** = The unknown parameter (the true average weight of all salmon).
+- **The MLE** = The value of the parameter that places the highest probability on the data we actually observed.
+
+---
+
+### How MLE Works (The Step-by-Step Process)
+
+Let's say we catch 5 salmon and their average weight is 5.3 kg. We want to know the true population mean ($\mu$).
+
+**Step 1: Write the Likelihood Function**
+
+We write a mathematical formula that answers: *"If the true mean is $\mu$, how likely is it that I would get a sample average of 5.3 kg?"*
+
+This creates a curve (the Likelihood Function).
+
+**Step 2: Find the Peak (Maximize)**
+
+We use calculus (or a computer) to find the peak of that curve—the single value of $\mu$ that makes our observed 5.3 kg the most probable.
+
+**Step 3: The Answer**
+
+The peak will always be at $\mu = 5.3$ kg. The MLE for the population mean is simply the sample mean ($\bar{x}$).
+
+---
+
+### The Mathematical Definition
+
+Formally, if we have a likelihood function $L(\theta \mid \text{data})$, the MLE (written as $\hat{\theta}$) is:
+
+$$\hat{\theta}_{MLE} = \underset{\theta}{\arg\max} \, L(\theta \mid \text{data})$$
+
+**Translation:** *"Find the value of $\theta$ that makes the likelihood function as big as possible."*
+
+---
+
+### Why We Use Log-Likelihood
+
+Because likelihood functions often involve multiplying many small probabilities (which creates tiny numbers), statisticians usually maximize the **Log-Likelihood** ($\log L$) instead.
+
+The logarithm turns multiplication into addition, making the math vastly easier—but it gives the exact same answer because the logarithm is a strictly increasing function.
+
+$$\log L(\theta \mid \text{data}) = \sum_{i=1}^n \log f(x_i \mid \theta)$$
+
+---
+
+### MLEs for Common Parameters
+
+| Parameter | What it represents | The MLE (The Best Guess) |
+|-----------|-------------------|--------------------------|
+| **Mean ($\mu$)** | True average weight of all salmon | The sample average: $\hat{\mu} = \bar{x}$ |
+| **Variance ($\sigma^2$)** | True spread of salmon weights | $\hat{\sigma}^2 = \frac{1}{n}\sum (x_i - \bar{x})^2$ (Divides by $n$, not $n-1$!) |
+| **Proportion ($p$)** | True fraction of salmon with sea lice | $\hat{p} = \frac{\text{Number with lice}}{\text{Total sampled}}$ |
+| **Poisson Rate ($\lambda$)** | True average number of lice per fish | $\hat{\lambda} = \bar{x}$ |
+
+---
+
+### The Three Magical Properties of MLE (Asymptotics!)
+
+Remember our discussion about Asymptotics (what happens when sample size gets huge)? MLE has three magical properties that make it the gold standard of statistics:
+
+| Property | Meaning | Salmon Example |
+|----------|---------|----------------|
+| **Consistency** | As we catch more fish, MLE gets closer to the true parameter | Catch 1,000 fish, and $\hat{\mu}$ is almost certainly 5.000 kg |
+| **Efficiency** | Among all estimators, MLE has the smallest possible variance | No other estimator gives a tighter, more precise guess |
+| **Normality** | As $n \to \infty$, MLE becomes Normally distributed | We can easily build confidence intervals! |
+
+---
+
+### The MLE vs. Unbiased Estimator Trade-off
+
+Notice in the table above that the MLE for variance divides by $n$, not $n-1$.
+
+| Estimator | Formula | Bias | Consistency |
+|-----------|---------|------|-------------|
+| **MLE for variance** | $\hat{\sigma}^2 = \frac{1}{n}\sum (x_i - \bar{x})^2$ | Biased (underestimates) | Consistent |
+| **Unbiased estimate** | $s^2 = \frac{1}{n-1}\sum (x_i - \bar{x})^2$ | Unbiased | Consistent |
+
+This means the MLE for variance is **biased**. On average, it slightly underestimates the true population variance (because it doesn't account for the fact that we estimated the mean using the same data).
+
+**MLE for variance:**
+$$\hat{\sigma}^2 = \frac{1}{n}\sum (x_i - \bar{x})^2 \quad \text{(Biased, but consistent)}$$
+
+**Unbiased estimate:**
+$$s^2 = \frac{1}{n-1}\sum (x_i - \bar{x})^2 \quad \text{(Unbiased, but not the MLE)}$$
+
+---
+
+### The Classic Trade-off
+
+| | MLE | Unbiased Estimator |
+|--|-----|-------------------|
+| **Variance** | Divides by $n$ | Divides by $n-1$ |
+| **Bias** | Biased (slightly underestimates) | Unbiased |
+| **Variance of estimator** | Smaller | Larger |
+| **Best for** | Large samples | Small samples |
+
+MLE gives you the absolute peak of the likelihood curve, but if you want an unbiased estimate, you have to tweak the denominator.
+
+---
+
+### Summary
+
+It is the single most important tool in a statistician's toolbox. If statistics is about finding the "hidden truth" (the parameters) from our data, MLE is the mathematical search engine that finds the most plausible value for that truth.
+
+MLE is a method that finds the value of the unknown parameter (e.g., the true average weight) that makes the data we actually observed as likely as possible.
+
+**The Bottom Line:** MLE is the gold standard for estimation. It's consistent, efficient, and asymptotically Normal. But for small samples, the unbiased estimator (dividing by $n-1$) is safer for variance estimation!
