@@ -1042,8 +1042,7 @@ MLE is a method that finds the value of the unknown parameter (e.g., the true av
 
 **The Bottom Line:** MLE is the gold standard for estimation. It's consistent, efficient, and asymptotically Normal. But for small samples, the unbiased estimator (dividing by $n-1$) is safer for variance estimation!
 
-## T Confidence Intervals
-### t Confidence Intervals
+## t Confidence Intervals
 
 To understand t confidence intervals, we have to combine three things we already know:
 
@@ -1303,6 +1302,98 @@ When we run a **linear regression** (e.g., predicting salmon weight based on len
 
 That Residual Standard Error is actually a **giant pooled variance**! It pools together the variation from all the data points around the regression line, across all values of our predictors, to give us one single, powerful estimate of the **"noise"** in our system.
 
+### The Test Statistic that uses the Pooled Estimator
+
+When we want to compare the means of two groups (e.g., Pen A vs. Pen B), we calculate a two-sample t-statistic:
+
+$$t = \frac{(\bar{x}_1 - \bar{x}_2) - (\mu_1 - \mu_2)}{s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
+
+Notice that the pooled standard deviation ($s_p$) is sitting in the denominator.
+
+Now, here is the crucial part:
+
+| Scenario | Distribution | Center |
+|----------|--------------|--------|
+| **Null hypothesis is TRUE** ($\mu_1 = \mu_2$) | Central (regular) t-distribution | Centered at 0 |
+| **Null hypothesis is FALSE** ($\mu_1 \neq \mu_2$) | Non-central t-distribution | Shifted by $\delta$ |
+
+If the null hypothesis is **TRUE** ($\mu_1 = \mu_2$): This test statistic follows a central (regular) t-distribution with $n_1 + n_2 - 2$ degrees of freedom.
+
+If the null hypothesis is **FALSE** ($\mu_1 \neq \mu_2$): This test statistic follows a **non-central t-distribution** with the same degrees of freedom, but with a non-centrality parameter ($\delta$).
+
+---
+
+### The Non-Centrality Parameter for the Pooled Test
+
+When there is a true difference between the two pens, the numerator of our t-statistic doesn't center at 0 anymore. It centers at the true difference ($\mu_1 - \mu_2$).
+
+The non-centrality parameter ($\delta$) for this two-sample t-test is:
+
+$$\delta = \frac{\mu_1 - \mu_2}{\sigma \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
+
+Let's decode this:
+
+| Component | Meaning |
+|-----------|---------|
+| **Numerator** ($\mu_1 - \mu_2$) | The true, real-world difference between the average weights of the two pens. (The **"Signal"**). |
+| **Denominator** ($\sigma \sqrt{1/n_1 + 1/n_2}$) | The standard error of that difference. (The **"Noise"**). |
+
+---
+
+### The Big Picture
+
+This non-centrality parameter ($\delta$) measures **how detectable our effect is**.
+
+| Effect Size | $\delta$ | Detectability |
+|-------------|----------|---------------|
+| **Large effect** (e.g., feed adds 2 kg) | $\delta$ is large | The non-central t-distribution is shoved far to the right, far away from the central t-distribution. **Power is HIGH** — we are very likely to detect the difference. |
+| **Small effect** (e.g., feed adds 0.1 kg) | $\delta$ is tiny | The non-central t-distribution sits almost exactly on top of the central t-distribution. **Power is LOW** — we are unlikely to detect the difference unless we have a massive sample size. |
+
+---
+
+### Example for salmon
+
+**The Setup:**
+
+| Pen | Feed | True Mean ($\mu$) |
+|-----|------|-------------------|
+| **Pen A** | Standard | $\mu_1 = 5.0$ kg |
+| **Pen B** | Experimental | $\mu_2 = 5.5$ kg |
+
+So the true difference is $\mu_1 - \mu_2 = -0.5$ kg (Pen B is heavier).
+
+- The true standard deviation of weights in both pens is $\sigma = 1.0$ kg.
+- We catch $n_1 = 10$ fish from Pen A, and $n_2 = 10$ fish from Pen B.
+
+---
+
+**Calculate the Non-Centrality Parameter:**
+
+$$\delta = \frac{-0.5}{1.0 \times \sqrt{1/10 + 1/10}} = \frac{-0.5}{1.0 \times \sqrt{0.2}} = \frac{-0.5}{0.447} \approx -1.12$$
+
+---
+
+**What does $\delta = -1.12$ mean?**
+
+It means the true effect (the feed makes fish 0.5 kg lighter) is **1.12 standard errors away from zero**.
+
+| Scenario | Distribution | Center |
+|----------|--------------|--------|
+| **If the feed actually does nothing** | Central t-distribution | Centered at 0 |
+| **If the feed adds 0.5 kg** | Non-central t-distribution | Shifted to the left, centered at -1.12 |
+
+If we run a t-test, our observed t-statistic will be a random draw from a **non-central t-distribution** that is shifted to the left, centered at -1.12.
+
+If the feed actually did nothing ($\delta = 0$), our t-statistic would be a random draw from the central t-distribution (centered at 0).
+
+---
+
+### The Connection to Power
+
+The area under the non-central t-curve (with $\delta = -1.12$) that falls past the critical rejection region (e.g., $t < -2.10$) is our **statistical power**.
+
+Because $\delta$ is only -1.12, our power might be around **30%** — meaning we only have a 30% chance of actually catching this 0.5 kg difference with only 10 fish per pen.
+
 ---
 
 ### Summary Table
@@ -1314,6 +1405,8 @@ That Residual Standard Error is actually a **giant pooled variance**! It pools t
 | **Degrees of Freedom** | $df = n_1 + n_2 - 2$ | Total df for pooled t-test |
 
 **The Big Idea:** Pooling combines information from multiple groups to get a more reliable estimate of the common variance. But it only works if we can assume the variances are equal!
+
+
 
 ## Test Statistics
 
