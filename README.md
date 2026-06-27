@@ -896,4 +896,4 @@ In modern machine learning or computer science, people often use the word **"par
 
 - **In AI (like neural networks):** A "parameter" is just a weight or a number inside the algorithm that gets updated as the computer learns. There might be billions of them, and they don't necessarily represent a biological "truth"—they are just mathematical knobs to make the computer spit out the right answer.
 
-**Golden rule: The parameter is the target. The statistic is the arrow you shoot at it. You never hit the bullseye perfectly, but you try to get as close as possible.
+**Golden rule: The parameter is the target. The statistic is the arrow you shoot at it. You never hit the bullseye perfectly, but you try to get as close as possible.** 
