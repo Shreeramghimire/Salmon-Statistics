@@ -1041,3 +1041,144 @@ It is the single most important tool in a statistician's toolbox. If statistics 
 MLE is a method that finds the value of the unknown parameter (e.g., the true average weight) that makes the data we actually observed as likely as possible.
 
 **The Bottom Line:** MLE is the gold standard for estimation. It's consistent, efficient, and asymptotically Normal. But for small samples, the unbiased estimator (dividing by $n-1$) is safer for variance estimation!
+
+## T Confidence Intervals
+### t Confidence Intervals
+
+To understand t confidence intervals, we have to combine three things we already know:
+
+1. **Gosset's t-distribution** (the bell curve with fatter tails for small samples).
+2. **The Pivot** $\frac{\bar{x} - \mu}{s/\sqrt{n}}$ (which follows that t-distribution).
+3. **The Pivotal Quantity Method** (trapping the pivot between two bounds and solving for $\mu$).
+
+A t confidence interval is simply the practical result of that 3-step process. It is the formula we plug our numbers into to get a range of plausible values for the true population mean ($\mu$) when we are working with a small sample and don't know the true standard deviation.
+
+Here is the formula, followed by a plain-English breakdown:
+
+$$\bar{x} \pm t_{n-1, \alpha/2} \times \frac{s}{\sqrt{n}}$$
+
+---
+
+### 1. Breaking Down the Formula
+
+Let's translate each piece into salmon-farming language.
+
+| Component | Symbol | Meaning | Salmon Example |
+|-----------|--------|---------|----------------|
+| **Sample Mean** | $\bar{x}$ | Our best single guess | 5.3 kg |
+| **Sample Std Dev** | $s$ | How much our fish vary from each other | 0.39 kg |
+| **Sample Size** | $n$ | How many fish we caught | 5 |
+| **Standard Error** | $\frac{s}{\sqrt{n}}$ | The "margin of error" from random sampling | $0.39/\sqrt{5} \approx 0.174$ |
+| **t-Critical Value** | $t_{n-1, \alpha/2}$ | Multiplier accounting for small sample size | 2.776 |
+
+---
+
+#### The Standard Error
+
+This is the "margin of error" caused by random sampling. It tells us how much our sample mean (5.3 kg) typically bounces around from sample to sample.
+
+$$\frac{s}{\sqrt{n}} = \frac{0.39}{\sqrt{5}} \approx 0.174$$
+
+#### The t-Critical Value
+
+This is the multiplier that accounts for our small sample size. We look this up in a t-table.
+
+- For $n = 5$, degrees of freedom ($df$) = $4$
+- For 95% confidence, $\alpha = 0.05$, so $\alpha/2 = 0.025$
+- The t-critical value for $df = 4$ is **2.776**
+
+---
+
+#### Plugging it in
+
+$$\bar{x} \pm t_{n-1, \alpha/2} \times \frac{s}{\sqrt{n}}$$
+
+$$5.3 \pm 2.776 \times 0.174$$
+
+$$5.3 \pm 0.483$$
+
+**Final Interval:** $(4.817 \text{ kg}, 5.783 \text{ kg})$
+
+---
+
+### 2. What does this interval actually mean?
+
+This is the tricky philosophical part.
+
+| Statement | Correct? | Why? |
+|-----------|----------|------|
+| "There is a 95% probability that the true mean is between 4.817 and 5.783 kg." | **Incorrect** | The true mean is a fixed number; it's either in there or it isn't. Probability doesn't apply to a fixed number. |
+| "We are 95% confident that the true mean lies between 4.817 and 5.783 kg." | **Correct** | Confidence refers to the method, not the parameter. |
+
+---
+
+#### What does "95% confident" mean?
+
+It means that if we repeated this exact experiment 100 times (catching 5 new salmon each time, calculating the mean and standard deviation, and building a new interval each time), **95 of those 100 intervals** would successfully capture the true population mean, and **5 of them would miss it**.
+
+We don't know if this specific interval is one of the 95 that hit or the 5 that miss. But our method is reliable 95% of the time.
+
+---
+
+### 3. Why "t" instead of "Z" (Normal)?
+
+This is the core of Gosset's genius.
+
+| Distribution | When to Use | Problem |
+|--------------|-------------|---------|
+| **Normal (Z)** | We know $\sigma$ (true population std dev) | We never know $\sigma$ in real life! |
+| **t-distribution** | We estimate $\sigma$ with $s$ | Correctly accounts for extra uncertainty |
+
+**The t-distribution has fatter tails** than the Normal distribution. This forces the critical value (2.776) to be much larger than the Normal value (1.96).
+
+**The Result:** The t-interval is **wider** than the Normal interval. It forces us to be honest about our uncertainty when we only have a few data points.
+
+---
+
+### 4. The "Degrees of Freedom" (Why $n-1$?)
+
+We might wonder why we use $n-1$ instead of $n$.
+
+When we calculate the sample standard deviation ($s$), we first have to calculate the sample mean ($\bar{x}$). Once we know $\bar{x}$ and $n-1$ of the data points, the $n$-th data point is forced (it cannot vary freely).
+
+We have effectively **"lost" 1 degree of freedom**. So, for a sample of 5 fish, we have $5-1=4$ degrees of freedom. We use the t-table row for $df = 4$.
+
+$$\text{df} = n - 1 = 5 - 1 = 4$$
+
+---
+
+### 5. The "Magic" of Large Samples (Asymptotics)
+
+What happens if we catch 1,000 salmon instead of 5?
+
+- Degrees of freedom = 999
+- The t-critical value for 999 df is 1.962—almost identical to the Normal value of 1.96
+- The Standard Error ($s/\sqrt{n}$) becomes tiny because $n$ is huge
+
+Our interval becomes:
+
+$$5.3 \pm 1.962 \times \frac{0.39}{\sqrt{1000}} = 5.3 \pm 1.962 \times 0.0123$$
+
+$$5.3 \pm 0.024 \rightarrow (5.276, 5.324)$$
+
+With 1,000 fish, we are incredibly certain the true mean is around 5.3 kg. The t-distribution automatically **"grows up"** to become the Normal distribution as our sample size increases.
+
+This is why we love the t-interval: **We can use it for any sample size.**
+
+- If $n$ is small, it gives us wide, honest intervals.
+- If $n$ is huge, it automatically gives us the same result as the Normal distribution.
+
+---
+
+### Summary: The t Confidence Interval Cheat Sheet
+
+| Step | Action | Salmon Example |
+|------|--------|----------------|
+| 1 | Calculate the sample mean ($\bar{x}$) | 5.3 kg |
+| 2 | Calculate the sample std dev ($s$) | 0.39 kg |
+| 3 | Find the Standard Error ($s/\sqrt{n}$) | 0.174 kg |
+| 4 | Find the t-critical value ($df = n-1$, 95% confidence) | 2.776 |
+| 5 | Multiply the critical value by the SE | $2.776 \times 0.174 = 0.483$ |
+| 6 | Add and subtract from the mean | $5.3 \pm 0.483$ |
+
+**Final Answer:** We are 95% confident the true mean is between **4.817 kg** and **5.783 kg**.
