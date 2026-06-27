@@ -739,3 +739,114 @@ Yes! But only if we are measuring **relative** things, not **absolute** things.
 - The difference in blood pressure before and after taking a placebo pill has a mean of 0.
 - If we standardize the exam scores of your entire class, the resulting Z-scores will have a mean of exactly 0 and a standard deviation of exactly 1 by construction.
 
+### Cohen's *d* (the standardized effect size)
+
+The ratio:
+
+$$\frac{\text{Population Mean}}{\text{Standard Deviation}} = \frac{\mu}{\sigma}$$
+
+...is the **Signal-to-Noise Ratio**.
+
+It tells us how big our "discovery" is, relative to the natural chaos of our system. It strips away the units (kg, dollars, lice) and tells us the practical size of an effect, completely independent of our sample size.
+
+Let me break down exactly what this ratio means in plain English, and why it is arguably more important than the p-value.
+
+---
+
+### 1. The Intuition: The "Whisper in a Hurricane"
+
+Imagine we are standing in a crowded salmon processing plant.
+
+- **The Signal ($\mu$):** Our friend whispers something to us from 2 feet away. That whisper has a certain volume (say, 20 decibels).
+
+- **The Noise ($\sigma$):** The machines, the water pumps, and the workers are creating a constant roar of background noise (say, 100 decibels).
+
+What is our chance of hearing the whisper? It is almost zero. The noise completely drowns out the signal. The ratio of $\mu/\sigma$ is $20/100 = 0.2$. Very small.
+
+Now, imagine our friend uses a megaphone (Signal = 120 decibels) in the exact same factory (Noise = 100 decibels). The ratio is $120/100 = 1.2$.
+
+That ratio is exactly what $\mu/\sigma$ is! It measures how far the "center" of our effect is from zero, measured in units of the natural background noise.
+
+---
+
+### 2. Let's translate this to our Salmon Farm
+
+**Scenario A (A Tiny Effect):**
+
+We test a new vitamin supplement. We find that it increases salmon growth by 0.1 kg ($\mu = 0.1$).
+
+However, salmon naturally have a huge variation in weight—some are just naturally big eaters, some are small. The standard deviation is 1.0 kg ($\sigma = 1.0$).
+
+$$\frac{\mu}{\sigma} = \frac{0.1}{1.0} = 0.1$$
+
+**What does 0.1 mean?**
+
+It means the average growth from our supplement is only 0.1 standard deviations away from zero. The "signal" is completely buried inside the natural randomness of the fish. If we feed 100 fish this supplement, we will barely notice the difference because a random, untreated fish varies more than that on its own.
+
+**Scenario B (A Massive Effect):**
+
+We test a miracle growth hormone. It increases salmon growth by 1.5 kg ($\mu = 1.5$). The natural standard deviation is still 1.0 kg ($\sigma = 1.0$).
+
+$$\frac{\mu}{\sigma} = \frac{1.5}{1.0} = 1.5$$
+
+**What does 1.5 mean?**
+
+It means our "signal" is 1.5 times bigger than the natural "noise." The effect is massive. If we feed this to fish, we can literally look at the tank and see that these fish are giants compared to the others. The effect is so large it punches through the randomness.
+
+---
+
+### 3. The Two Faces of this Ratio (The Catch!)
+
+Here is where things get incredibly subtle. The exact same ratio $\mu/\sigma$ does two completely different jobs depending on how we use it:
+
+**Role 1: The Non-Centrality Parameter (Signal we expect to see)**
+
+When we are designing an experiment (before we collect data), this ratio is the true, real-world effect we are trying to catch. We call this $\delta$.
+
+| $\delta$ | Interpretation |
+|----------|----------------|
+| $\delta = 0.2$ | A tiny, barely noticeable effect |
+| $\delta = 0.5$ | A moderate, noticeable effect |
+| $\delta = 0.8$ | A large, obvious effect |
+
+We use this to calculate **Statistical Power**: *"How many fish do we need to catch to be sure we detect this 0.5 effect?"*
+
+**Role 2: The "Z-score" (Signal we observed in our data)**
+
+When we have already collected our data, we calculate the sample mean ($\bar{x}$) and sample standard deviation ($s$). The ratio $\bar{x}/s$ tells us how many standard deviations our observed result is away from zero. This is our observed effect size.
+
+**But wait!** We usually divide by the Standard Error ($s/\sqrt{n}$) for a t-test, not just $s$:
+
+| Ratio | What it tells us |
+|-------|------------------|
+| $\frac{\bar{x}}{s}$ | How big is the effect in the population? |
+| $\frac{\bar{x}}{s/\sqrt{n}}$ | How confident are we that this effect isn't due to random luck? (This is the **t-statistic**) |
+
+---
+
+### 4. The Golden Rule of Statistics (Why this ratio saves us)
+
+There is a famous saying in statistics: **"Statistical significance is not the same as practical significance."**
+
+**If our sample size ($n$) is huge:**
+- We can get a statistically significant p-value (e.g., $p < 0.0001$) even when $\mu/\sigma = 0.01$.
+- We proved the feed works, but it adds 0.01 kg per fish. Who cares? It's not worth the money.
+
+**If our sample size ($n$) is tiny:**
+- We might get a p-value of 0.08 (not significant) even when $\mu/\sigma = 1.5$.
+- We failed the math test, but the effect is so massive that any farmer looking at the tank knows it works.
+
+The ratio $\mu/\sigma$ protects us from these traps. It forces us to ask: *"Forget the p-value. Is this effect actually large enough to matter in the real world?"*
+
+---
+
+### Summary Table
+
+| Effect Size ($d$) | Interpretation | Real-World Example |
+|-------------------|----------------|-------------------|
+| $d = 0.2$ | Small | Barely noticeable |
+| $d = 0.5$ | Medium | Noticeable |
+| $d = 0.8$ | Large | Obvious |
+| $d = 1.5$ | Very Large | Massive, can't miss it |
+
+**The Bottom Line:** Cohen's $d$ tells us the **practical significance** of our results. It strips away sample size and tells us: *"Is this effect big enough to care about?"*
