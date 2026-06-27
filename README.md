@@ -378,6 +378,18 @@ This rule isn't just for Chi-Squared; it applies everywhere.
 
 - **Linear Regression (Estimating a slope and intercept):** You have to estimate two parameters (the slope and the intercept) to draw your best-fit line. You lose 2 degrees of freedom. **$df = n - 2$.**
 
+### Why Use MLE (Dividing by $n$) Instead of $n-1$?
+
+If $n-1$ gives us an unbiased estimate, why would anyone ever use the MLE (which divides by $n$)?
+
+**Because of Asymptotics (large samples)!**
+
+- When $n$ is small (e.g., $n=5$): The difference is huge. Dividing by $n$ gives you only $0.8$ of the truth (bad bias). Dividing by $n-1$ gives you the exact truth on average.
+
+- When $n$ is huge (e.g., $n=1,000$): Dividing by $n$ gives you $\frac{999}{1000} = 0.999$ of the truth. The bias is practically zero!
+
+Statisticians prefer the MLE (dividing by $n$) for large samples because it has better **"asymptotic properties"** (it is more efficient and consistent). But for small samples, we absolutely must use $n-1$ to avoid grossly underestimating our true variance!
+
 **Golden Rule: When we calculate variance, we have $n$ data points. But we already **"spent"** 1 piece of information to calculate $\bar{x}$. Therefore, only $n-1$ of our data points are actually free to vary. Because only $n-1$ pieces of information are contributing to the variance, we divide by $n-1$. Dividing by $n$ would be like saying we have more information than we actually do, which makes our estimate falsely precise (and biased).**
 
 ## Gamma Distribution
