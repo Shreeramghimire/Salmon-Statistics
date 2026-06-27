@@ -1182,3 +1182,136 @@ This is why we love the t-interval: **We can use it for any sample size.**
 | 6 | Add and subtract from the mean | $5.3 \pm 0.483$ |
 
 **Final Answer:** We are 95% confident the true mean is between **4.817 kg** and **5.783 kg**.
+
+## The Pooled Estimator
+
+To understand a pooled estimator, imagine we are a salmon farmer with two separate pens.
+
+- **Pen A** gets the standard, cheap feed.
+- **Pen B** gets our expensive, experimental feed.
+
+We want to know if the experimental feed makes the fish grow heavier. We catch 10 fish from Pen A and 10 fish from Pen B.
+
+Now we have two separate sample variances ($s_1^2$ and $s_2^2$).
+
+- Pen A's variance might be 0.8 kg².
+- Pen B's variance might be 1.2 kg².
+
+**Which one do we use to calculate our standard error?** Do we use Pen A's? Pen B's? An average?
+
+A **pooled estimator** is the mathematical answer to this problem. It is a weighted average that combines the information from both samples into one single, super-reliable estimate of the common population variance.
+
+---
+
+### 1. The Formula for the Pooled Variance ($s_p^2$)
+
+When we assume that both populations have the same underlying variance ($\sigma_1^2 = \sigma_2^2$), we **"pool"** our samples together to get the best possible guess for that single $\sigma^2$.
+
+The formula is:
+
+$$s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}$$
+
+Let's decode this:
+
+| Component | Meaning |
+|-----------|---------|
+| $n_1 - 1$ and $n_2 - 1$ | The degrees of freedom for each sample |
+| $(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2$ | The sum of the squared deviations from both groups added together (total "evidence" of spread from both pens) |
+| $n_1 + n_2 - 2$ | The total degrees of freedom (we lose 1 df estimating the mean of Pen A, and 1 df estimating the mean of Pen B) |
+
+---
+
+### 2. Salmon Example (Plugging in the Numbers)
+
+Let's put real numbers to it.
+
+| Pen | Feed | Sample Size ($n$) | Sample Variance ($s^2$) |
+|-----|------|-------------------|------------------------|
+| **Pen A** | Standard | $n_1 = 10$ | $s_1^2 = 0.8$ |
+| **Pen B** | Experimental | $n_2 = 10$ | $s_2^2 = 1.2$ |
+
+Plug them into the formula:
+
+$$s_p^2 = \frac{(10 - 1) \times 0.8 + (10 - 1) \times 1.2}{10 + 10 - 2}$$
+
+$$s_p^2 = \frac{(9 \times 0.8) + (9 \times 1.2)}{18}$$
+
+$$s_p^2 = \frac{7.2 + 10.8}{18} = \frac{18}{18} = 1.0$$
+
+**The Pooled Variance is exactly 1.0 kg².**
+
+The pooled standard deviation (which we use in our formulas) is:
+
+$$s_p = \sqrt{1.0} = 1.0 \text{ kg}$$
+
+**What did we just do?** Instead of trusting the weird 0.8 from Pen A or the 1.2 from Pen B (which were based on only 10 fish each), we combined them. By pooling, we effectively have a variance estimate based on **18 degrees of freedom**, which is much more reliable!
+
+---
+
+### 3. Where do we use the Pooled Estimator?
+
+We use the pooled variance to calculate the **Standard Error for the two-sample t-test** (when we assume equal variances).
+
+The formula for the pooled standard error is:
+
+$$SE_{\text{pooled}} = s_p \times \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$$
+
+Using our numbers:
+
+$$SE_{\text{pooled}} = 1.0 \times \sqrt{\frac{1}{10} + \frac{1}{10}} = 1.0 \times \sqrt{0.2} \approx 0.447$$
+
+We would then use this 0.447 to build a confidence interval for the difference between the two pen means, or to calculate our t-statistic!
+
+---
+
+### 4. The Intuition: Why do we "weight" it?
+
+Notice the formula does not just add the two variances and divide by 2 (a simple average).
+
+It is a **weighted average**.
+
+| Scenario | Result |
+|----------|--------|
+| Pen A has 100 fish, Pen B has 10 fish | The pooled variance will be pulled much closer to Pen A's variance, because Pen A has more information (more degrees of freedom). |
+
+**The group with more data "deserves" to have more say in the final estimate.**
+
+---
+
+### 5. The Big Assumption (The Catch!)
+
+We can only use the pooled estimator if we are willing to assume that the two populations have **equal variances**.
+
+In statistics, this is called the **assumption of homogeneity of variance**.
+
+| Situation | What to Do |
+|-----------|------------|
+| Variances are equal (e.g., 0.8 and 1.2) | **Use pooled estimator** ✅ |
+| Variances are wildly different (e.g., 5.0 and 0.5) | **Do NOT pool** ❌ |
+
+If Pen A's fish weights vary wildly (variance = 5.0) and Pen B's fish weights are incredibly consistent (variance = 0.5), pooling them together into one single number would be mathematically wrong.
+
+If the variances are wildly different, we have to use **Welch's t-test**, which does not pool the variances. Instead, it uses a complicated formula (the Satterthwaite approximation) to calculate the degrees of freedom and keeps the variances separate.
+
+---
+
+### 6. Pooled Estimator in Linear Regression (The Big Picture)
+
+The pooled estimator isn't just for comparing two groups.
+
+When we run a **linear regression** (e.g., predicting salmon weight based on length, temperature, and feed type), the computer calculates a single **Residual Standard Error**.
+
+That Residual Standard Error is actually a **giant pooled variance**! It pools together the variation from all the data points around the regression line, across all values of our predictors, to give us one single, powerful estimate of the **"noise"** in our system.
+
+---
+
+### Summary Table
+
+| Concept | Formula | Use Case |
+|---------|---------|----------|
+| **Pooled Variance** | $s_p^2 = \frac{(n_1 - 1)s_1^2 + (n_2 - 1)s_2^2}{n_1 + n_2 - 2}$ | Combining two sample variances |
+| **Pooled SE** | $SE_{\text{pooled}} = s_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$ | Standard error for two-sample t-test |
+| **Degrees of Freedom** | $df = n_1 + n_2 - 2$ | Total df for pooled t-test |
+
+**The Big Idea:** Pooling combines information from multiple groups to get a more reliable estimate of the common variance. But it only works if we can assume the variances are equal!
+
