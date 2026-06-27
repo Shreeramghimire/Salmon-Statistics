@@ -876,6 +876,20 @@ The true average weight of the salmon is 5.0 kg. It doesn't change. It is a sing
 
 The only reason we don't know it is because we can't catch all the salmon. The randomness comes from our **sampling**, not from the parameter itself. If we catch a different set of 20 fish, our statistic ($\bar{x}$) changes, but the parameter ($\mu$) stays exactly the same.
 
+When we use a statistic to guess a parameter, we put a **"hat"** (^) on the Greek letter to show it is an estimate.
+
+- $\mu$ = The true, unknown average.
+- $\hat{\mu}$ (read as **"mu-hat"**) = Our best guess for the average (which is usually just $\bar{x}$, the sample mean).
+
+---
+
+### Salmon Example
+
+We want to know the true sea lice infestation rate ($p$). We sample 100 fish and find 10 have lice.
+
+- **The Parameter:** $p$ = The true proportion of all fish in the pen with lice. (Hidden).
+- **The Estimate:** $\hat{p} = 10/100 = 0.10$. We guess that 10% of all fish have lice.
+
 In modern machine learning or computer science, people often use the word **"parameter"** differently.
 
 - **In statistics:** A parameter is a fixed, hidden truth about nature.
