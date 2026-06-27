@@ -348,7 +348,7 @@ We calculate the average of the first 4 weights:
 
 $$\frac{4.8 + 5.1 + 5.3 + 5.5}{4} = 5.175$$
 
-We decide you want your total sample mean to be exactly $\bar{x} = 5.3$ kg.
+We want total sample mean to be exactly $\bar{x} = 5.3$ kg.
 
 **Question:** What must the weight of the 5th salmon be?
 
@@ -706,8 +706,6 @@ Instead of carrying around the messy numbers "5.0" and "1.5" for every calculati
 ---
 
 ### 4. The Boring (But mathematically true) Facts about $N(0,1)$
-
-Since I know you love the hard math, here is the formal definition:
 
 **The PDF:**
 
