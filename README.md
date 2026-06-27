@@ -1315,3 +1315,124 @@ That Residual Standard Error is actually a **giant pooled variance**! It pools t
 
 **The Big Idea:** Pooling combines information from multiple groups to get a more reliable estimate of the common variance. But it only works if we can assume the variances are equal!
 
+## Test Statistics
+
+A **test statistic** is a single number calculated from our sample data that measures how far our observed results are from what we would expect if the null hypothesis were true.
+
+It is the **"distance"** between our data and our assumption, measured in units of standard error.
+
+---
+
+### The Salmon Feed Example
+
+Imagine we are a salmon farmer. We have always used Standard Feed, and our fish average 5.0 kg.
+
+A salesperson sells us a new **"Super-Growth"** feed, claiming it makes fish heavier. We try it on 10 fish and get an average of 5.3 kg.
+
+We ask ourselves: *"Is 5.3 kg genuinely heavier, or is this just random luck because I happened to catch a few big fish?"*
+
+A test statistic is the mathematical tool that answers this question.
+
+| Test Statistic | Meaning |
+|----------------|---------|
+| **Small (close to 0)** | Our data is perfectly consistent with the null hypothesis (the feed does nothing). The difference is just noise. |
+| **Large (far from 0)** | Our data is screaming that the null hypothesis is wrong. The difference is a real signal. |
+
+---
+
+### The Signal/Noise Template
+
+Every single test statistic we will ever encounter follows this exact same **"Signal/Noise"** template:
+
+$$\text{Test Statistic} = \frac{\text{Observed Effect} - \text{Expected Effect under } H_0}{\text{Standard Error of the Effect}}$$
+
+Let's decode this:
+
+| Component | Meaning |
+|-----------|---------|
+| **Numerator (Signal)** | How far our sample result is from the null hypothesis value |
+| **Denominator (Noise)** | How much random variation we would expect just by chance (the standard error) |
+
+---
+
+### The Golden Rule
+
+> **The bigger the numerator (the effect), or the smaller the denominator (the noise), the larger our test statistic becomes. A large test statistic means strong evidence against the null hypothesis.**
+
+---
+
+### Common Test Statistics
+
+| Test | Test Statistic Formula | What it measures | Distribution |
+|------|----------------------|------------------|--------------|
+| **One-sample t-test** | $t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}}$ | How many standard errors our sample mean is from the hypothesized mean ($\mu_0$) | Central $t$ (if $H_0$ is true) |
+| **Two-sample t-test (Pooled)** | $t = \frac{(\bar{x}_1 - \bar{x}_2) - 0}{s_p \sqrt{1/n_1 + 1/n_2}}$ | How many standard errors apart the two group means are | Central $t$ (if $H_0$ is true) |
+| **Chi-Squared test** | $\chi^2 = \sum \frac{(O - E)^2}{E}$ | How far our observed counts ($O$) are from our expected counts ($E$) | Chi-Squared (if $H_0$ is true) |
+
+---
+
+### Super-Growth Feed Example (Walkthrough)
+
+**Null Hypothesis ($H_0$):** The new feed does nothing. The true mean is still $\mu_0 = 5.0$ kg.
+
+**Our sample:** 10 fish, average $\bar{x} = 5.3$ kg, standard deviation $s = 0.5$ kg.
+
+**Standard Error:**
+
+$$SE = \frac{s}{\sqrt{n}} = \frac{0.5}{\sqrt{10}} \approx 0.158$$
+
+**Calculate the test statistic ($t$):**
+
+$$t = \frac{5.3 - 5.0}{0.158} = \frac{0.3}{0.158} \approx 1.90$$
+
+---
+
+### What does $t = 1.90$ actually mean?
+
+> *"Our observed average (5.3 kg) is **1.90 standard errors** away from the hypothesized average (5.0 kg)."*
+
+Now, we look up the $t$-distribution with 9 degrees of freedom. We find that 95% of random samples fall between $t = -2.26$ and $t = +2.26$.
+
+Because our test statistic (1.90) falls **inside** this range, we conclude:
+
+> *"There is not enough evidence to reject the null hypothesis. The 0.3 kg gain could easily be due to random chance."*
+
+---
+
+### The "Z-Score" vs. "T-Statistic" Connection
+
+| Concept | What it measures |
+|---------|------------------|
+| **Z-score** | How many **standard deviations** an individual data point is from the mean |
+| **Test Statistic (t)** | How many **standard errors** our sample estimate is from the null hypothesis |
+
+---
+
+### The Non-Central t-Distribution Connection
+
+Remember our discussion about the non-central $t$-distribution?
+
+| Scenario | Distribution | Center | Meaning |
+|----------|--------------|--------|---------|
+| **Null hypothesis is TRUE** | Central $t$-distribution | Centered at 0 | The average test statistic is 0 |
+| **Null hypothesis is FALSE** | Non-central $t$-distribution | Shifted right or left | The average test statistic is the non-centrality parameter ($\delta$) |
+
+---
+
+### The Real-World Application
+
+We calculate our test statistic (e.g., $t = 1.90$). We compare it to the central $t$-distribution to get our **p-value**.
+
+| Test Statistic | What It Means | Decision |
+|----------------|---------------|----------|
+| **$t$ is huge** (say, 4.5) | Falls in the extreme tail. Probability if null were true is tiny ($p < 0.01$) | **Reject the null** — the feed works! |
+| **$t$ is tiny** (say, 0.5) | Falls right in the middle of the central distribution | **Fail to reject the null** — no evidence the feed works |
+
+---
+
+## Summary
+
+A test statistic is a single number calculated from our sample data that measures how far our observed results are from what we would expect if the null hypothesis were true.
+
+**The Bottom Line:** A test statistic is the "distance" between our data and our assumption, measured in units of standard error. The larger the test statistic, the stronger the evidence against the null hypothesis!
+
