@@ -638,5 +638,104 @@ You catch $n = 5$ salmon, so $df = 4$.
 
 **Result:** The t-distribution forces you to build a much wider, more honest confidence interval. It basically says:
 
-> *"Hey, you only caught 5 fish! You better admit you are very uncertain!"*
+## Standard Normal Distribution (Z value) (N(0,1))
+When a Normal distribution has a mean of $0$ and a standard deviation of $1$, we give it a special name: the **Standard Normal Distribution** (often called the **$Z$-distribution**).
+
+### 1. What does a "Mean of 0" actually mean?
+
+A mean of 0 does not mean that all your values are zero or negative. It simply means that **zero is the center of the universe** for this measurement.
+
+Imagine a weighing scale that is perfectly calibrated to measure change rather than total weight:
+
+- We weigh a salmon before the experiment (5.0 kg).
+- We feed it your new diet.
+- We weigh it after the experiment (5.5 kg).
+- We calculate the difference: $5.5 - 5.0 = +0.5$ kg.
+
+Now, imagine we do this for 1,000 salmon. You plot the differences on a histogram.
+
+- Some salmon gained weight ($+0.2, +0.8$).
+- Some salmon lost weight ($-0.3, -0.1$).
+
+If the new feed does absolutely nothing, the gains and losses will cancel out. The average of all these differences will be exactly 0.
+
+**In plain English:** A mean of 0 means that 0 is the "baseline" or "no-effect" point. Values above 0 represent an increase; values below 0 represent a decrease. The bell curve is perfectly centered right on that baseline.
+
+---
+
+### 2. What does a "Standard Deviation of 1" actually mean?
+
+A standard deviation of 1 is just a ruler that we artificially created to make math easier.
+
+In the real world, salmon weights might have a standard deviation of 0.8 kg, and sea lice counts might have a standard deviation of 5.2 lice. These are different "rulers" (units).
+
+When we subtract the mean and divide by the standard deviation (which is called **standardizing** or calculating a **Z-score**), we are throwing away the original units (kg, lice, dollars) and converting everything into a universal ruler called **"standard deviations away from the mean."**
+
+- A value of $+1$ means it is exactly 1 standard deviation above the mean.
+- A value of $-2$ means it is exactly 2 standard deviations below the mean.
+- A value of $0$ means it is exactly equal to the mean.
+
+---
+
+### 3. The "Standard Normal" Distribution $N(0,1)$
+
+When we write $X \sim N(0,1)$, we are saying:
+
+> *"X follows a Normal distribution that is perfectly centered at zero, and the units on the x-axis are measured in 'standard deviations.'"*
+
+**Why do statisticians love this so much?**
+
+Because every single Normal distribution in the universe can be turned into $N(0,1)$ using a simple formula:
+
+$$Z = \frac{X - \mu}{\sigma}$$
+
+---
+
+### Salmon Example
+
+Let's say the weights of your adult salmon follow a Normal distribution with a mean of 5.0 kg and a standard deviation of 1.5 kg. You catch a random salmon that weighs 6.5 kg.
+
+What is its Z-score?
+
+$$Z = \frac{6.5 - 5.0}{1.5} = \frac{1.5}{1.5} = 1$$
+
+**Translation:** A 6.5 kg salmon is exactly 1 standard deviation above the average.
+
+Instead of carrying around the messy numbers "5.0" and "1.5" for every calculation, we just say it's a $Z$ of 1, and we look up "1" in our standard Normal table to find that about 84% of salmon are lighter than it.
+
+---
+
+### 4. The Boring (But mathematically true) Facts about $N(0,1)$
+
+Since I know you love the hard math, here is the formal definition:
+
+**The PDF:**
+
+$$f(z) = \frac{1}{\sqrt{2\pi}} e^{-z^2/2}$$
+
+Notice that the mean ($\mu$) and standard deviation ($\sigma$) have completely vanished from the formula! They are replaced by 0 and 1.
+
+**Symmetry:** Because the mean is 0, the curve is perfectly symmetric. The probability of getting a value less than $-1.96$ is exactly the same as getting a value greater than $+1.96$ (which is 2.5% each).
+
+**The 68-95-99.7 Rule:**
+
+- 68% of the data lies between $-1$ and $+1$.
+- 95% lies between $-2$ and $+2$ (actually 1.96, but roughly 2).
+- 99.7% lies between $-3$ and $+3$.
+
+---
+
+### 5. Can a "mean" actually be zero in real life?
+
+Yes! But only if we are measuring **relative** things, not **absolute** things.
+
+- **Absolute measurements** (like salmon weight in kg, or human height in cm) can never have a mean of zero, because you can't have negative height or negative weight.
+
+- **Relative measurements** (like weight gain, profit/loss, temperature in Celsius, or standardized Z-scores) can and do have a mean of zero all the time!
+
+**For example:**
+
+- The daily change in the S&P 500 stock index over a long period has a mean of roughly 0.
+- The difference in blood pressure before and after taking a placebo pill has a mean of 0.
+- If we standardize the exam scores of your entire class, the resulting Z-scores will have a mean of exactly 0 and a standard deviation of exactly 1 by construction.
 
