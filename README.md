@@ -1529,3 +1529,120 @@ A test statistic is a single number calculated from our sample data that measure
 
 **The Bottom Line:** A test statistic is the "distance" between our data and our assumption, measured in units of standard error. The larger the test statistic, the stronger the evidence against the null hypothesis!
 
+### Bootstrapping
+
+Bootstrapping is the statistical magic trick that lets us create **"fake"** new samples from our single, real sample, allowing us to estimate how wrong our estimate might be—**without catching a single additional fish!**
+
+To understand bootstrapping, imagine we are a salmon farmer who wants to know the true average weight of all 10,000 fish in our pen.
+
+We have a problem: We can only afford to catch and weigh 20 fish.
+
+We calculate the average of those 20 fish (say, 5.2 kg). But we know that if we caught a different set of 20 fish, the average would be slightly different. We want to know how much our estimate bounces around—but we refuse to catch more fish because it's too expensive.
+
+---
+
+### The Name and the Idea
+
+The name comes from the old phrase **"to pull yourself up by your bootstraps"**—doing the impossible with nothing but what you already have.
+
+In statistics, bootstrapping does exactly this. It uses our existing 20 fish as a **"pretend population."** Then, it reaches into this pretend population, pulls out a fish, records its weight, puts it back, and pulls again. This is called **sampling with replacement**.
+
+Because we put the fish back each time, we can catch the exact same fish multiple times in our "fake" sample. A fake sample of 20 fish might look like this:
+
+> Fish #3, Fish #3, Fish #7, Fish #1, Fish #3, Fish #12, Fish #12, Fish #12, Fish #5, ... (with repeats and some fish left out).
+
+This fake sample is called a **bootstrap sample**. It is the exact same size (20) as our original sample, but it is a random "reshuffling" of our original data.
+
+---
+
+### The Bootstrap Algorithm
+
+Here is exactly how a statistician performs a bootstrap:
+
+**Step 1: The Original Sample**
+
+We catch 20 salmon. We have their weights: [4.8, 5.1, 5.3, 5.5, 5.8, ...]. The average is 5.2 kg.
+
+**Step 2: Create a Bootstrap Sample (Resample)**
+
+We randomly select 20 fish **with replacement** from our original 20. Because of replacement, some fish are picked multiple times, some not at all. We calculate the average of this fake sample. Let's say it's 5.1 kg.
+
+**Step 3: Repeat, Repeat, Repeat**
+
+We do Step 2 a massive number of times—say, **10,000 times**. We now have 10,000 different "fake" averages (5.1, 5.3, 4.9, 5.4, 5.0, ...).
+
+**Step 4: Use the Fake Averages to Understand the Real One**
+
+We look at the spread of these 10,000 fake averages.
+
+- The **standard deviation** of these 10,000 averages is our **Bootstrap Standard Error**. It tells us exactly how much our original 5.2 kg average bounces around.
+- The **2.5th and 97.5th percentiles** of these 10,000 averages give us a **95% Bootstrap Confidence Interval**. (e.g., 4.8 kg to 5.6 kg).
+
+**The Result:** We have built a confidence interval and estimated our uncertainty **without ever catching a single additional fish**, without knowing the true population standard deviation, and without relying on the Normal distribution!
+
+---
+
+### A Concrete Salmon Example
+
+| Sample | Data | Mean |
+|--------|------|------|
+| **Original Sample (n=5)** | [4.8, 5.1, 5.3, 5.5, 5.8] | **5.3 kg** |
+| Bootstrap Sample #1 | [5.1, 5.3, 5.3, 5.5, 5.8] | 5.4 kg |
+| Bootstrap Sample #2 | [4.8, 4.8, 5.1, 5.5, 5.8] | 5.2 kg |
+| Bootstrap Sample #3 | [5.3, 5.5, 5.5, 5.5, 5.8] | 5.52 kg |
+
+We do this 10,000 times. We sort all 10,000 means from smallest to largest.
+
+- The **250th** smallest mean is 4.9 kg (the lower bound).
+- The **9,750th** smallest mean is 5.7 kg (the upper bound).
+
+**Final Answer:** We are 95% confident that the true average weight of all salmon in the pen is between **4.9 kg** and **5.7 kg**.
+
+---
+
+### Why Bootstrapping is Revolutionary
+
+Bootstrapping is one of the most important statistical inventions of the 20th century (introduced by Bradley Efron in 1979). Here is why:
+
+| Advantage | Explanation |
+|-----------|-------------|
+| **It makes no assumptions** | We don't have to assume our data is Normally distributed. We don't need to know the true variance. The data speaks for itself. |
+| **It works for anything** | It doesn't just work for averages. It works for **any** statistic—the median, the standard deviation, the correlation coefficient, the slope of a regression line, or even a complex machine learning model. |
+| **It is computationally simple** | With modern computers, resampling 10,000 times takes seconds. |
+
+---
+
+### Two Types of Bootstrapping
+
+| Type | Description | When to Use |
+|------|-------------|-------------|
+| **Non-Parametric Bootstrap** | We resample directly from our raw data. We make no assumptions about the underlying distribution. | **Most common and safest method** |
+| **Parametric Bootstrap** | We fit a specific distribution to our data (say, we assume it's Normal, estimate the mean and variance, and then draw new samples from that fitted Normal distribution). | Less common; relies on the assumption that our chosen distribution is correct |
+
+---
+
+### The Golden Rule: "The Bootstrap is not a cure-all"
+
+Bootstrapping is magical, but it has one fatal flaw: **It cannot create information out of thin air.**
+
+If our original sample of 20 fish is completely biased (e.g., we accidentally only caught fish from the shallow, warm end of the pen), bootstrapping will just give us 10,000 fake samples that are all equally biased.
+
+> **Garbage in = Garbage out.** The bootstrap only tells us about the **random sampling error**; it cannot fix systematic errors in how we collected our data.
+
+---
+
+### Summary Table
+
+| Step | Action | Result |
+|------|--------|--------|
+| 1 | Collect original sample | 20 fish, mean = 5.2 kg |
+| 2 | Resample with replacement (10,000 times) | 10,000 bootstrap samples |
+| 3 | Calculate statistic for each | 10,000 bootstrap means |
+| 4 | Compute standard deviation | Bootstrap Standard Error |
+| 5 | Find 2.5th and 97.5th percentiles | 95% Bootstrap Confidence Interval |
+
+**The Bottom Line:** Bootstrapping lets us estimate uncertainty without additional data, without distributional assumptions, and without complex math. But it cannot fix biased data—garbage in, garbage out!
+
+
+
+
