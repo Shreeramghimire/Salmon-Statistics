@@ -1903,4 +1903,116 @@ This is the final piece of the puzzle!
 
 **The Bottom Line:** Pseudo-observations let us see the **hidden influence** of each data point on any statistic—mean, median, variance, correlation, or regression slope—without complex math!
 
+### Confidence Intervals for Binomial Proportions
+
+Let's dive into confidence intervals for binomial parameters (specifically, the population proportion $p$).
+
+When we flip a coin, survey 100 farmers, or check how many salmon in a sample have sea lice, we are dealing with binomial data. The goal is to estimate the true underlying probability $p$ of "success" (e.g., a fish having lice).
+
+We have two main ways to build a confidence interval for $p$:
+
+1. **The Wald Interval** (the standard "textbook" method, based on the Normal approximation).
+2. **The Wilson Interval** (the smarter, more accurate method, often called the "plus-four" interval).
+
+There is also the Exact (Clopper-Pearson) interval, but we will focus on the two most common approaches.
+
+---
+
+### 1. The Wald Interval (Normal Approximation)
+
+If we have $n$ trials and $X$ successes, our estimate for $p$ is:
+
+$$\hat{p} = \frac{X}{n}$$
+
+By the Central Limit Theorem, $\hat{p}$ is approximately Normal with mean $p$ and variance $\frac{p(1-p)}{n}$.
+
+**The Wald 95% Confidence Interval is:**
+
+$$\hat{p} \pm 1.96 \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+---
+
+**Salmon Example:**
+
+We sample 20 fish and find 4 have lice. $\hat{p} = 4/20 = 0.20$.
+
+$$0.20 \pm 1.96 \times \sqrt{\frac{0.20 \times 0.80}{20}} = 0.20 \pm 1.96 \times 0.089 = 0.20 \pm 0.175$$
+
+**Result:** $[0.025, 0.375]$. We are 95% confident the true infection rate is between 2.5% and 37.5%.
+
+---
+
+**The Catch (The "Wald" Problem):**
+
+If $p$ is near 0 or 1, or if $n$ is small, this interval **fails miserably**. The Normal approximation breaks down.
+
+**Example:** If we sample 10 fish and find 0 lice ($\hat{p} = 0$), the Wald interval gives $0 \pm 0$, which is $[0, 0]$. That implies we are 100% certain there are no lice in the entire pen—**which is nonsense!**
+
+---
+
+### 2. The Wilson Interval (The "Score" Method)
+
+To fix the flaws of the Wald interval, we use the Wilson interval. It is more complicated to calculate by hand, but it gives much better coverage, especially for small samples or extreme probabilities.
+
+Instead of centering the interval at $\hat{p}$, the Wilson interval solves for the two values of $p$ that satisfy:
+
+$$\frac{|\hat{p} - p|}{\sqrt{p(1-p)/n}} \leq 1.96$$
+
+**The closed-form formula for the 95% Wilson interval is:**
+
+$$\frac{\hat{p} + \frac{1.96^2}{2n} \pm 1.96 \sqrt{\frac{\hat{p}(1-\hat{p})}{n} + \frac{1.96^2}{4n^2}}}{1 + \frac{1.96^2}{n}}$$
+
+---
+
+**Salmon Example:** $n = 20$, $\hat{p} = 0.20$:
+
+$$\text{Wilson Interval} \approx [0.073, 0.414]$$
+
+Notice this is shifted upwards compared to the Wald interval ($[0.025, 0.375]$) and performs better in practice.
+
+---
+
+### 3. The "Plus-Four" Rule (Agresti-Coull)
+
+This is a quick and dirty approximation to the Wilson interval. It is incredibly simple and works surprisingly well.
+
+We add **2 successes and 2 failures** to our data (hence "plus-four"):
+
+$$\tilde{n} = n + 4$$
+
+$$\tilde{p} = \frac{X + 2}{n + 4}$$
+
+Then we use the Wald formula with these adjusted numbers:
+
+$$\tilde{p} \pm 1.96 \times \sqrt{\frac{\tilde{p}(1-\tilde{p})}{\tilde{n}}}$$
+
+---
+
+**Salmon Example** ($n = 20, X = 4$):
+
+$$\tilde{p} = (4 + 2) / (20 + 4) = 6/24 = 0.25$$
+
+$$SE = \sqrt{0.25 \times 0.75 / 24} = 0.088$$
+
+$$\text{Interval: } 0.25 \pm 1.96 \times 0.088 = 0.25 \pm 0.173$$
+
+**Result:** $[0.077, 0.423]$, which is remarkably close to the proper Wilson interval!
+
+---
+
+### Summary Table: Which interval should we use?
+
+| Method | Formula | When to Use |
+|--------|---------|-------------|
+| **Wald** | $\hat{p} \pm z \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$ | Avoid if possible. Only use if $n$ is huge and $p$ is not near 0 or 1. |
+| **Wilson (Score)** | Complex formula (see above) | **The gold standard.** Works well for any $n$ and any $p$. |
+| **Plus-Four (Agresti-Coull)** | $\tilde{p} \pm z \sqrt{\frac{\tilde{p}(1-\tilde{p})}{n+4}}$ | The best "quick" method. Use for teaching or quick hand calculations. Prevents the zero-variance issue. |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Wald interval is dangerous for small samples or extreme probabilities because the Normal approximation fails. The Wilson interval fixes this, and the Plus-Four interval is a simple trick that mimics it by adding 2 successes and 2 failures to your data."*
+
+
 
