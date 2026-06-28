@@ -2490,3 +2490,35 @@ $$\text{Posterior Mean} = \left(\frac{\alpha + \beta}{\alpha + \beta + n}\right)
 ### The One-Liner
 
 > *"The posterior mean is a compromise: it starts at the prior mean and gets pulled toward the MLE as the sample size grows."*
+
+---
+### Bayesian Credible Intervals
+
+To understand **Bayesian credible intervals**, we have to go back to the fundamental difference between Bayesian and Frequentist statistics.
+
+Remember, a Frequentist **Confidence Interval** says: *"If I repeat this experiment infinitely many times, 95% of the intervals I build will contain the true parameter."* (It is a statement about the *procedure*, not about the parameter).
+
+A Bayesian **Credible Interval** gives you exactly what you *actually want*: **a direct probability statement about the parameter itself.**
+
+---
+
+### The Short, Direct Answer
+
+A **Bayesian Credible Interval** is a range of values that contains the true population parameter with a specified probability, **given our data and our prior beliefs**.
+
+For a 95% credible interval, we can legitimately say:
+
+> **"There is a 95% probability that the true parameter lies within this interval."**
+
+---
+
+### How it works
+
+In Bayesian statistics, after we combine our **Prior** and our **Likelihood** (our data) using Bayes' Theorem, we get the **Posterior Distribution**.
+
+The credible interval is simply cut directly from this posterior distribution:
+
+1. We take our posterior distribution (which represents everything we know about the parameter).
+2. We chop off 2.5% of the area from the left tail, and 2.5% from the right tail.
+3. The 95% of the distribution left in the middle is our **95% Credible Interval**.
+
