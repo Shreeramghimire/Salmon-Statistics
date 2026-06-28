@@ -1760,6 +1760,147 @@ Where:
 
 **The Bottom Line:** The Jackknife is a simple, elegant tool that tells us **which data points are driving our results** and gives us a quick estimate of our uncertainty without the computational burden of the Bootstrap!
 
+### Pseudo-Observations
 
+A **pseudo-observation** is a mathematically constructed number that represents the exclusive contribution of a single data point to our overall estimate. It is the **"opinion"** of that one fish about what the population parameter should be.
+
+To understand pseudo-observations (often called pseudo-values), we have to go back to the Jackknife and ask one deep question:
+
+> *"If we remove one fish and the average drops from 5.54 kg to 5.30 kg, what does that single fish think the true average should be?"*
+
+---
+
+### 1. The Intuition: The "Imaginary" Contribution
+
+Imagine we have a team of 5 salmon, and together they give us an average weight of 5.54 kg.
+
+We want to know how much credit (or blame) each individual fish deserves for that final number.
+
+The pseudo-observation for Fish $i$ is calculated by taking the overall estimate and adjusting it upward or downward based on how much the estimate changed when Fish $i$ was removed.
+
+**The Formula:**
+
+$$\text{Pseudo-Value}_i = n \times (\text{Full Estimate}) - (n-1) \times (\text{Leave-One-Out Estimate}_{(-i)})$$
+
+Where:
+
+| Symbol | Meaning |
+|--------|---------|
+| $n$ | Our total sample size |
+| Full Estimate | The statistic calculated using all our data |
+| Leave-One-Out Estimate | The statistic calculated without Fish $i$ |
+
+---
+
+### 2. A Salmon Example (Putting numbers to it)
+
+Let's use the 5 fish from the Jackknife example:
+
+**Full Mean (all 5 fish):** 5.54 kg
+
+**Leave-One-Out Means:**
+
+| Remove | Mean |
+|--------|------|
+| Without Fish 1 (4.8 kg) | 5.725 kg |
+| Without Fish 2 (5.1 kg) | 5.65 kg |
+| Without Fish 3 (6.5 kg) | 5.30 kg |
+| Without Fish 4 (5.5 kg) | 5.55 kg |
+| Without Fish 5 (5.8 kg) | 5.475 kg |
+
+---
+
+**Calculate the pseudo-observation for Fish 3 (the 6.5 kg outlier):**
+
+$$\text{Pseudo}_3 = 5 \times (5.54) - 4 \times (5.30)$$
+
+$$\text{Pseudo}_3 = 27.7 - 21.2 = 6.5$$
+
+**Look at that!** The pseudo-observation for Fish 3 is exactly **6.5 kg**—which is its actual weight!
+
+---
+
+**Now calculate the pseudo-observation for Fish 1 (the 4.8 kg fish):**
+
+$$\text{Pseudo}_1 = 5 \times (5.54) - 4 \times (5.725)$$
+
+$$\text{Pseudo}_1 = 27.7 - 22.9 = 4.8$$
+
+**Mind blown!** In the case of the mean, every pseudo-observation is exactly equal to the original data point!
+
+---
+
+### 3. The Magic: Pseudo-Observations for Complex Statistics
+
+If the pseudo-observation is just the original data point for a mean, why do we even care?
+
+> **Because for complex statistics, the pseudo-observation is NOT the original data point!**
+
+Imagine we are calculating the **median**, the **variance**, the **correlation**, or the **slope of a regression line**. When we remove a single fish, the statistic changes in a nonlinear, complicated way.
+
+The pseudo-observation formula gives us a single number that represents how that specific fish **"wants"** the statistic to be.
+
+---
+
+**Example: The Median**
+
+Take 5 fish: [4.8, 5.1, 5.3, 5.5, 5.8]. The median is 5.3.
+
+| Remove | New Median | Pseudo-Value |
+|--------|------------|--------------|
+| Fish 1 (4.8) | 5.3 | $5 \times 5.3 - 4 \times 5.3 = 5.3$ |
+| Fish 2 (5.1) | 5.3 | $5 \times 5.3 - 4 \times 5.3 = 5.3$ |
+| **Fish 3 (5.3)** | **5.5** | **$5 \times 5.3 - 4 \times 5.5 = 26.5 - 22.0 = 4.5$** |
+| Fish 4 (5.5) | 5.3 | $5 \times 5.3 - 4 \times 5.3 = 5.3$ |
+| Fish 5 (5.8) | 5.3 | $5 \times 5.3 - 4 \times 5.3 = 5.3$ |
+
+**What does this 4.5 mean?**
+
+It means that Fish 3 (which was exactly the median) is actually **pulling the median downward** relative to the other fish. The pseudo-observation (4.5) is completely different from the actual data point (5.3)! It tells us the **"hidden influence"** of that fish.
+
+---
+
+### 4. Why are Pseudo-Observations so Useful?
+
+Once we calculate the pseudo-observations for all our fish, we now have a new dataset (the pseudo-values).
+
+Here is the genius part: **These pseudo-values behave like independent, identically distributed (i.i.d.) data points**, even if our original statistic is wildly complicated!
+
+| Application | How It Works |
+|-------------|--------------|
+| **Calculate the Standard Error** | Take the standard deviation of the pseudo-values and divide by $\sqrt{n}$ to get a standard error for any statistic—without using complicated calculus! |
+| **Detect Outliers** | If one pseudo-observation is wildly different from the others, that data point is exerting outsized leverage on our result. |
+| **Regression Analysis** | Run a linear regression on the pseudo-values to see which variables (like fish length or water temperature) are driving our statistic. |
+
+---
+
+### 5. Pseudo-Observations vs. Bootstrapping
+
+This is the final piece of the puzzle!
+
+| Feature | Pseudo-Observations (Jackknife) | Bootstrap Samples |
+|---------|--------------------------------|-------------------|
+| **What it creates** | Exactly $n$ pseudo-values (one per data point) | Thousands of resampled datasets |
+| **Interpretation** | The "opinion" of each single data point about the parameter | The distribution of the statistic across fake universes |
+| **Computational cost** | Very cheap ($n$ calculations) | Expensive (10,000+ calculations) |
+| **What it gives us** | A fast, deterministic estimate of standard error and bias | Full, flexible confidence intervals and percentile distributions |
+
+---
+
+### The Golden Rule
+
+> **The Jackknife pseudo-observation is the "influence score" of a single data point. The Bootstrap is the "universe of possibilities" for our statistic. The Jackknife is faster and simpler; the Bootstrap is more powerful and flexible.**
+
+---
+
+### Summary Table
+
+| Concept | Definition | Formula |
+|---------|------------|---------|
+| **Pseudo-Observation** | The "opinion" of a single data point about the parameter | $\text{Pseudo}_i = n\hat{\theta} - (n-1)\hat{\theta}_{(-i)}$ |
+| **Jackknife SE** | Standard error from pseudo-values | $SE = \sqrt{\frac{1}{n(n-1)} \sum (\text{Pseudo}_i - \bar{\text{Pseudo}})^2}$ |
+| **Interpretation** | Each pseudo-value represents the contribution of one observation | High leverage = pseudo-value far from others |
+
+**The Bottom Line:** Pseudo-observations let us see the **hidden influence** of each data point on any statistic—mean, median, variance, correlation, or regression slope—without complex math!
 
 
