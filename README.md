@@ -2449,3 +2449,44 @@ To answer this, we simply calculate the area under our Beta(13, 97) curve betwee
 ### The One-Liner to Memorize
 
 > *"The Beta Prior is our opinion; the Beta Posterior is our updated opinion. Conjugacy gives us a cheat code: just add the new successes to $\alpha$ and the new failures to $\beta$. The Posterior is simply our old imaginary data combined with our new real data."*
+
+----
+### The Posterior Mean as a Weighted Average
+
+The posterior mean is a weighted average of two things:
+
+1. **The prior mean** (what we believed before the data).
+2. **The MLE** (what the data alone says, which is the sample proportion $\hat{p} = x/n$).
+
+For a Beta-Binomial model:
+
+$$\text{Posterior Mean} = \frac{\alpha + x}{\alpha + \beta + n}$$
+
+This can be rewritten as:
+
+$$\text{Posterior Mean} = \left(\frac{\alpha + \beta}{\alpha + \beta + n}\right) \times \text{Prior Mean} + \left(\frac{n}{\alpha + \beta + n}\right) \times \text{MLE}$$
+
+---
+
+### What this tells us
+
+| Component | Weight | Meaning |
+|-----------|--------|---------|
+| **Prior Mean** | $\frac{\alpha + \beta}{\alpha + \beta + n}$ | Proportional to the strength of our prior ($\alpha + \beta$, the imaginary sample size) |
+| **MLE** ($x/n$) | $\frac{n}{\alpha + \beta + n}$ | Proportional to the actual sample size ($n$) |
+
+---
+
+### The Result
+
+| Scenario | What Happens |
+|----------|--------------|
+| **Strong prior** (large $\alpha + \beta$) + **little data** (small $n$) | The posterior mean stays **close to the prior mean** |
+| **Weak prior** (small $\alpha + \beta$) + **lots of data** (large $n$) | The posterior mean moves **toward the MLE** (the data) |
+| **As $n \to \infty$** | The posterior mean **converges to the MLE**—the prior gets completely washed out by the data |
+
+---
+
+### The One-Liner
+
+> *"The posterior mean is a compromise: it starts at the prior mean and gets pulled toward the MLE as the sample size grows."*
