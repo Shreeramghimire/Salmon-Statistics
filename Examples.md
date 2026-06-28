@@ -136,7 +136,7 @@ $$2 \pm 2.145$$
 
 ---
 
-### Final Answer (Salmon Edition)
+### Answer 
 
 The 95% confidence interval for the difference in population mean log-growth rates (Experimental Diet - Control Diet) is:
 
