@@ -2142,3 +2142,181 @@ In the 1990s, computers got fast enough to run **Markov Chain Monte Carlo (MCMC)
 ### The One-Liner to Memorize
 
 > *"Bayesian statistics is the formal mathematical process of updating your beliefs. It combines what we thought before the experiment (the Prior) with what we observed during the experiment (the Likelihood) to give us a complete picture of what we should think after the experiment (the Posterior)."*
+
+---
+## The Beta Distribution
+
+To understand the Beta distribution, forget about complex math for a moment and imagine we are trying to guess the true probability of something—like the proportion of salmon in a pen that are infected with sea lice.
+
+We don't know the exact number, but we have a gut feeling.
+
+- We might think it's exactly 10%.
+- Or we might think it's between 5% and 15%.
+- Or we might have no clue at all and think it could be anywhere from 0% to 100%.
+
+The Beta distribution is the mathematical shape that describes exactly that gut feeling.
+
+It is the ultimate **"distribution of probabilities"**—a flexible family of continuous distributions defined strictly on the interval $[0, 1]$.
+
+---
+
+### 1. The Physical Intuition: The "Bayesian's Best Friend"
+
+The Beta distribution is the go-to tool in Bayesian statistics for modeling a probability $p$ (a proportion).
+
+**Why?** Because it is incredibly flexible. With just two **"knobs"** (parameters), it can take on almost any shape we can imagine:
+
+| Shape | Description |
+|-------|-------------|
+| A flat line | Complete ignorance |
+| A sharp spike | High certainty |
+| A left-skewed hill | Mostly high probabilities |
+| A right-skewed hill | Mostly low probabilities |
+| A perfect bell curve | Centered in the middle |
+
+---
+
+### 2. The Parameters: Shape $\alpha$ and Shape $\beta$
+
+The Beta distribution has two parameters, both of which must be positive:
+
+| Parameter | Controls |
+|-----------|----------|
+| **$\alpha$ (alpha)** | The weight of "successes" or the right side of the distribution |
+| **$\beta$ (beta)** | The weight of "failures" or the left side of the distribution |
+
+**The Mean (Expected Value):**
+
+$$E[X] = \frac{\alpha}{\alpha + \beta}$$
+
+---
+
+**The "Pseudo-Count" Intuition:**
+
+Think of $\alpha$ and $\beta$ as **"fake" data points**.
+
+- $\alpha$ is like the number of **successes** we have seen (or imagine we have seen).
+- $\beta$ is like the number of **failures** we have seen (or imagine we have seen).
+- The total $\alpha + \beta$ acts like our **effective sample size** (how strong our belief is).
+
+---
+
+### 3. The Shapes of the Beta Distribution (The "Knobs" in action)
+
+Here is where it gets fun. Depending on the values of $\alpha$ and $\beta$, the Beta distribution morphs into completely different shapes:
+
+| If $\alpha$ and $\beta$ are... | The Shape | What it means in real life |
+|--------------------------------|-----------|---------------------------|
+| Both = 1 (Beta(1,1)) | Flat / Uniform | Complete ignorance. Every probability from 0% to 100% is equally likely. |
+| Both > 1 (e.g., Beta(5,5)) | Bell-shaped (centered at 0.5) | We are confident the probability is around 50%. |
+| $\alpha > \beta$ (e.g., Beta(9,1)) | Skewed Right / Peaked near 1 | We are pretty sure the probability is high (e.g., > 80%). |
+| $\alpha < \beta$ (e.g., Beta(1,9)) | Skewed Left / Peaked near 0 | We are pretty sure the probability is low (e.g., < 20%). |
+| Both < 1 (e.g., Beta(0.5, 0.5)) | U-shaped | We think the probability is either very high OR very low, but not in the middle. |
+
+---
+
+### 4. A Step-by-Step Salmon Example (Bayesian Update)
+
+Let's put this into action using our salmon farm.
+
+---
+
+**Step 1: The Prior (Our belief before sampling)**
+
+Historically, sea lice infect about 10% of salmon. We are fairly confident, but not 100% sure.
+
+We encode this prior belief as a **Beta(1, 9)** distribution.
+
+- $\alpha = 1$ (imagine 1 success)
+- $\beta = 9$ (imagine 9 failures)
+
+This distribution peaks at 10% and has a nice spread around it.
+
+---
+
+**Step 2: The Data (What we observe)**
+
+We catch 20 salmon and find that 4 have lice.
+
+- Successes = 4
+- Failures = 16
+
+---
+
+**Step 3: The Posterior (Our updated belief after seeing the data)**
+
+Here is the magic formula for the Beta distribution in Bayesian updating:
+
+$$\text{Posterior} = \text{Beta}(\alpha_{\text{prior}} + \text{successes}, \beta_{\text{prior}} + \text{failures})$$
+
+Plug in the numbers:
+
+$$\text{Posterior} = \text{Beta}(1 + 4, 9 + 16) = \text{Beta}(5, 25)$$
+
+---
+
+**Interpretation:**
+
+| Stage | Distribution | Mean | Interpretation |
+|-------|--------------|------|----------------|
+| **Prior** | Beta(1, 9) | 10% | Our old belief |
+| **Data** | 4 successes, 16 failures | 20% | What we observed |
+| **Posterior** | Beta(5, 25) | **16.7%** | Our updated belief |
+
+The mean of this posterior is:
+
+$$\frac{5}{5 + 25} = \frac{5}{30} \approx 16.7\%$$
+
+We now believe the true infection rate is around **16.7%**, and the Beta distribution gives us the full range of uncertainty (e.g., a 95% credible interval from roughly 6% to 32%).
+
+---
+
+### 5. The Relationship to the Binomial Distribution
+
+Here is the crucial connection:
+
+| Distribution | Models |
+|--------------|--------|
+| **Binomial** | The number of successes (data), given a fixed probability $p$ |
+| **Beta** | The probability $p$ itself, given the data |
+
+In Bayesian statistics, the Beta distribution is the **conjugate prior** for the Binomial likelihood.
+
+This is a fancy way of saying: *"If our prior is Beta and our data is Binomial, our posterior is also Beta."* This mathematical convenience is why the Beta distribution is so incredibly popular in A/B testing, quality control, and salmon farming!
+
+---
+
+### 6. The PDF (For the Math Lovers)
+
+Just so we have seen it, the probability density function (PDF) of the Beta distribution is:
+
+$$f(x) = \frac{x^{\alpha-1} (1-x)^{\beta-1}}{B(\alpha, \beta)} \quad \text{for } 0 \leq x \leq 1$$
+
+Where $B(\alpha, \beta)$ is the **Beta function** (a normalization constant that ensures the total area under the curve equals 1).
+
+Notice the beautiful symmetry:
+
+| Component | Controls |
+|-----------|----------|
+| $x^{\alpha-1}$ | The behavior near 0 (failures) |
+| $(1-x)^{\beta-1}$ | The behavior near 1 (successes) |
+
+---
+
+### Summary Cheat Sheet
+
+| Feature | Explanation |
+|---------|-------------|
+| **Support** | Strictly between 0 and 1 (perfect for modeling probabilities) |
+| **Parameters** | $\alpha$ (alpha) and $\beta$ (beta), both $> 0$ |
+| **Mean** | $\frac{\alpha}{\alpha + \beta}$ |
+| **Variance** | $\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$ |
+| **Uniform special case** | $\alpha = 1, \beta = 1$ (flat line—complete ignorance) |
+| **Conjugate prior for** | The Binomial distribution |
+| **Real-world use** | Modeling infection rates, conversion rates, batting averages, and any probability between 0 and 1 |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Beta distribution is the ultimate 'belief barometer.' It uses two knobs—$\alpha$ and $\beta$—to flexibly model any probability between 0 and 1, making it the perfect tool for updating our beliefs about proportions when we see new data."*
