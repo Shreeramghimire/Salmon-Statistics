@@ -1643,6 +1643,123 @@ If our original sample of 20 fish is completely biased (e.g., we accidentally on
 
 **The Bottom Line:** Bootstrapping lets us estimate uncertainty without additional data, without distributional assumptions, and without complex math. But it cannot fix biased data—garbage in, garbage out!
 
+### The Jackknife
+
+The Jackknife is a simple, brilliant, old-school trick (invented in 1949, decades before the computer-heavy Bootstrap) to answer exactly this question. It systematically answers: **"How much does each individual data point influence our final estimate?"**
+
+To understand the Jackknife, imagine we are a salmon farmer who caught 10 fish to estimate the average weight.
+
+We calculate the average: 5.2 kg.
+
+But we have a nagging worry: *"What if Fish #3 (which weighed 6.5 kg) is a freakishly large outlier that is pulling our average upward? How much does this single fish actually change our result?"*
+
+---
+
+### 1. The Intuition: "Leave One Out"
+
+The name "Jackknife" comes from the folding pocketknife. It is a **"rough and ready"** tool that is simple, reliable, and can cut through tough problems.
+
+The process is beautifully simple:
+
+| Step | Action |
+|------|--------|
+| 1 | We have $n$ data points (say, 10 salmon). |
+| 2 | We calculate our statistic (e.g., the average) using all 10 fish. We call this $\hat{\theta}$. |
+| 3 | We leave out the first fish and calculate the average of the remaining 9 fish. |
+| 4 | We leave out the second fish and calculate the average of the remaining 9 fish. |
+| 5 | We do this for **every single fish**. We end up with 10 different **"leave-one-out"** averages. |
+| 6 | We look at how much these 10 averages bounce around. |
+
+**The Result:**
+- If all 10 leave-one-out averages are very close to 5.2 kg, our estimate is **stable and robust**.
+- If one of them drops to 4.5 kg when we remove that 6.5 kg fish, we know that single fish is a **"leverage point"** (an outlier) that is driving our results.
+
+---
+
+### 2. The Step-by-Step Salmon Example
+
+Let's do it with 5 fish to keep it simple.
+
+**Original sample (n=5):**
+
+| Fish | Weight (kg) |
+|------|-------------|
+| Fish 1 | 4.8 |
+| Fish 2 | 5.1 |
+| Fish 3 | **6.5** (The outlier!) |
+| Fish 4 | 5.5 |
+| Fish 5 | 5.8 |
+
+---
+
+**Step 1: Calculate the full-sample mean.**
+
+$$\bar{x}_{all} = \frac{4.8 + 5.1 + 6.5 + 5.5 + 5.8}{5} = \frac{27.7}{5} = 5.54 \text{ kg}$$
+
+---
+
+**Step 2: Calculate the "Leave-One-Out" (Jackknife) means.**
+
+| Leave Out | Remaining Data | Mean |
+|-----------|----------------|------|
+| Fish 1 (4.8) | [5.1, 6.5, 5.5, 5.8] | $22.9 / 4 = 5.725$ |
+| Fish 2 (5.1) | [4.8, 6.5, 5.5, 5.8] | $22.6 / 4 = 5.65$ |
+| **Fish 3 (6.5)** | [4.8, 5.1, 5.5, 5.8] | **$21.2 / 4 = 5.30$** (Notice how much lower this is!) |
+| Fish 4 (5.5) | [4.8, 5.1, 6.5, 5.8] | $22.2 / 4 = 5.55$ |
+| Fish 5 (5.8) | [4.8, 5.1, 6.5, 5.5] | $21.9 / 4 = 5.475$ |
+
+---
+
+**Step 3: Analyze the spread.**
+
+The leave-one-out means range from **5.30** to **5.725**. That is a spread of **0.425 kg**.
+
+This tells us that our estimate (5.54 kg) is **heavily influenced** by that single 6.5 kg fish. If we remove it, the average drops from 5.54 to 5.30.
+
+---
+
+### 3. The Jackknife Formula for Standard Error
+
+Just like the Bootstrap, the Jackknife can give us a standard error for our estimate.
+
+The formula for the Jackknife standard error is:
+
+$$SE_{\text{Jackknife}} = \sqrt{\frac{n-1}{n} \sum_{i=1}^{n} \left( \hat{\theta}_{(i)} - \hat{\theta}_{(\cdot)} \right)^2}$$
+
+Where:
+
+| Symbol | Meaning |
+|--------|---------|
+| $\hat{\theta}_{(i)}$ | The statistic (e.g., mean) calculated with the $i$-th observation removed |
+| $\hat{\theta}_{(\cdot)}$ | The average of all the leave-one-out statistics |
+
+**What this formula does:** It measures the variance of the leave-one-out estimates and scales it appropriately to estimate the standard error of our full-sample estimate.
+
+---
+
+### 4. Jackknife vs. Bootstrap
+
+| Feature | Jackknife (1949) | Bootstrap (1979) |
+|---------|------------------|------------------|
+| **When invented** | 1949 | 1979 |
+| **Computational cost** | $n$ replications (cheap) | Thousands of replications (more expensive) |
+| **What it does** | Systematically leaves out each observation | Randomly resamples with replacement |
+| **Best for** | Quick assessment of influence | General uncertainty estimation |
+| **Works for** | Simple statistics | Any statistic |
+
+---
+
+### Summary Table
+
+| Step | Action | Result |
+|------|--------|--------|
+| 1 | Calculate full-sample statistic | $\hat{\theta} = 5.54$ kg |
+| 2 | Leave out each observation one at a time | 5 leave-one-out means |
+| 3 | Look at the spread | Range: 5.30 to 5.725 (spread = 0.425 kg) |
+| 4 | Identify influential points | Fish #3 (6.5 kg) is pulling the mean up! |
+
+**The Bottom Line:** The Jackknife is a simple, elegant tool that tells us **which data points are driving our results** and gives us a quick estimate of our uncertainty without the computational burden of the Bootstrap!
+
 
 
 
