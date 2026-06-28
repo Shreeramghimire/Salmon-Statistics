@@ -2014,5 +2014,131 @@ $$\text{Interval: } 0.25 \pm 1.96 \times 0.088 = 0.25 \pm 0.173$$
 
 > *"The Wald interval is dangerous for small samples or extreme probabilities because the Normal approximation fails. The Wilson interval fixes this, and the Plus-Four interval is a simple trick that mimics it by adding 2 successes and 2 failures to your data."*
 
+---
+## What is Bayesian Statistics?
 
+To understand Bayesian statistics, forget about p-values, confidence intervals, and "repeating the experiment infinitely many times."
 
+Bayesian statistics is built on a single, radical, and deeply intuitive idea:
+
+> **"Uncertainty is a belief, and beliefs can be updated with data."**
+
+Instead of treating the unknown truth (like the true average weight of our salmon) as a single, fixed number, Bayesian statistics treats it as a **random variable** that has a distribution of plausible values.
+
+---
+
+### 1. The Core Philosophy: "Prior" + "Data" = "Posterior"
+
+Bayesian statistics is governed by one elegant equation: **Bayes' Theorem**.
+
+$$\text{Posterior} = \frac{\text{Likelihood} \times \text{Prior}}{\text{Evidence}}$$
+
+In plain English, this means:
+
+| Component | Meaning |
+|-----------|---------|
+| **Prior** | What we believed **before** we saw the data. (Our gut feeling, historical knowledge, or expert opinion). |
+| **Likelihood** | How well the new data fits our prior belief. (This is the same likelihood function we discussed for MLE!). |
+| **Posterior** | What we should believe **after** seeing the data. (Our updated, combined belief). |
+
+---
+
+### 2. A Salmon Example (Step-by-Step)
+
+Let's say we want to know the true proportion ($p$) of salmon in a pen that are infected with sea lice.
+
+---
+
+**Step 1: The Prior (Our initial belief)**
+
+We have farmed this pen for years. Historically, the infection rate is around 10%. We are fairly confident it's near 10%, but we aren't 100% sure.
+
+In Bayesian stats, we encode this belief as a **prior distribution**. We might use a **Beta distribution** with parameters $\alpha = 1, \beta = 9$, which peaks at 10%.
+
+---
+
+**Step 2: The Data (The Likelihood)**
+
+We catch 20 fish and find that 4 have lice (20% infection rate).
+
+We calculate the likelihood: *"Given a true infection rate of $p$, how likely is it that we would see 4 infected fish out of 20?"*
+
+---
+
+**Step 3: The Posterior (Our updated belief)**
+
+We plug the Prior and the Likelihood into Bayes' Theorem. The math is beautifully simple for the Beta distribution:
+
+$$\text{Posterior} = \text{Beta}(\alpha + \text{successes}, \beta + \text{failures})$$
+
+$$\text{Posterior} = \text{Beta}(1 + 4, 9 + 16) = \text{Beta}(5, 25)$$
+
+---
+
+**The Result:**
+
+Our prior (centered at 10%) and our data (showing 20%) combine to give a posterior distribution centered around **16.7%**.
+
+Instead of saying, *"There is a 95% confidence interval between X and Y,"* we can say: *"There is a 95% probability that the true infection rate is between 6% and 32%."* This is a **direct, probabilistic statement** about our parameter—which Frequentist statistics strictly forbids!
+
+---
+
+### 3. Bayesian vs. Frequentist (The Ultimate Showdown)
+
+| Feature | Frequentist (Classical) | Bayesian |
+|---------|------------------------|----------|
+| **What is a parameter?** | A fixed, unknown constant. (The true mean weight is exactly 5.0 kg, period). | A random variable with a distribution. (The mean weight could be 4.9 or 5.1, with varying probabilities). |
+| **What is probability?** | The long-run frequency of events. (If we repeat this experiment 1,000 times...). | A degree of belief or certainty. (We are 95% certain the mean is between X and Y). |
+| **Does it use prior knowledge?** | No. It relies purely on the data in our hand. | Yes. It formally combines prior knowledge with the current data. |
+| **What do we get?** | A confidence interval (about the procedure, not the parameter). | A credible interval (a direct probability statement about the parameter). |
+| **Computational cost** | Fast (closed-form math). | Slow (requires computers to simulate the posterior, e.g., MCMC sampling). |
+
+---
+
+### 4. The "Priors" Controversy (The Catch)
+
+The biggest criticism of Bayesian statistics is the **Prior**.
+
+- If we have a strong, incorrect prior belief, it can **"bias"** our results.
+- If we have no prior knowledge, we use a **"non-informative"** prior (like Beta(1,1), which is flat), allowing the data to speak entirely for itself. In this case, the Bayesian credible interval ends up looking almost exactly like the Frequentist confidence interval!
+
+**The Defense:**
+
+Bayesians argue that everyone has a prior, even Frequentists. When a Frequentist says, *"We assume the null hypothesis is true,"* that is a prior belief! Bayesian statistics just makes that assumption explicit and mathematically rigorous.
+
+---
+
+### 5. Why is Bayesian Statistics so Popular NOW?
+
+If Bayes' Theorem was invented in the 1700s, why did it take so long to catch on?
+
+Because the math is **brutally hard**. To find the Posterior, we often have to solve incredibly complex integrals in the denominator (the "Evidence").
+
+In the 1990s, computers got fast enough to run **Markov Chain Monte Carlo (MCMC)** algorithms. These algorithms allow computers to **"sample"** from the posterior distribution without doing the impossible calculus. Suddenly, Bayesian statistics became the dominant force in:
+
+- **Machine Learning** (Google, Amazon, Netflix use it for recommendations)
+- **A/B Testing** (Which website layout converts better?)
+- **Pharmaceutical Trials** (Adaptive trial designs that update beliefs mid-study)
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Explanation | Salmon Example |
+|---------|-------------|----------------|
+| **Prior** | Our initial belief about the parameter. | "We believe the sea lice rate is around 10%." (Beta(1,9)) |
+| **Likelihood** | How well the new data fits the parameter. | "We saw 4 infected fish out of 20." |
+| **Posterior** | Our updated belief after seeing the data. | "The infection rate is most likely around 16.7%." (Beta(5,25)) |
+| **Credible Interval** | The Bayesian version of a confidence interval. | "There is a 95% probability the true rate is between 6% and 32%." |
+
+---
+
+### The Golden Rule
+
+> *"Bayesian statistics is about updating your beliefs, not making binary 'reject/fail to reject' decisions. It gives us a full distribution of plausible truths, not just a single p-value."*
+
+---
+
+### The One-Liner to Memorize
+
+> *"Bayesian statistics is the formal mathematical process of updating your beliefs. It combines what we thought before the experiment (the Prior) with what we observed during the experiment (the Likelihood) to give us a complete picture of what we should think after the experiment (the Posterior)."*
