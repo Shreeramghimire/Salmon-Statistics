@@ -2626,3 +2626,135 @@ However, **as long as our sample size is greater than 0**, the posterior will be
 
 > *"Jeffreys' prior is the 'Swiss Army knife' of non-informative priors. It ensures our ignorance isn't accidentally skewed by the scale of measurement, giving us a mathematically objective starting point—represented for a proportion by Beta(0.5, 0.5)."*
 
+---
+## The Grand Unification: Logs, Means, Confidence Intervals, and the Law of Large Numbers
+
+These four concepts—**Logs**, **Arithmetic vs. Geometric Means**, **Confidence Intervals**, and the **Law of Large Numbers (LLN)**—are deeply interconnected.
+
+Let's build this up step-by-step using our salmon farm, so we see exactly how they fit together like gears in a machine.
+
+---
+
+### Part 1: The Law of Large Numbers (The Engine)
+
+Before we talk about means, we need the mathematical rule that makes sampling work.
+
+**The Law of Large Numbers (LLN)** states:
+
+> *As our sample size ($n$) gets larger and larger, our sample average ($\bar{x}$) gets closer and closer to the true population mean ($\mu$).*
+
+**Salmon Example:** 
+- If we catch 5 fish, our average weight might be 4.8 kg (way off from the true 5.0 kg). 
+- If we catch 1,000 fish, our average will be 5.01 kg (very close to the truth). 
+
+The LLN guarantees this convergence.
+
+**Crucially, the LLN applies to the Arithmetic Mean.** It relies on the fact that as $n \to \infty$, the random highs and lows cancel out.
+
+---
+
+### Part 2: Arithmetic Mean vs. Geometric Mean (The Two Rulers)
+
+Now, let's look at the two main ways to calculate an "average."
+
+**Arithmetic Mean (The Standard Average):**
+
+We add everything up and divide by the count.
+
+$$\bar{x}_{AM} = \frac{1}{n} \sum_{i=1}^{n} x_i$$
+
+*Use this when:* We are measuring **additive** things. (e.g., Total weight of fish, daily feed intake).
+
+---
+
+**Geometric Mean (The Multiplicative Average):**
+
+We multiply everything together and take the $n$-th root.
+
+$$\bar{x}_{GM} = \left( \prod_{i=1}^{n} x_i \right)^{1/n}$$
+
+*Use this when:* We are measuring **multiplicative** things. (e.g., Growth rates, bacterial doubling times, concentration ratios).
+
+---
+
+### Part 3: The Relationship between Logs, Arithmetic, and Geometric Means
+
+Here is the magical connection that links all three:
+
+> **The logarithm of the Geometric Mean is equal to the Arithmetic Mean of the log-transformed data.**
+
+Mathematically:
+
+$$\log(\text{Geometric Mean}) = \frac{1}{n} \sum_{i=1}^{n} \log(x_i) = \text{Arithmetic Mean of the logs}$$
+
+---
+
+**Salmon Example (Growth Rates):**
+
+Imagine a salmon grows by **10%** in Week 1, **50%** in Week 2, and **90%** in Week 3.
+
+| Method | Calculation | Result | Interpretation |
+|--------|-------------|--------|----------------|
+| **Arithmetic Mean** | $(0.10 + 0.50 + 0.90)/3$ | **50%** | Misleading—assumes additive growth |
+| **Geometric Mean** | $(1.10 \times 1.50 \times 1.90)^{1/3}$ | **~46%** | The *true* compound average growth rate |
+
+To calculate this easily, we take the logs of the growth factors: $\log(1.10), \log(1.50), \log(1.90)$, average them, and exponentiate the result!
+
+---
+
+### Part 4: Confidence Intervals for the Geometric Mean
+
+This is where the question about "logs and CIs" gets incredibly practical.
+
+When our data is highly skewed (e.g., bacteria counts, pollutant concentrations, or salmon growth rates), the Arithmetic Mean is pulled toward the outliers, and the Normal distribution fails.
+
+**The Standard Trick:**
+
+1. **Log-transform the data:** Take the natural log of every data point.
+2. **Build a t-confidence interval on the logs:** Calculate the mean and standard deviation of these logs. Build our 95% CI using the standard formula:
+   $$\bar{y} \pm t \times \frac{s_y}{\sqrt{n}}$$
+   where $y = \log(x)$.
+3. **Exponentiate the bounds:** Take $e^{\text{lower bound}}$ and $e^{\text{upper bound}}$.
+
+**The Result:** We get a **Confidence Interval for the Geometric Mean!**
+
+Because the log-transform pulls in the long right tail, the resulting interval is symmetric on the log-scale, and when we transform back, it correctly represents the multiplicative uncertainty.
+
+---
+
+### Part 5: Putting it all together with the Law of Large Numbers
+
+Here is how all the pieces fit together:
+
+| Step | Concept | Action |
+|------|---------|--------|
+| 1 | **Law of Large Numbers** | Guarantees that our Arithmetic Mean will converge to the true mean as $n$ grows |
+| 2 | **Arithmetic Mean** | Works for additive effects, but is biased for growth rates |
+| 3 | **Log Transform** | Turns multiplication into addition; makes skewed data symmetric |
+| 4 | **LLN on Logs** | As $n$ grows, the Arithmetic Mean of the logs converges to the true mean of the logs |
+| 5 | **Exponentiate** | Transform back to get the Geometric Mean on the original scale |
+
+**The Pipeline:**
+
+$$\text{Original Data} \xrightarrow{\log} \text{Logs} \xrightarrow{\text{LLN + t-CI}} \text{CI on Logs} \xrightarrow{\exp} \text{CI for Geometric Mean}$$
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Definition | Salmon Example |
+|---------|------------|----------------|
+| **Law of Large Numbers** | Sample averages converge to the true mean as $n \to \infty$ | Catching 1,000 fish gives a perfect average; catching 5 does not |
+| **Arithmetic Mean** | The standard sum/count average | Average daily feed intake (kg/day) |
+| **Geometric Mean** | The multiplicative average ($n$-th root of the product) | Average weekly growth rate (%) |
+| **Log Transform** | $Y = \log(X)$. Turns multiplication into addition | Used to make skewed data (like growth rates) look Normal |
+| **The Rule** | $\text{Mean of Logs} = \log(\text{Geometric Mean})$ | If we average the logs of growth rates, exponentiate it to get the true average growth |
+| **CI for Geometric Mean** | Calculate CI on the log scale, then exponentiate the bounds | Getting a 95% CI for the *multiplier* effect of a new feed |
+| **The Golden Rule** | Use Arithmetic for *additive* effects; use Geometric/Logs for *multiplicative* or skewed effects. The LLN works on both, as long as we apply it to the correct scale! | |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Law of Large Numbers makes our Arithmetic Mean trustworthy. But when our data grows multiplicatively—like bacteria, money, or salmon growth—take the logs, average them (using the LLN), and exponentiate the result to get the Geometric Mean and its honest confidence interval."*
+
