@@ -2522,3 +2522,107 @@ The credible interval is simply cut directly from this posterior distribution:
 2. We chop off 2.5% of the area from the left tail, and 2.5% from the right tail.
 3. The 95% of the distribution left in the middle is our **95% Credible Interval**.
 
+---
+### Jeffreys' Prior
+
+To understand **Jeffreys' prior**, we have to address a fundamental problem in Bayesian statistics: **What prior should we use when we know absolutely nothing about the parameter?**
+
+If we have no prior information, we want a **non-informative prior**—a prior that lets the data "speak for itself."
+
+The obvious choice seems to be a **flat (uniform) prior** (e.g., Beta(1,1), which gives every value between 0 and 1 equal weight). But here is the catch: **Flat priors are not actually non-informative!** If we change the scale of our measurement (e.g., measuring variance vs. standard deviation), a flat prior on one scale becomes a *skewed* prior on the other scale. Our "ignorance" accidentally becomes a strong opinion.
+
+**Jeffreys' prior** is the brilliant mathematical solution to this problem. It is a **rule** for creating a prior that remains perfectly non-informative, no matter how we transform or re-parameterize our model.
+
+---
+
+### 1. The Intuition: "Respecting the Geometry" of the Parameter
+
+Imagine we are trying to estimate a proportion $p$ (like the sea lice rate).
+
+- A flat prior (Beta(1,1)) says every value of $p$ between 0 and 1 is equally likely.
+- But $p$ is bounded between 0 and 1. If we transform $p$ to the **log-odds scale** $\log(p/(1-p))$ (which ranges from $-\infty$ to $\infty$), a flat prior on $p$ becomes a *massive* U-shaped prior on the log-odds scale, heavily favoring extreme values of $-\infty$ or $+\infty$!
+
+This is bad! Our "ignorance" about $p$ is actually a very strong opinion about log-odds.
+
+**Jeffreys' prior fixes this.** It is designed so that it is **invariant under re-parameterization**. If we apply Jeffreys' prior to $p$, and then change our mind and decide to work in log-odds, the prior automatically transforms into the correct Jeffreys' prior for log-odds. It respects the "geometry" of the parameter space.
+
+---
+
+### 2. The Math (Without the Calculus)
+
+Jeffreys' prior is proportional to the square root of the **Fisher Information** ($I(\theta)$):
+
+$$\pi_J(\theta) \propto \sqrt{I(\theta)}$$
+
+Don't let the formula scare us. The Fisher Information is just a mathematical measure of **how much information the data is expected to contain about the parameter**.
+
+| Where the data is... | Jeffreys' prior puts... |
+|----------------------|------------------------|
+| Highly informative (steep likelihood curves) | **Less** weight |
+| Weakly informative (flat likelihood curves) | **More** weight |
+
+It essentially says: *"Let the prior be proportional to how much the data can teach us."*
+
+---
+
+### 3. What Jeffreys' Prior looks like for common distributions
+
+| Model | Parameter | Jeffreys' Prior | Equivalent Beta Prior |
+|-------|-----------|-----------------|----------------------|
+| **Binomial / Proportion** | $p$ (probability) | **Beta(0.5, 0.5)** | $\alpha = 0.5, \beta = 0.5$ |
+| **Normal (Mean)** | $\mu$ (known variance) | Flat (Uniform) | - |
+| **Normal (Variance)** | $\sigma^2$ (unknown mean) | $1 / \sigma^2$ | - |
+| **Poisson** | $\lambda$ (rate) | $1 / \sqrt{\lambda}$ | - |
+
+---
+
+### 4. The Salmon Example: Beta(0.5, 0.5)
+
+For our salmon farm, if we want to estimate the sea lice infection rate $p$ and we have absolutely *zero* prior knowledge, Jeffreys' prior tells us to use **Beta(0.5, 0.5)**.
+
+Compare this to the flat prior Beta(1,1):
+
+| Prior | Shape | Description |
+|-------|-------|-------------|
+| **Beta(1,1) (Flat)** | Perfectly flat line | Every infection rate from 0% to 100% is equally likely |
+| **Beta(0.5, 0.5) (Jeffreys)** | **U-shaped** | Puts slightly more weight at the extremes (near 0% and near 100%) and less weight in the middle (near 50%) |
+
+**Why the U-shape?**
+
+Because when $p$ is near 0.5, the Binomial data is **most variable** (noisy) and gives us the least precise information. Jeffreys' prior down-weights these noisy middle values. When $p$ is near 0 or 1, the data is more stable and informative, so Jeffreys' prior allows it to put more weight there.
+
+**The Result:**
+
+Using Beta(0.5, 0.5) as our prior, and observing $x$ successes in $n$ trials, our posterior becomes:
+
+$$\text{Posterior} = \text{Beta}(0.5 + x, \ 0.5 + n - x)$$
+
+This posterior has **excellent frequentist properties**—meaning, if we use it, our 95% credible intervals will actually cover the true parameter 95% of the time, even for small samples!
+
+---
+
+### 5. The One Catch
+
+Jeffreys' prior is **not** a true "probability distribution" in some cases—it can be **improper** (meaning it doesn't integrate to 1).
+
+However, **as long as our sample size is greater than 0**, the posterior will be a proper, valid probability distribution. The data "saves" the prior.
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Explanation |
+|---------|-------------|
+| **What it is** | A rule for creating a non-informative prior that is mathematically invariant under transformations |
+| **The Formula** | $\pi_J(\theta) \propto \sqrt{I(\theta)}$ (proportional to the square root of the Fisher Information) |
+| **For a Binomial proportion** | Beta(0.5, 0.5) — a U-shaped prior that slightly favors extreme probabilities |
+| **Why use it?** | It allows the data to speak for itself without imposing accidental, scale-dependent biases |
+| **The Trade-off** | It is not a true "belief" prior. It is a mathematical convenience to get good statistical properties (like frequentist coverage) from a Bayesian interval |
+| **The Golden Rule** | If we have genuine prior information, use it. If we know nothing and want a truly objective prior, use Jeffreys' prior |
+
+---
+
+### The One-Liner to Memorize
+
+> *"Jeffreys' prior is the 'Swiss Army knife' of non-informative priors. It ensures our ignorance isn't accidentally skewed by the scale of measurement, giving us a mathematically objective starting point—represented for a proportion by Beta(0.5, 0.5)."*
+
