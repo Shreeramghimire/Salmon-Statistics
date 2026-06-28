@@ -2758,3 +2758,134 @@ $$\text{Original Data} \xrightarrow{\log} \text{Logs} \xrightarrow{\text{LLN + t
 
 > *"The Law of Large Numbers makes our Arithmetic Mean trustworthy. But when our data grows multiplicatively—like bacteria, money, or salmon growth—take the logs, average them (using the LLN), and exponentiate the result to get the Geometric Mean and its honest confidence interval."*
 
+---
+### The Log-Normal Distribution
+
+To understand the **Log-Normal distribution**, forget about the math for a second and imagine a single, tiny salmon egg.
+
+That egg has the potential to grow multiplicatively. It doubles in size, then doubles again, then doubles again. Each step is a *percentage* increase of its current size.
+
+Now, imagine we have 1,000 of these eggs. We let them grow for a year and weigh them.
+
+- Most of them will be around the average size.
+- But a few will have had a lucky streak of good growth and will be **massive**.
+- And a few will have had a rough time and will be **tiny**.
+
+If we plot the histogram of their weights, it won't be a symmetric bell curve. It will be **pushed up against zero on the left, with a long, stretched-out tail dragging to the right**. This is a **Log-Normal distribution**.
+
+Here is the definitive guide to everything we need to know about it.
+
+---
+
+### 1. The Physical Meaning: The "Multiplicative" Distribution
+
+A variable is Log-Normally distributed if **its logarithm is Normally distributed**.
+
+- If $X$ is Log-Normal, then $Y = \log(X)$ is Normal.
+- Conversely, if $Y$ is Normal, then $X = e^{Y}$ is Log-Normal.
+
+**In plain English:**
+
+The Log-Normal distribution describes things that are the **product** of many small, independent, positive factors.
+
+| Example | Why It's Log-Normal |
+|---------|---------------------|
+| **Salmon weight** | Results from daily growth rates multiplying together over time |
+| **Concentration of pollutants** | Accumulates via multiplicative bio-magnification |
+| **Blood lead concentration** | Famously Log-Normal, which is exactly why researchers take the **natural logarithm** before doing a t-test! |
+
+---
+
+### 2. What does it look like? (The Shape)
+
+| Feature | Normal Distribution | Log-Normal Distribution |
+|---------|---------------------|------------------------|
+| **Support** | $-\infty$ to $+\infty$ (can be negative) | **Strictly positive** ($0$ to $\infty$) |
+| **Shape** | Perfectly symmetric bell curve | **Right-skewed** (positive skew). Starts at zero, rises sharply to a peak, then decays slowly to the right |
+| **Mean vs. Median** | Mean = Median | **Mean > Median.** The long right tail pulls the mean to the right, while the median stays closer to the peak |
+
+---
+
+### 3. The Parameters ($\mu$ and $\sigma$)
+
+The Log-Normal distribution is defined by **two parameters**, but they are **NOT** the mean and standard deviation of $X$ itself.
+
+They are the mean and standard deviation of $\log(X)$:
+
+| Parameter | Meaning |
+|-----------|---------|
+| **$\mu$** (mu) | The mean of the *log-transformed* data. (This is the **location** parameter) |
+| **$\sigma$** (sigma) | The standard deviation of the *log-transformed* data. (This is the **scale** parameter, and it is always $> 0$) |
+
+**Crucial Warning:** Do not confuse $\mu$ and $\sigma$ with the mean and SD of our raw data. They are the mean and SD of our *logged* data!
+
+---
+
+### 4. The Mean and Variance of the Raw Data
+
+If we want the actual mean and variance of the raw Log-Normal values (e.g., the actual average weight in kg), we must use these formulas:
+
+| Quantity | Formula |
+|----------|---------|
+| **Mean of $X$** | $E[X] = e^{\mu + \sigma^2 / 2}$ |
+| **Median of $X$** | $e^{\mu}$ (the 50th percentile) |
+| **Variance of $X$** | $\text{Var}(X) = e^{2\mu + \sigma^2} (e^{\sigma^2} - 1)$ |
+| **Mode of $X$** | $e^{\mu - \sigma^2}$ |
+
+**Notice:** The mean of the Log-Normal is **larger** than $e^{\mu}$ (the median). The larger $\sigma$ is (the more skewed the data), the further the mean gets pulled to the right by the heavy tail.
+
+---
+
+### 5. The Connection to the Central Limit Theorem (Multiplicative CLT)
+
+We know the Central Limit Theorem (CLT): sums of random variables become Normal.
+
+There is a **Multiplicative Central Limit Theorem**: products of random variables become Log-Normal.
+
+| Growth Type | Mechanism | Resulting Distribution |
+|-------------|-----------|----------------------|
+| **Additive** | Gains **0.5 kg** every day regardless of size | **Normal distribution** |
+| **Multiplicative** | Gains **5%** of current body weight every day | **Log-Normal distribution** |
+
+**Salmon Example:** Because salmon growth is primarily multiplicative, their weights are naturally Log-Normal!
+
+---
+
+### 6. Why we take logs before doing a t-test (The practical takeaway)
+
+This perfectly ties into our earlier question about blood lead concentration!
+
+When researchers measure blood lead, they know the data is Log-Normal. If they try to build a confidence interval using the raw data, the Normal approximation fails (the interval will be asymmetric and inaccurate).
+
+**The "Log-Normal" Workflow:**
+
+| Step | Action | Result |
+|------|--------|--------|
+| 1 | Take the **natural log** of every data point | Logs will now follow a **Normal distribution** |
+| 2 | Build a t-confidence interval on these **logs** | Use arithmetic mean and SD of the logs |
+| 3 | **Exponentiate** the lower and upper bounds | Take $e^{\text{bound}}$ for each bound |
+
+**The Result:** We get a confidence interval for the **Geometric Mean** (which is the true center of a Log-Normal distribution). This interval is mathematically correct, symmetric on the log-scale, and guaranteed to be positive.
+
+---
+
+### Summary Cheat Sheet
+
+| Feature | Explanation |
+|---------|-------------|
+| **Definition** | $\log(X)$ is Normally distributed |
+| **Support** | Strictly positive ($0$ to $\infty$) |
+| **Shape** | Right-skewed (long tail to the right) |
+| **Parameters** | $\mu$ (mean of logs), $\sigma$ (SD of logs) |
+| **Mean (raw scale)** | $e^{\mu + \sigma^2 / 2}$ (Always > the median) |
+| **Median (raw scale)** | $e^{\mu}$ (The 50th percentile) |
+| **Variance (raw scale)** | $e^{2\mu + \sigma^2} (e^{\sigma^2} - 1)$ |
+| **When to use** | When our data is positive, right-skewed, and results from multiplicative processes (growth rates, concentrations, bacteria counts) |
+| **The Golden Rule** | **Never** build a confidence interval on raw Log-Normal data. Always log-transform, build the CI on the logs, and exponentiate the bounds to get a correct interval for the geometric mean! |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Log-Normal distribution is the 'Multiplicative Normal.' If we take the logarithm of a Log-Normal variable, it magically turns into a perfect bell curve—which is exactly why we log-transform skewed data before running a t-test."*
+
