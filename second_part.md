@@ -103,4 +103,24 @@ These three are locked in an eternal triangle:
 | **Increase $n$ (Sample Size)** | No effect (we set $\alpha$) | $\beta$ **decreases** (Power increases) |
 | **Decrease $\alpha$** (e.g., 0.05 to 0.01) | Stricter threshold | $\beta$ **increases** (Power decreases). Harder to find effects |
 | **Increase the true effect size** | No effect | $\beta$ **decreases** (huge effects are easy to spot) |
+---
+
+### Summary Cheat Sheet
+
+| Concept | Definition | Salmon Example |
+|---------|------------|----------------|
+| **Null Hypothesis ($H_0$)** | The "no effect" claim | Feed does nothing: $\mu = 5.0$ kg |
+| **Alternative ($H_A$)** | The "effect exists" claim | Feed changes weight: $\mu \neq 5.0$ kg |
+| **Test Statistic (z-score)** | Signal / Noise. How many SEs away from $H_0$ | $z = (5.3 - 5.0) / 0.15 = 2.0$ |
+| **Alpha ($\alpha$)** | The risk of a False Positive (Type I Error). Usually 5% | We are willing to wrongly declare the feed works 5% of the time |
+| **Type I Error** | Rejecting $H_0$ when it is *true* | Declaring the feed works when it actually doesn't |
+| **Beta ($\beta$)** | The risk of a False Negative (Type II Error) | Declaring the feed doesn't work when it actually does |
+| **Power ($1 - \beta$)** | The probability of correctly detecting a real effect | 80% power = 80% chance we catch the real weight gain if it exists |
+| **The Golden Rule** | To reduce $\beta$ (increase power), increase our sample size ($n$) or accept a higher $\alpha$ | Catch more fish to make sure we don't miss a real effect! |
+
+---
+
+### The One-Liner to Memorize
+
+> *"Alpha is the risk of a false alarm (Type I), Beta is the risk of missing the truth (Type II). Increasing our sample size is the only cure to lower Beta without raising Alpha."*
 
