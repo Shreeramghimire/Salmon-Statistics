@@ -124,3 +124,15 @@ These three are locked in an eternal triangle:
 
 > *"Alpha is the risk of a false alarm (Type I), Beta is the risk of missing the truth (Type II). Increasing our sample size is the only cure to lower Beta without raising Alpha."*
 
+### Applying t critical value and p-value in testing hypothesis
+
+To understand how we use the **t-critical value** to decide whether to reject the null hypothesis, we have to look at the **"Courtroom Analogy"** of hypothesis testing.
+
+We are the judge. The **Null Hypothesis ($H_0$)** is the defendant, who is presumed "innocent" (no effect). The **Alternative Hypothesis ($H_A$)** is the prosecutor, claiming "guilty" (there is an effect).
+
+The **t-critical value** is the **"burden of proof"** line. It is the minimum amount of evidence we need to convict the defendant.
+
+Here is the exact step-by-step process of how we use it to make the final decision.
+
+---
+
