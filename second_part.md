@@ -145,3 +145,7 @@ In a t-test, we have two numbers:
 | **t-statistic** | $t_{obs}$ | The **evidence** | Calculate *from our data*. Measures how many standard errors our sample mean is away from the null hypothesis mean |
 
 ---
+### 2. The Decision Rule (The "Line in the Sand")
+
+Once we have both numbers, the rule is brutally simple:
+
