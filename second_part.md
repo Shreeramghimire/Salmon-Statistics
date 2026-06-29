@@ -153,3 +153,47 @@ Once we have both numbers, the rule is brutally simple:
 Let's look at how this works in the two different scenarios.
 
 ---
+### Scenario 1: The Two-Tailed Test (Checking for ANY difference)
+
+**The Question:** *"Does the new feed change weight? (It could be heavier OR lighter)."*
+
+| Component | Value |
+|-----------|-------|
+| **Null ($H_0$)** | $\mu = 5.0$ kg |
+| **Alternative ($H_A$)** | $\mu \neq 5.0$ kg |
+| **Alpha ($\alpha$)** | 0.05 (split into 2.5% left tail + 2.5% right tail) |
+| **Degrees of Freedom** | $df = 9$ |
+| **t-critical value ($t^*$)** | $\pm 2.262$ (from t-table) |
+
+**Visualizing the Graph:**
+
+Imagine a t-distribution (bell curve). We draw vertical lines at **-2.262** and **+2.262**.
+
+| Region | Range | Probability | Meaning |
+|--------|-------|-------------|---------|
+| **Innocence Zone** | Between -2.262 and +2.262 | 95% | Fail to reject $H_0$ |
+| **Rejection Zones** | Outside -2.262 and +2.262 | 5% | Reject $H_0$ |
+
+
+**Our Decision:**
+
+| Scenario | $t_{obs}$ | Result | Meaning |
+|----------|-----------|--------|---------|
+| **Case 1** | $t_{obs} = 1.5$ | Falls between -2.262 and +2.262 (Innocence Zone) | **Fail to reject $H_0$.** The evidence is too weak; we cannot convict the feed of working |
+| **Case 2** | $t_{obs} = 2.8$ | Is greater than +2.262 (Rejection Zone) | **Reject $H_0$.** The evidence is overwhelming; we conclude the feed works! |
+
+---
+
+### Scenario 2: The One-Tailed Test (Checking if it is GREATER)
+
+**The Question:** *"Does the new feed make fish HEAVIER?"* (We only care about weight gain, not weight loss).
+
+| Component | Value |
+|-----------|-------|
+| **Null ($H_0$)** | $\mu \leq 5.0$ kg |
+| **Alternative ($H_A$)** | $\mu > 5.0$ kg |
+| **Alpha ($\alpha$)** | 0.05 (ALL in the right tail) |
+| **Degrees of Freedom** | $df = 9$ |
+| **t-critical value ($t^*$)** | $+1.833$ (from t-table) |
+
+**Visualizing the Graph:**
