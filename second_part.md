@@ -57,6 +57,50 @@ $$z = \frac{5.3 - 5.0}{0.15} = \frac{0.3}{0.15} = 2.0$$
 **Translation:** Our sample mean is **2.0 standard errors** above the hypothesized mean.
 
 ---
+### The "Alpha" Level ($\alpha$) – Type I Error
 
-e alarm (Type I), Beta is the risk of missing the truth (Type II). Increasing our sample size is the only cure to lower Beta without raising Alpha."*
+**Definition:** Alpha ($\alpha$) is the **threshold** we set for rejecting the null hypothesis. It is the probability of making a **Type I Error**.
+
+| Concept | Definition | Salmon Example |
+|---------|------------|----------------|
+| **Type I Error (False Positive)** | We reject $H_0$ when it is actually *true* | We declare the feed works, but it actually does nothing |
+| **Alpha ($\alpha$)** | The risk we are willing to take of making a Type I Error | Usually set to **0.05** (5%) |
+
+**How it works:**
+
+We compare our test statistic ($z = 2.0$) to the critical value for $\alpha = 0.05$ (which is $\pm 1.96$ for a two-tailed test).
+
+- If $|z| > 1.96$ → Reject $H_0$
+- If $|z| < 1.96$ → Fail to reject $H_0$
+
+Since $2.0 > 1.96$, we reject $H_0$. We conclude the feed works, but there is a 5% chance we are wrong (Type I Error).
+
+---
+
+### "Beta" ($\beta$) and Type II Error
+
+**Definition:** Beta ($\beta$) is the probability of making a **Type II Error**.
+
+| Concept | Definition | Salmon Example |
+|---------|------------|----------------|
+| **Type II Error (False Negative)** | We **fail** to reject $H_0$ when it is actually *false* | The feed *does* work, but our sample was too small or too noisy to detect it |
+| **Beta ($\beta$)** | The probability of a Type II Error | Depends on effect size, sample size, and alpha |
+| **Power ($1 - \beta$)** | The probability that we *correctly* reject a false null hypothesis | Power = 80% means we have an 80% chance of catching the effect if it truly exists |
+
+**Beta ($\beta$) depends on:**
+1. The **true effect size** (how big the real difference is)
+2. Our **sample size** ($n$)
+3. Our **alpha level** ($\alpha$)
+
+---
+
+### The Interplay of Alpha, Beta, and Sample Size
+
+These three are locked in an eternal triangle:
+
+| What we change | Effect on $\alpha$ (Type I) | Effect on $\beta$ (Type II / Power) |
+|----------------|----------------------------|-------------------------------------|
+| **Increase $n$ (Sample Size)** | No effect (we set $\alpha$) | $\beta$ **decreases** (Power increases) |
+| **Decrease $\alpha$** (e.g., 0.05 to 0.01) | Stricter threshold | $\beta$ **increases** (Power decreases). Harder to find effects |
+| **Increase the true effect size** | No effect | $\beta$ **decreases** (huge effects are easy to spot) |
 
