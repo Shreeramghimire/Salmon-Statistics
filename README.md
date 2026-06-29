@@ -3017,7 +3017,7 @@ $$h = 0.9 \times 0.73 \times 0.70 \approx 0.46$$
 
 ### Summary: Histogram vs. KDE
 
-| Feature | Histogram | KDE |
+| Feature | Density Histogram | KDE |
 |---------|-----------|-----|
 | **Shape** | Blocky, discrete rectangles | Flowing, continuous curve |
 | **Depends on...** | Bin width and bin origin | Bandwidth ($h$) and kernel type |
