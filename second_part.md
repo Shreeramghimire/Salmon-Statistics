@@ -197,3 +197,9 @@ Imagine a t-distribution (bell curve). We draw vertical lines at **-2.262** and 
 | **t-critical value ($t^*$)** | $+1.833$ (from t-table) |
 
 **Visualizing the Graph:**
+We draw a vertical line at **+1.833**.
+
+| Region | Range | Probability | Meaning |
+|--------|-------|-------------|---------|
+| **Innocence Zone** | Left of 1.833 | 95% | Fail to reject $H_0$ |
+| **Rejection Zone** | Right of 1.833 | 5% | Reject $H_0$ |
