@@ -339,7 +339,7 @@ We reject the null hypothesis. We declare the feed works. **But does it matter?*
 
 The p-value is not a binary "significant / not significant" switch.
 
-- A p-value of **0.049** and **0.051** are almost identical in reality, but one is considered "significant" and the other is not if we use a strict 0.05 cutoff.
+- A p-value of **0.049** and **0.051** are almost identical in reality, but one is considered "significant", and the other is not if we use a strict 0.05 cutoff.
 - **Best Practice:** Report the exact p-value (e.g., $p = 0.048$) and let the reader decide.
 
 ---
