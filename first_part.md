@@ -1,5 +1,5 @@
 # Salmon-Statistics
-In this repository, statistical phenomena are explained in reference to metrics from aqauculture activities related to salmon.
+In this repository, statistical phenomena are explained in reference to metrics from aquaculture activities related to salmon.
 
 # Probability Functions
 ## Random variable
