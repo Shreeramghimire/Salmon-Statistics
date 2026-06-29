@@ -59,3 +59,4 @@ $$z = \frac{5.3 - 5.0}{0.15} = \frac{0.3}{0.15} = 2.0$$
 ---
 
 e alarm (Type I), Beta is the risk of missing the truth (Type II). Increasing our sample size is the only cure to lower Beta without raising Alpha."*
+
