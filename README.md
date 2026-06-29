@@ -2948,19 +2948,19 @@ Let's decode every single piece of this equation:
 | $K$ | The **Kernel**. The shape of the tiny "blob" we drop on each fish. A smooth, symmetric function that integrates to 1 |
 | $h$ | The **Bandwidth**. The width of the tiny blob. The single most important knob in KDE |
 
-When we combine the core KDE structure with the standard Gaussian (Normal) Kernel equation, the full expanded formula becomes:
-
-$$\hat{f}(x) = \frac{1}{n \cdot h \cdot \sqrt{2\pi}} \sum_{i=1}^{n} e^{-\frac{1}{2}\left(\frac{x - x_i}{h}\right)^2}$$
-
 ---
 
 ### Choosing the Kernel ($K$)
 
-Just use the standard Gaussian (Normal) kernel:
+We use standard Gaussian (Normal) kernel:
 
 $$K(u) = \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}u^2}$$
 
 This is the smooth, bell-shaped curve we drop on each data point.
+
+When we combine the core KDE structure with the standard Gaussian (Normal) Kernel equation, the full expanded formula becomes:
+
+$$\hat{f}(x) = \frac{1}{n \cdot h \cdot \sqrt{2\pi}} \sum_{i=1}^{n} e^{-\frac{1}{2}\left(\frac{x - x_i}{h}\right)^2}$$
 
 ---
 
