@@ -203,3 +203,26 @@ We draw a vertical line at **+1.833**.
 |--------|-------|-------------|---------|
 | **Innocence Zone** | Left of 1.833 | 95% | Fail to reject $H_0$ |
 | **Rejection Zone** | Right of 1.833 | 5% | Reject $H_0$ |
+
+
+**Our Decision:**
+
+| Scenario | $t_{obs}$ | Result | Meaning |
+|----------|-----------|--------|---------|
+| **Case 1** | $t_{obs} = 1.9$ | Greater than 1.833 (Rejection Zone) | **Reject $H_0$.** We conclude the fish are heavier! |
+| **Case 2** | $t_{obs} = 1.5$ | Less than 1.833 (Innocence Zone) | **Fail to reject $H_0$.** Not enough evidence |
+
+---
+
+### 3. The "P-value" Shortcut (Modern Software)
+
+Almost all modern statistical software (R, Python, SPSS) bypasses the t-critical value and gives us the **p-value** instead.
+
+| Concept | Definition | Rule |
+|---------|------------|------|
+| **p-value** | The exact probability of getting our specific $t_{obs}$ (or something more extreme) if the null hypothesis were true | If **p-value < $\alpha$** (e.g., 0.05) → **Reject $H_0$** |
+| **Connection** | A p-value of 0.03 means there is a 3% chance of seeing our data by pure luck | Since 3% < 5% (alpha), we reject the null |
+
+The t-critical value method is the **"old-school"** way of doing this without computers.
+
+---
