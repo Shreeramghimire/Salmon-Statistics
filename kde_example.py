@@ -1,4 +1,4 @@
-# In this example, we are comparing density histogram with KDE diagram. Three types of KDE curves (undersmooth, smooth, oversmooth) are drawn by altering the bandwidth parameter.
+# In this example, we are comparing density histogram with KDE diagram. Three types of KDE curves (undersmooth, balanced, oversmooth) are drawn by altering the bandwidth parameter.
 
 import numpy as np
 import matplotlib.pyplot as plt
