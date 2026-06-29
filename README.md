@@ -2888,7 +2888,7 @@ When researchers measure blood lead, they know the data is Log-Normal. If they t
 
 > *"The Log-Normal distribution is the 'Multiplicative Normal.' If we take the logarithm of a Log-Normal variable, it magically turns into a perfect bell curve—which is exactly why we log-transform skewed data before running a t-test."*
 
-### Kernel Density Estimation (KDE)
+## Kernel Density Estimation (KDE)
 
 Kernel Density Estimation is the mathematical tool that turns those ugly, blocky histogram rectangles into a beautiful, smooth, continuous curve.
 
@@ -2947,6 +2947,10 @@ Let's decode every single piece of this equation:
 | $x_i$ | Each individual data point (the weight of fish $i$) |
 | $K$ | The **Kernel**. The shape of the tiny "blob" we drop on each fish. A smooth, symmetric function that integrates to 1 |
 | $h$ | The **Bandwidth**. The width of the tiny blob. The single most important knob in KDE |
+
+When we combine the core KDE structure with the standard Gaussian (Normal) Kernel equation, the full expanded formula becomes:
+
+$$\hat{f}(x) = \frac{1}{n \cdot h \cdot \sqrt{2\pi}} \sum_{i=1}^{n} e^{-\frac{1}{2}\left(\frac{x - x_i}{h}\right)^2}$$
 
 ---
 
