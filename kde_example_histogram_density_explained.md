@@ -2,7 +2,7 @@
 
 
 # Data
-Biomass of 7 fish
+Biomass of 7 fish:
 [221, 221.5, 223, 226, 224, 229, 222]
 
 # Number of bins
