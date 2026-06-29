@@ -241,3 +241,98 @@ The t-critical value method is the **"old-school"** way of doing this without co
 ### The One-Liner to Memorize
 
 > *"The t-critical value is the 'finish line.' If our calculated t-statistic crosses that line (is more extreme), we reject the null hypothesis. If it stays behind the line, we admit the evidence is too weak to convict."*
+
+## The p-Value: A Measure of Surprise
+
+The **p-value** is the probability of obtaining a test statistic as extreme as (or more extreme than) the one observed, **assuming that the null hypothesis ($H_0$) is true**.
+
+- It is **not** the probability that $H_0$ is true.
+- It is **not** the probability that the alternative hypothesis ($H_A$) is true.
+- It is purely a measure of **surprise**: *"How surprised would we be to see this data if nothing were really going on?"*
+
+---
+
+### The Courtroom Analogy
+
+To understand the **p-value**, we have to go back to our courtroom analogy from hypothesis testing.
+
+Imagine we are a judge, and the **Null Hypothesis ($H_0$)** is the defendant, who is presumed "innocent" (meaning: there is no effect, no difference, no relationship).
+
+The **p-value** is the exact answer to this question:
+
+> *"If the defendant is truly innocent (if $H_0$ is true), what is the probability that we would see evidence as extreme as (or more extreme than) what we just observed, purely by random chance?"*
+
+---
+
+### A Salmon Example (Putting numbers to it)
+
+We are testing a new feed. We want to know if it makes salmon heavier.
+
+| Component | Value |
+|-----------|-------|
+| **Null Hypothesis ($H_0$)** | The feed does nothing. The true mean weight is $\mu = 5.0$ kg |
+| **Alternative ($H_A$)** | The feed makes them heavier. $\mu > 5.0$ kg |
+| **Sample** | 100 fish, $\bar{x} = 5.3$ kg, $SE = 0.15$ kg |
+| **Test Statistic** | $z = \frac{5.3 - 5.0}{0.15} = 2.0$ |
+
+**The p-value:**
+
+We ask: *"If the feed actually does nothing (true mean = 5.0), what is the probability of randomly catching 100 fish with an average of 5.3 kg or higher?"*
+
+We look at the standard Normal distribution. The area to the right of $z = 2.0$ is **0.025** (2.5%).
+
+> **The p-value = 0.025**
+
+---
+
+### How to use the p-value to make a decision
+
+We compare the p-value to our pre-set **Alpha level ($\alpha$)**, which is our tolerance for false alarms (Type I error). Usually, $\alpha = 0.05$.
+
+**The Decision Rule:**
+
+| Condition | Meaning | Decision |
+|-----------|---------|----------|
+| **p-value < $\alpha$** (e.g., 0.025 < 0.05) | *"This is too unlikely to be a coincidence. The evidence is strong enough to reject the null hypothesis."* | **Statistically Significant** → Reject $H_0$ |
+| **p-value > $\alpha$** (e.g., 0.10 > 0.05) | *"This is plausible under the null hypothesis. We do not have enough evidence to convict."* | **Not Statistically Significant** → Fail to reject $H_0$ |
+
+---
+
+### The Golden Rule of p-values (What they DO NOT mean)
+
+This is the single most misunderstood concept in statistics. Memorize these:
+
+| **True Statement** | **False Statement (Common Misinterpretation)** |
+| :--- | :--- |
+| A p-value of 0.03 means there is a 3% chance of seeing this data (or more extreme) **if $H_0$ is true** | A p-value of 0.03 means there is only a 3% chance that $H_0$ is true |
+| A p-value of 0.06 means we do not have enough evidence to reject $H_0$ | A p-value of 0.06 means there is a 94% chance that $H_A$ is true |
+| A small p-value indicates that the data are **incompatible** with the null hypothesis | A small p-value indicates the **effect size** is large or practically important |
+
+---
+
+### The "P-Value" Fallacy (A Cautionary Tale)
+
+Imagine we test a new feed on **1,000,000 salmon**. The feed increases weight by a microscopic **0.001 kg**.
+
+- The sample size is so huge that our standard error is tiny.
+- The test statistic becomes gigantic.
+- We get a **p-value of 0.0001**.
+
+We reject the null hypothesis. We declare the feed works. **But does it matter?**
+
+- 0.001 kg is less than a drop of water. It is completely useless to the farmer, even though it is "statistically significant."
+
+> **The Golden Rule of Application:** A p-value tells us about **statistical significance** (is it likely a coincidence?). It does **NOT** tell us about **practical significance** (does it actually matter?). Always report the **effect size** and **confidence interval** alongside the p-value!
+
+---
+
+### Real-World Applications of p-values
+
+| Application | Example | Interpretation |
+|-------------|---------|----------------|
+| **Medical Trials** | p-value = 0.04 | Only a 4% chance the observed drug effect is due to random luck. FDA approves the drug |
+| **Salmon Farming** | p-value = 0.60 | 60% chance the difference in growth is just noise. Stick with the cheaper feed |
+| **A/B Testing (Websites)** | p-value = 0.01 | Only 1% chance the increase in clicks was random. Switch to the new layout |
+
+---
+
