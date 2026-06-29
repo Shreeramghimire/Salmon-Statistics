@@ -751,7 +751,7 @@ Yes! But only if we are measuring **relative** things, not **absolute** things.
 - The difference in blood pressure before and after taking a placebo pill has a mean of 0.
 - If we standardize the exam scores of your entire class, the resulting Z-scores will have a mean of exactly 0 and a standard deviation of exactly 1 by construction.
 
-### Cohen's *d* (the standardized effect size)
+## Cohen's *d* (the standardized effect size)
 
 The ratio:
 
@@ -913,7 +913,6 @@ In modern machine learning or computer science, people often use the word **"par
 **Golden rule: The parameter is the target. The statistic is the arrow you shoot at it. You never hit the bullseye perfectly, but you try to get as close as possible.** 
 
 ## Maximum Likelihood Estimation (MLE)
-### Maximum Likelihood Estimation (MLE)
 
 It is the single most important tool in a statistician's toolbox. If statistics is about finding the "hidden truth" (the parameters) from our data, MLE is the mathematical search engine that finds the most plausible value for that truth.
 
@@ -1529,7 +1528,7 @@ A test statistic is a single number calculated from our sample data that measure
 
 **The Bottom Line:** A test statistic is the "distance" between our data and our assumption, measured in units of standard error. The larger the test statistic, the stronger the evidence against the null hypothesis!
 
-### Bootstrapping
+## Bootstrapping
 
 Bootstrapping is the statistical magic trick that lets us create **"fake"** new samples from our single, real sample, allowing us to estimate how wrong our estimate might be—**without catching a single additional fish!**
 
@@ -1643,7 +1642,7 @@ If our original sample of 20 fish is completely biased (e.g., we accidentally on
 
 **The Bottom Line:** Bootstrapping lets us estimate uncertainty without additional data, without distributional assumptions, and without complex math. But it cannot fix biased data—garbage in, garbage out!
 
-### The Jackknife
+## The Jackknife
 
 The Jackknife is a simple, brilliant, old-school trick (invented in 1949, decades before the computer-heavy Bootstrap) to answer exactly this question. It systematically answers: **"How much does each individual data point influence our final estimate?"**
 
@@ -1760,7 +1759,7 @@ Where:
 
 **The Bottom Line:** The Jackknife is a simple, elegant tool that tells us **which data points are driving our results** and gives us a quick estimate of our uncertainty without the computational burden of the Bootstrap!
 
-### Pseudo-Observations
+## Pseudo-Observations
 
 A **pseudo-observation** is a mathematically constructed number that represents the exclusive contribution of a single data point to our overall estimate. It is the **"opinion"** of that one fish about what the population parameter should be.
 
@@ -1903,7 +1902,7 @@ This is the final piece of the puzzle!
 
 **The Bottom Line:** Pseudo-observations let us see the **hidden influence** of each data point on any statistic—mean, median, variance, correlation, or regression slope—without complex math!
 
-### Confidence Intervals for Binomial Proportions
+## Confidence Intervals for Binomial Proportions
 
 Let's dive into confidence intervals for binomial parameters (specifically, the population proportion $p$).
 
@@ -2492,7 +2491,7 @@ $$\text{Posterior Mean} = \left(\frac{\alpha + \beta}{\alpha + \beta + n}\right)
 > *"The posterior mean is a compromise: it starts at the prior mean and gets pulled toward the MLE as the sample size grows."*
 
 ---
-### Bayesian Credible Intervals
+## Bayesian Credible Intervals
 
 To understand **Bayesian credible intervals**, we have to go back to the fundamental difference between Bayesian and Frequentist statistics.
 
@@ -2759,7 +2758,7 @@ $$\text{Original Data} \xrightarrow{\log} \text{Logs} \xrightarrow{\text{LLN + t
 > *"The Law of Large Numbers makes our Arithmetic Mean trustworthy. But when our data grows multiplicatively—like bacteria, money, or salmon growth—take the logs, average them (using the LLN), and exponentiate the result to get the Geometric Mean and its honest confidence interval."*
 
 ---
-### The Log-Normal Distribution
+## The Log-Normal Distribution
 
 To understand the **Log-Normal distribution**, forget about the math for a second and imagine a single, tiny salmon egg.
 
