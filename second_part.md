@@ -135,4 +135,13 @@ The **t-critical value** is the **"burden of proof"** line. It is the minimum am
 Here is the exact step-by-step process of how we use it to make the final decision.
 
 ---
+### 1. The Two Numbers We Calculate
 
+In a t-test, we have two numbers:
+
+| Number | Symbol | What It Is | How We Get It |
+|--------|--------|------------|---------------|
+| **t-critical value** | $t^*$ | The **threshold** | Look up in a t-table *before* looking at our data. Depends on $\alpha$, $df$, and whether the test is one-tailed or two-tailed |
+| **t-statistic** | $t_{obs}$ | The **evidence** | Calculate *from our data*. Measures how many standard errors our sample mean is away from the null hypothesis mean |
+
+---
