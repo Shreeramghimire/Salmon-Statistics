@@ -148,4 +148,8 @@ In a t-test, we have two numbers:
 ### 2. The Decision Rule (The "Line in the Sand")
 
 Once we have both numbers, the rule is brutally simple:
+> **If our observed t-statistic is MORE EXTREME than the t-critical value, we REJECT the null hypothesis.**
 
+Let's look at how this works in the two different scenarios.
+
+---
