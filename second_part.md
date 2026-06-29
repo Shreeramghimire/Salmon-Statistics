@@ -344,3 +344,20 @@ The p-value is not a binary "significant / not significant" switch.
 
 ---
 
+### Summary Cheat Sheet
+
+| Concept | Explanation |
+| :--- | :--- |
+| **p-value** | The probability of seeing our data (or more extreme) **assuming $H_0$ is true** |
+| **Small p-value** | Strong evidence against $H_0$. The data are unlikely to be a coincidence |
+| **Large p-value** | Weak evidence against $H_0$. The data are consistent with random chance |
+| **Alpha ($\alpha$)** | The threshold we set (usually 0.05). If $p < \alpha$, we reject $H_0$ |
+| **The Catch** | p-value is **not** the probability that $H_0$ is true. It is the probability of the data *given* $H_0$ |
+| **Practical Significance** | A tiny p-value does not mean a huge effect. Always check the effect size! |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The p-value is a measure of surprise, not a measure of truth. It tells us how unlikely our data would be if nothing were really happening. The smaller the p-value, the louder our data screams, 'This is not a coincidence!'"*
+
