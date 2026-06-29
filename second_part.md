@@ -226,3 +226,18 @@ Almost all modern statistical software (R, Python, SPSS) bypasses the t-critical
 The t-critical value method is the **"old-school"** way of doing this without computers.
 
 ---
+
+### Summary Table: The Decision Matrix
+
+| Test Type | Condition | Result | Meaning |
+|-----------|-----------|--------|---------|
+| **Two-tailed ($\alpha = 0.05$)** | $t_{obs}$ is between -2.262 and +2.262 | **Fail to Reject $H_0$** | Not enough evidence to say the feed changes weight |
+| **Two-tailed ($\alpha = 0.05$)** | $t_{obs} < -2.262$ or $t_{obs} > +2.262$ | **Reject $H_0$** | Strong evidence that the feed changes weight |
+| **One-tailed ($\alpha = 0.05$)** | $t_{obs} < +1.833$ | **Fail to Reject $H_0$** | Not enough evidence to say the feed *increases* weight |
+| **One-tailed ($\alpha = 0.05$)** | $t_{obs} > +1.833$ | **Reject $H_0$** | Strong evidence that the feed *increases* weight |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The t-critical value is the 'finish line.' If our calculated t-statistic crosses that line (is more extreme), we reject the null hypothesis. If it stays behind the line, we admit the evidence is too weak to convict."*
