@@ -1,4 +1,4 @@
-# Lets explain histogram density digram in a basic terms. The diagram should always present the total area of all bars combined to be exactly 1. 
+### Lets explain histogram density digram in a basic terms. The diagram should always present the total area of all bars combined to be exactly 1. 
 
 
 # Data
