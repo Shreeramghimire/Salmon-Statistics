@@ -993,3 +993,151 @@ The LLN guarantees that as our number of Monte Carlo draws goes to infinity, our
 ### The One-Liner to Memorize
 
 > *"Monte Carlo simulation replaces impossible calculus with brute-force random numbers. Instead of solving a complex integral for the difference of two Betas, we just draw a million random samples from each, subtract them, and look at the histogram."*
+
+## Relative Risk and Odds Ratios
+
+To understand **Relative Risk** and **Odds Ratios**, we have to go back to the salmon farm and look at a **2x2 contingency table**.
+
+We want to know: *Does the new feed reduce the risk of sea lice?*
+
+These two numbers—Relative Risk and Odds Ratios—are the standard tools for answering this. They both measure the **strength of association** between an exposure (New Feed) and an outcome (Sea Lice). However, they do it in completely different ways, and one is vastly more popular in medical research.
+
+Here is the definitive guide.
+
+---
+
+### The Setup: A 2x2 Contingency Table
+
+We run a trial with 100 fish on the old feed and 100 fish on the new feed. Here are the results:
+
+| | **Sea Lice (Disease)** | **No Sea Lice (No Disease)** | **Total** |
+| :--- | :--- | :--- | :--- |
+| **Old Feed (Exposed)** | 40 (a) | 60 (b) | 100 (a+b) |
+| **New Feed (Unexposed)** | 20 (c) | 80 (d) | 100 (c+d) |
+
+- **Risk (Incidence) in Old Feed:** $40/100 = 0.40$ (40%)
+- **Risk (Incidence) in New Feed:** $20/100 = 0.20$ (20%)
+
+---
+
+### Part 1: Relative Risk (The "Risk Ratio")
+
+**Definition:** Relative Risk (RR) is the **ratio** of the risk of an event happening in the exposed group compared to the unexposed group.
+
+**The Formula:**
+
+$$RR = \frac{\text{Risk in Exposed}}{\text{Risk in Unexposed}} = \frac{a / (a+b)}{c / (c+d)}$$
+
+**Salmon Example:**
+
+$$RR = \frac{40 / 100}{20 / 100} = \frac{0.40}{0.20} = 2.0$$
+
+**Interpretation:**
+
+Fish on the old feed are **2.0 times more likely** to get sea lice than fish on the new feed. Alternatively, the new feed cuts the risk in half (since $1 - 0.50 = 50\%$ reduction).
+
+**The Golden Rule of RR:**
+
+| RR Value | Meaning |
+| :--- | :--- |
+| **RR = 1** | No association. The exposure does not affect risk |
+| **RR > 1** | The exposure **increases** risk (risk factor) |
+| **RR < 1** | The exposure **decreases** risk (protective factor) |
+
+**The Catch:** Relative Risk is **only valid** in prospective studies (cohort studies, clinical trials) where we follow people forward in time. It does not work in retrospective studies (case-control studies) because we artificially fix the number of cases, so we can't calculate the true risk.
+
+---
+
+### Part 2: Odds Ratio (The "Cross-Product" Ratio)
+
+**Definition:** An Odds Ratio (OR) is the ratio of the **odds** of an event happening in one group to the odds of it happening in another group.
+
+*Remember:* Odds = $\frac{\text{Probability of happening}}{\text{Probability of not happening}}$.
+
+**The Formula:**
+
+$$\text{Odds in Exposed} = \frac{a}{b}, \quad \text{Odds in Unexposed} = \frac{c}{d}$$
+
+$$OR = \frac{a / b}{c / d} = \frac{a \times d}{b \times c}$$
+
+**Salmon Example:**
+
+- Odds of lice on **Old Feed**: $40 / 60 = 0.667$
+- Odds of lice on **New Feed**: $20 / 80 = 0.25$
+- **Odds Ratio:** $0.667 / 0.25 = \mathbf{2.67}$
+
+**Interpretation:**
+
+The odds of having sea lice are **2.67 times higher** on the old feed compared to the new feed.
+
+**The Golden Rule of OR:**
+
+| OR Value | Meaning |
+| :--- | :--- |
+| **OR = 1** | No association |
+| **OR > 1** | The exposure is associated with **higher odds** of the outcome |
+| **OR < 1** | The exposure is associated with **lower odds** of the outcome |
+
+---
+
+### Part 3: Relative Risk vs. Odds Ratio (The Showdown)
+
+Here is where it gets tricky. For rare diseases (e.g., less than 10% incidence), the Odds Ratio is a **very good approximation** of the Relative Risk.
+
+In our example, the incidence was 40% and 20% (not rare). Notice the difference:
+
+| Measure | Value |
+| :--- | :--- |
+| **Relative Risk** | 2.0 |
+| **Odds Ratio** | 2.67 |
+
+They are different! The OR is always "further from 1" than the RR.
+
+| Feature | Relative Risk (RR) | Odds Ratio (OR) |
+| :--- | :--- | :--- |
+| **What it calculates** | Ratio of *probabilities* (risks) | Ratio of *odds* (not probabilities) |
+| **Range** | 0 to infinity | 0 to infinity |
+| **Interpretation** | Intuitive: "X times more likely to happen" | Counterintuitive: "X times higher odds" (Most people don't think in odds) |
+| **When is it used?** | Randomized trials, cohort studies | **Case-control studies** (retrospective) |
+| **When does OR ≈ RR?** | Only when the disease is **rare** (<10%) | Always, but approximates RR when rare |
+| **The "Constant" Rule** | RR is a direct comparison | OR is **asymmetric**—the OR of disease vs. non-disease is the same, but RR is not |
+
+---
+
+### Part 4: The "Rare Disease" Rule (Crucial!)
+
+Imagine sea lice is rare (say, 2% vs. 1%).
+
+- **Risk:** $0.02 / 0.01 = \mathbf{RR = 2.0}$
+- **Odds:** $(0.02/0.98) / (0.01/0.99) \approx \mathbf{OR = 2.02}$
+
+**When the outcome is rare, OR ≈ RR.** This is why medical researchers love the OR: they study rare diseases using case-control designs, and the OR gives them a perfect estimate of the RR without having to do a massive, expensive trial.
+
+---
+
+### Part 5: Why does the Odds Ratio dominate statistics? (Logistic Regression)
+
+We will see Odds Ratios everywhere in advanced statistics (like Logistic Regression). Why?
+
+| Reason | Explanation |
+| :--- | :--- |
+| **1. Symmetry** | The OR is "symmetric." The OR of getting the disease is $a \times d / (b \times c)$. The OR of *not* getting the disease is $b \times c / (a \times d)$. They are just reciprocals. This makes it mathematically elegant |
+| **2. No Bounds on Odds** | Odds can range from 0 to infinity without being restricted by probability boundaries. This allows statisticians to use the **logit** transformation ($\log(\text{odds})$), which forms the backbone of logistic regression, without worrying about probabilities going below 0 or above 1 |
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Definition | Salmon Example | Interpretation |
+| :--- | :--- | :--- | :--- |
+| **Relative Risk (RR)** | $\frac{\text{Risk in Exposed}}{\text{Risk in Unexposed}}$ | $0.40 / 0.20 = 2.0$ | Old feed = **2.0 times more likely** to get lice |
+| **Odds Ratio (OR)** | $\frac{\text{Odds in Exposed}}{\text{Odds in Unexposed}} = \frac{a \times d}{b \times c}$ | $40 \times 80 / (60 \times 20) = 2.67$ | Odds of lice are **2.67 times higher** on old feed |
+| **When to use RR** | Cohort studies, clinical trials | Testing a new feed prospectively | - |
+| **When to use OR** | Case-control studies, Logistic Regression | Retrospectively comparing fish with/without lice to see which feed they ate | - |
+| **The Golden Rule** | If the disease is **rare**, OR ≈ RR | If 1% vs. 2% infection, OR ≈ 2.0 | - |
+
+---
+
+### The One-Liner to Memorize
+
+> *"Relative Risk tells us how much more **likely** something is to happen; Odds Ratios tell us how much higher the **odds** are. For rare events, they are almost identical—but only the Odds Ratio can be used in case-control studies and logistic regression."*
