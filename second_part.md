@@ -488,3 +488,125 @@ Imagine we are testing whether a new gene is linked to sea lice resistance in sa
 ### The One-Liner to Memorize
 
 > *"The Score Statistic is the slope of the likelihood hill. If the slope at our null hypothesis is steep, the data is screaming that we are nowhere near the peak—so we reject the null."*
+
+## Hypothesis Testing for Binomial Proportions: Wald, Score, and Agresti-Coull
+
+Let's dive into **hypothesis testing for binomial proportions** using the three most common approaches: the **Score Test**, the **Wald Test**, and the **Agresti-Coull Interval**.
+
+We'll use a consistent example throughout: We sample **100 fish** and find **40 have sea lice**. We want to test if the true infection rate is **50%** ($H_0: p = 0.5$).
+
+---
+
+### Part 1: The Wald Test (The "Standard" but Flawed Test)
+
+The Wald test is the most straightforward. It uses the sample proportion $\hat{p} = x/n$ and its standard error, calculated *at the estimated proportion*.
+
+**The Logic:** How many standard errors is our observed $\hat{p}$ away from the null value $p_0$?
+
+**The Formula:**
+
+$$Z_{Wald} = \frac{\hat{p} - p_0}{\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}}$$
+
+---
+
+**Our Example:**
+
+| Component | Value |
+|-----------|-------|
+| $\hat{p}$ | $40/100 = 0.40$ |
+| $p_0$ | 0.50 |
+| Standard Error | $SE = \sqrt{0.40 \times 0.60 / 100} = \sqrt{0.0024} \approx 0.049$ |
+| Test Statistic | $Z = \frac{0.40 - 0.50}{0.049} \approx -2.04$ |
+
+**The Result:** The two-sided p-value is $2 \times P(Z < -2.04) \approx 0.041$. At $\alpha = 0.05$, we **reject** $H_0$.
+
+**The Catch (The "Wald" Problem):**
+
+The Wald test uses $\hat{p}$ in the standard error. If $p$ is near 0 or 1, or if $n$ is small, the standard error is poorly estimated. It also fails completely if $\hat{p} = 0$ (it gives a zero standard error).
+
+---
+
+### Part 2: The Score Test (Rao's Test – The "Gold Standard")
+
+The Score test fixes the Wald test's flaw by calculating the standard error **under the null hypothesis** ($p_0$), not under the estimate.
+
+**The Logic:** *"If the null is true, how much 'slope' or 'score' do we have pulling us away from it?"*
+
+**The Formula:**
+
+$$Z_{Score} = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0 (1-p_0)}{n}}}$$
+
+---
+
+**Our Example:**
+
+| Component | Value |
+|-----------|-------|
+| $\hat{p}$ | 0.40 |
+| $p_0$ | 0.50 |
+| Standard Error under $H_0$ | $SE_0 = \sqrt{0.50 \times 0.50 / 100} = \sqrt{0.0025} = 0.05$ |
+| Test Statistic | $Z = \frac{0.40 - 0.50}{0.05} = -2.0$ |
+
+**The Result:** The two-sided p-value is $2 \times P(Z < -2.0) \approx 0.0455$. We still reject $H_0$, but the test statistic is slightly different from the Wald test.
+
+**Why the Score Test is better:**
+
+It is more reliable for small samples and extreme probabilities. It is the foundation of the **Wilson Confidence Interval** (which we will see in a moment).
+
+---
+
+### Part 3: The Agresti-Coull Interval (The "Quick Fix")
+
+The **Agresti-Coull interval** is a simple modification of the Wald interval that makes it perform almost as well as the Wilson (Score) interval, without the complex formula.
+
+**The Logic:** We add **2 successes** and **2 failures** to our data (the "Plus-Four" rule), then use the Wald formula.
+
+**The Adjusted Numbers:**
+
+$$\tilde{n} = n + 4 = 104$$
+
+$$\tilde{p} = \frac{x + 2}{n + 4} = \frac{40 + 2}{104} = \frac{42}{104} \approx 0.4038$$
+
+**The 95% Confidence Interval Formula:**
+
+$$\tilde{p} \pm 1.96 \times \sqrt{\frac{\tilde{p}(1-\tilde{p})}{\tilde{n}}}$$
+
+---
+
+**Our Example:**
+
+| Component | Value |
+|-----------|-------|
+| $\tilde{p}$ | 0.4038 |
+| Standard Error | $SE = \sqrt{0.4038 \times 0.5962 / 104} = \sqrt{0.00231} \approx 0.0481$ |
+| Margin of Error | $1.96 \times 0.0481 \approx 0.0943$ |
+
+**The Interval:**
+
+$$0.4038 \pm 0.0943 = [0.3095, \ 0.4981]$$
+
+**Interpretation:** We are 95% confident that the true infection rate is between **31.0% and 49.8%**. Since 0.50 falls *just outside* the upper bound, it confirms the result of the hypothesis test (reject $H_0$).
+
+---
+
+### Side-by-Side Summary Table
+
+| Test/Interval | Formula | Standard Error uses... | Performance | When to use |
+| :--- | :--- | :--- | :--- | :--- |
+| **Wald Test / CI** | $\hat{p} \pm z \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$ | The estimated $\hat{p}$ | **Unreliable** for small $n$ or $p$ near 0/1. Sometimes gives impossible bounds (<0 or >1) | Quick, rough estimates with large $n$ and $p$ around 0.5 |
+| **Score Test / Wilson CI** | Complex (solve for $p$ where $|\hat{p}-p| \leq z \sqrt{p(1-p)/n}$) | The null $p_0$ (for testing) or solves for $p$ (for CI) | **Excellent.** Works well for any $n$ and any $p$. Never gives impossible bounds | The **gold standard** for proportions. Use in scientific reporting |
+| **Agresti-Coull CI** | $\tilde{p} \pm z \sqrt{\frac{\tilde{p}(1-\tilde{p})}{\tilde{n}}}$, with $\tilde{p} = \frac{x+2}{n+4}$ | The adjusted $\tilde{p}$ | **Very Good.** A simple hack that mimics the Wilson interval perfectly | Great for teaching, quick hand calculations, or when we want a simple formula that actually works |
+
+---
+
+### The Ultimate Recommendation
+
+1. **For Hypothesis Testing:** Use the **Score Test**. It controls the Type I error rate much better than the Wald test, especially when $p$ is near 0 or 1.
+
+2. **For Confidence Intervals:** Use the **Wilson Interval** (the inverted Score test) or the **Agresti-Coull** interval. **Never** use the Wald interval for proportions in practice—it is dangerously misleading for small samples.
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Wald test gambles by guessing the variance from the data; the Score test plays it safe by using the null hypothesis. And if we want a confidence interval that actually works, use the Wilson method or the Agresti-Coull quick-fix—never trust the Wald interval for proportions!"*
