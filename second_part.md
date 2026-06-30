@@ -2313,3 +2313,192 @@ $$[e^{0.406}, \ e^{2.366}] = [1.50, \ 10.66]$$
 ### The One-Liner to Memorize
 
 > *"In matched 2x2 tables, we have pairs, not independent subjects. The only numbers that matter are the discordant pairs ($b$ and $c$): $b/c$ gives us the odds ratio, and McNemar's test tells us if $b$ and $c$ are significantly different."*
+
+## Non-Parametric Tests: Sign Test, Wilcoxon Signed-Rank, and Wilcoxon Rank-Sum
+
+We have just asked about the **three musketeers** of **non-parametric statistics**—the methods we use when the Normal distribution is not appropriate, sample sizes are small, or the data is highly skewed.
+
+Unlike t-tests (which assume our data is Normally distributed and has a known variance), **rank-based tests** are "distribution-free." They convert our raw data into **ranks** (smallest = 1, largest = $n$) and test hypotheses about the **median** rather than the mean.
+
+Here is the complete, step-by-step guide to the **Sign Test**, the **Wilcoxon Signed-Rank Test**, and the **Wilcoxon Rank-Sum Test**, using our salmon farm examples.
+
+---
+
+### Part 1: The Sign Test (The Simplest)
+
+*Use this when: We have paired data, but the differences are highly skewed or have extreme outliers. We only care about the **direction** of the difference, not the magnitude.*
+
+**The Logic:**
+
+If two treatments are identical (null hypothesis), the number of positive differences should be approximately equal to the number of negative differences (like flipping a fair coin). The Sign Test ignores *how much* the difference is; it only counts *how many* differences are positive.
+
+---
+
+**Salmon Example (Paired Data):**
+
+We measure the weight of 10 salmon *before* and *after* a new diet.
+
+| Fish | Before (kg) | After (kg) | Difference (After - Before) | Sign |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | 4.8 | 5.0 | +0.2 | + |
+| 2 | 5.1 | 5.2 | +0.1 | + |
+| 3 | 5.3 | 5.3 | 0 | 0 (Ignore) |
+| 4 | 5.5 | 5.6 | +0.1 | + |
+| 5 | 5.8 | 5.9 | +0.1 | + |
+| 6 | 4.9 | 4.8 | -0.1 | - |
+| 7 | 5.2 | 5.4 | +0.2 | + |
+| 8 | 5.4 | 5.3 | -0.1 | - |
+| 9 | 5.6 | 5.8 | +0.2 | + |
+| 10 | 5.0 | 5.1 | +0.1 | + |
+
+- **Positive signs:** 8
+- **Negative signs:** 2
+- **Ties:** 1 (Ignored)
+
+---
+
+**Step 1: Calculate the test statistic.**
+
+The test statistic is simply the number of positive signs: $S = 8$.
+
+**Step 2: Calculate the p-value.**
+
+Under the null hypothesis (no effect), the number of positive signs follows a **Binomial distribution** with $p = 0.5$ and $n = 10$.
+
+$$P(\text{8 or more positives}) = P(X=8) + P(X=9) + P(X=10) = 0.0439 + 0.0098 + 0.0010 = 0.0547$$
+
+For a **two-sided** test, we double it: $2 \times 0.0547 \approx 0.11$.
+
+**Conclusion:** At $\alpha = 0.05$, we fail to reject the null. There is not enough evidence to say the diet changes weight.
+
+**Pros:** Extremely robust to outliers.
+
+**Cons:** Very low power (we throw away information about the *size* of the difference).
+
+---
+
+### Part 2: The Wilcoxon Signed-Rank Test (The "Sign Test on Steroids")
+
+*Use this when: We have paired data, and we want to account for the **magnitude** of the differences, but the data is still not Normal.*
+
+**The Logic:**
+
+It ranks the *absolute* differences and sums the ranks of the positive differences. If one treatment is better, the sum of the positive ranks should be much larger than the sum of the negative ranks.
+
+---
+
+**Salmon Example (Same data):**
+
+**Step 1: Rank the absolute differences (ignoring zeros and signs).**
+
+| Fish | Difference | Absolute Diff. | Rank |
+| :--- | :--- | :--- | :--- |
+| 2 | +0.1 | 0.1 | 1 |
+| 4 | +0.1 | 0.1 | 2 |
+| 5 | +0.1 | 0.1 | 3 |
+| 6 | -0.1 | 0.1 | 4 |
+| 8 | -0.1 | 0.1 | 5 |
+| 10 | +0.1 | 0.1 | 6 |
+| 1 | +0.2 | 0.2 | 7.5 |
+| 7 | +0.2 | 0.2 | 7.5 |
+| 9 | +0.2 | 0.2 | 9 |
+
+*(Note: Ties get the average rank).*
+
+**Step 2: Sum the ranks of the positive differences.**
+
+- Positive ranks: 1, 2, 3, 6, 7.5, 7.5, 9 → **Sum = 36**
+
+**Step 3: Calculate the test statistic.**
+
+The test statistic is the smaller of the sum of positive ranks and the sum of negative ranks.
+
+- Negative ranks: 4, 5 → Sum = 9
+- Test statistic $W = \min(36, 9) = 9$
+
+**Step 4: Look up the p-value.**
+
+For $n = 9$ (ignoring ties), the critical value for $\alpha = 0.05$ (two-sided) is 6. Since $W = 9 > 6$, we fail to reject the null.
+
+**Conclusion:** The diet does not significantly change weight.
+
+**Pros:** More powerful than the Sign Test because it uses the rank magnitudes.
+
+**Cons:** Assumes the distribution of differences is symmetric.
+
+---
+
+### Part 3: The Wilcoxon Rank-Sum Test (Two Independent Groups)
+
+*Use this when: We have **two independent samples** (like a t-test for two groups), but the data is not Normal.*
+
+**Salmon Example (Two Independent Groups):**
+
+We compare the weights of 5 fish on a New Feed vs. 6 fish on an Old Feed.
+
+- **New Feed:** 5.0, 5.2, 5.4, 5.6, 5.8
+- **Old Feed:** 4.8, 4.9, 5.1, 5.3, 5.5, 5.7
+
+---
+
+**Step 1: Combine all 11 fish and rank them from smallest (1) to largest (11).**
+
+| Weight | Group | Rank |
+| :--- | :--- | :--- |
+| 4.8 | Old | 1 |
+| 4.9 | Old | 2 |
+| 5.0 | New | 3 |
+| 5.1 | Old | 4 |
+| 5.2 | New | 5 |
+| 5.3 | Old | 6 |
+| 5.4 | New | 7 |
+| 5.5 | Old | 8 |
+| 5.6 | New | 9 |
+| 5.7 | Old | 10 |
+| 5.8 | New | 11 |
+
+---
+
+**Step 2: Sum the ranks for the smaller group (New Feed, $n=5$).**
+
+$$R_{New} = 3 + 5 + 7 + 9 + 11 = 35$$
+
+**Step 3: The test statistic ($W$).**
+
+The test statistic is the sum of the ranks of the first group: $W = 35$.
+
+**Step 4: Calculate the expected rank sum.**
+
+If there were no difference, the expected sum for the New Feed group would be:
+
+$$E[R] = \frac{n_1 (n_1 + n_2 + 1)}{2} = \frac{5(5 + 6 + 1)}{2} = \frac{5 \times 12}{2} = 30$$
+
+**Step 5: Calculate the z-score.**
+
+The standard deviation of the rank sum is:
+
+$$SD(R) = \sqrt{ \frac{n_1 n_2 (n_1 + n_2 + 1)}{12} } = \sqrt{ \frac{5 \times 6 \times 12}{12} } = \sqrt{30} \approx 5.48$$
+
+$$Z = \frac{35 - 30}{5.48} = \frac{5}{5.48} \approx 0.91$$
+
+**Step 6: P-value.**
+
+For $Z = 0.91$, the two-sided p-value is about **0.36**.
+
+**Conclusion:** We fail to reject the null. There is no significant difference in weight between the two feeds.
+
+---
+
+### Summary Cheat Sheet
+
+| Test | When to use | Data Type | Hypothesis | Test Statistic | Pros / Cons |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Sign Test** | Paired data, highly skewed, extreme outliers | Paired | Median difference = 0 | Number of positive signs | **Pro:** Very robust. **Con:** Low power (ignores magnitude) |
+| **Wilcoxon Signed-Rank** | Paired data, symmetric differences, but not Normal | Paired | Median difference = 0 | Sum of positive ranks | **Pro:** More powerful than Sign Test. **Con:** Assumes symmetry |
+| **Wilcoxon Rank-Sum (Mann-Whitney)** | Two independent groups, not Normal | Independent | Distribution of Group 1 = Distribution of Group 2 | Sum of ranks of one group | **Pro:** Robust, good power. **Con:** Less powerful than t-test if data is Normal |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Sign Test only counts who wins; the Signed-Rank Test weighs *how much* they win in paired data; and the Rank-Sum Test compares the rankings of two independent groups. All three are safe, non-parametric alternatives to t-tests when our data is skewed or has outliers."*
