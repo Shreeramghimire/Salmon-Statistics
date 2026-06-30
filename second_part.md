@@ -48,7 +48,7 @@ For a sample mean, the test statistic is the **z-score** (or t-score):
 $$z = \frac{\bar{x} - \mu_0}{SE} = \frac{\bar{x} - \mu_0}{\sigma / \sqrt{n}}$$
 
 **Salmon Example:**
-- Null mean: $\mu_0 = 5.0$ kg
+- Null mean: $\mu_0 = 5.0$ kg (population mean)
 - Sample mean: $\bar{x} = 5.3$ kg
 - Standard Error: $SE = 0.15$ kg
 
