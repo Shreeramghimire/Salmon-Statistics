@@ -1141,3 +1141,145 @@ We will see Odds Ratios everywhere in advanced statistics (like Logistic Regress
 ### The One-Liner to Memorize
 
 > *"Relative Risk tells us how much more **likely** something is to happen; Odds Ratios tell us how much higher the **odds** are. For rare events, they are almost identical—but only the Odds Ratio can be used in case-control studies and logistic regression."*
+
+## Standard Error and Confidence Intervals for Log Odds Ratio and Log Relative Risk
+
+To understand the **standard error and confidence intervals for the log Odds Ratio (OR) and log Relative Risk (RR)**, we have to tackle a fundamental problem: **These ratios are not Normally distributed.**
+
+- An Odds Ratio can range from 0 to $\infty$.
+- It is highly skewed. An OR of 2.0 (showing increased risk) and an OR of 0.5 (showing decreased risk) are mathematically symmetric *on the log scale*, but they are not symmetric on the raw scale.
+
+**The Fix:** We do all our math on the **natural log (ln) scale**, calculate the standard error and confidence interval there, and then **exponentiate** (take $e^{\text{bound}}$) the final bounds to get back to the interpretable OR/RR scale.
+
+Here is the exact step-by-step guide.
+
+---
+
+### Part 1: The Setup (The 2x2 Table)
+
+Let's use our salmon data comparing the old feed to the new feed:
+
+| | **Lice (Disease)** | **No Lice** | **Total** |
+| :--- | :--- | :--- | :--- |
+| **Old Feed** | 40 (a) | 60 (b) | 100 |
+| **New Feed** | 20 (c) | 80 (d) | 100 |
+
+- **Risk Old:** $p_1 = 40/100 = 0.40$
+- **Risk New:** $p_2 = 20/100 = 0.20$
+- **Odds Old:** $40/60 = 0.667$
+- **Odds New:** $20/80 = 0.25$
+
+---
+
+### Part 2: Standard Error and CI for the Log Odds Ratio (OR)
+
+**Step 1: Calculate the Odds Ratio.**
+
+$$OR = \frac{a \times d}{b \times c} = \frac{40 \times 80}{60 \times 20} = \frac{3200}{1200} = 2.67$$
+
+**Step 2: Calculate the log(OR).**
+
+$$\log(OR) = \log(2.67) \approx 0.982$$
+
+**Step 3: Calculate the Standard Error of the log(OR).**
+
+This is a beautiful, simple formula (developed by Woolf). The variance of the log(OR) is simply the sum of the reciprocals of the four cell counts:
+
+$$SE(\log OR) = \sqrt{ \frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d} }$$
+
+Plug in our numbers:
+
+$$SE(\log OR) = \sqrt{ \frac{1}{40} + \frac{1}{60} + \frac{1}{20} + \frac{1}{80} }$$
+
+$$SE(\log OR) = \sqrt{ 0.025 + 0.0167 + 0.05 + 0.0125 } = \sqrt{0.1042} \approx 0.323$$
+
+**Step 4: Build the 95% Confidence Interval on the log scale.**
+
+$$\log(OR) \pm 1.96 \times SE(\log OR)$$
+
+$$0.982 \pm 1.96(0.323) = 0.982 \pm 0.633$$
+
+- **Lower log bound:** $0.982 - 0.633 = 0.349$
+- **Upper log bound:** $0.982 + 0.633 = 1.615$
+
+**Step 5: Exponentiate to get back to the Odds Ratio scale.**
+
+- **Lower bound:** $e^{0.349} \approx 1.42$
+- **Upper bound:** $e^{1.615} \approx 5.03$
+
+**Final 95% CI for OR:** **$[1.42, 5.03]$**
+
+**Interpretation:** We are 95% confident that the true odds of sea lice on the old feed are between **1.42 and 5.03 times higher** than on the new feed. Since this interval does not contain 1.0, it is statistically significant.
+
+---
+
+### Part 3: Standard Error and CI for the Log Relative Risk (RR)
+
+The RR is slightly trickier because it involves dividing two probabilities, but the logic is identical.
+
+**Step 1: Calculate the Relative Risk.**
+
+$$RR = \frac{a / (a+b)}{c / (c+d)} = \frac{40/100}{20/100} = 2.0$$
+
+**Step 2: Calculate the log(RR).**
+
+$$\log(RR) = \log(2.0) \approx 0.693$$
+
+**Step 3: Calculate the Standard Error of the log(RR).**
+
+The variance of the log(RR) is a bit more complex because it depends on the probabilities:
+
+$$SE(\log RR) = \sqrt{ \frac{1 - p_1}{n_1 \times p_1} + \frac{1 - p_2}{n_2 \times p_2} }$$
+
+Where $p_1$ and $p_2$ are the risks in the two groups.
+
+Plug in our numbers:
+
+$$SE(\log RR) = \sqrt{ \frac{1 - 0.40}{100 \times 0.40} + \frac{1 - 0.20}{100 \times 0.20} }$$
+
+$$SE(\log RR) = \sqrt{ \frac{0.60}{40} + \frac{0.80}{20} } = \sqrt{ 0.015 + 0.04 } = \sqrt{0.055} \approx 0.2345$$
+
+**Step 4: Build the 95% CI on the log scale.**
+
+$$0.693 \pm 1.96(0.2345) = 0.693 \pm 0.460$$
+
+- **Lower log bound:** $0.693 - 0.460 = 0.233$
+- **Upper log bound:** $0.693 + 0.460 = 1.153$
+
+**Step 5: Exponentiate.**
+
+- **Lower bound:** $e^{0.233} \approx 1.26$
+- **Upper bound:** $e^{1.153} \approx 3.17$
+
+**Final 95% CI for RR:** **$[1.26, 3.17]$**
+
+**Interpretation:** We are 95% confident that the true risk of sea lice on the old feed is between **1.26 and 3.17 times higher** than on the new feed.
+
+---
+
+### Part 4: Why the Odds Ratio CI is wider than the RR CI
+
+Look at the intervals:
+
+| Measure | 95% CI | Width |
+| :--- | :--- | :--- |
+| **Odds Ratio (OR)** | $[1.42, 5.03]$ | 3.61 |
+| **Relative Risk (RR)** | $[1.26, 3.17]$ | 1.91 |
+
+The OR interval is much wider and more skewed. This is because the OR is always more extreme than the RR when the disease is common (like 20% and 40%). If sea lice were a rare disease (say, 2% and 1%), the OR and RR would be almost identical, and their CIs would look the same.
+
+---
+
+### Summary Cheat Sheet
+
+| Measure | Formula for SE (on the log scale) | 95% CI (on log scale) | Final CI (Exponentiate) |
+| :--- | :--- | :--- | :--- |
+| **Odds Ratio (OR)** | $\sqrt{ \frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d} }$ | $\log(OR) \pm 1.96 \times SE$ | $e^{\text{lower}}, e^{\text{upper}}$ |
+| **Relative Risk (RR)** | $\sqrt{ \frac{1-p_1}{n_1 p_1} + \frac{1-p_2}{n_2 p_2} }$ | $\log(RR) \pm 1.96 \times SE$ | $e^{\text{lower}}, e^{\text{upper}}$ |
+| **The Golden Rule** | **Always** do the math on the **log scale** first | Add/subtract the margin on the log scale | **Exponentiate** the bounds to get the final interval. If the interval contains **1**, the result is not significant |
+
+---
+
+### The One-Liner to Memorize
+
+> *"Odds Ratios and Relative Risks are highly skewed. To build a proper confidence interval, we must convert them to logs, calculate the standard error, add/subtract 1.96, and then exponentiate the bounds. If the final interval doesn't contain 1, we have a significant result."*
