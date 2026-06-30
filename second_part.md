@@ -2105,13 +2105,14 @@ fisher.test(matrix, alternative="two.sided")
 ```
 
 **Output:**
-	Fisher's Exact Test for Count Data
+```
+    Fisher's Exact Test for Count Data
 p-value = 0.2065
 95 percent confidence interval:
   0.6229 745.1493
 sample estimates:
 odds ratio: 11.248
-
+```
 
 
 Notice the massively wide confidence interval: $[0.62, 745]$. This reflects the extreme uncertainty with such a small sample.
