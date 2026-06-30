@@ -361,3 +361,133 @@ The p-value is not a binary "significant / not significant" switch.
 
 > *"The p-value is a measure of surprise, not a measure of truth. It tells us how unlikely our data would be if nothing were really happening. The smaller the p-value, the louder our data screams, 'This is not a coincidence!'"*
 
+## The Score Statistic
+To understand the **Score Statistic**, we have to look under the hood of **Maximum Likelihood Estimation (MLE)**. 
+
+Remember, the MLE finds the parameter value that makes your data the most likely. The **Score Statistic** is the mathematical "engine" that drives that search. It tells you **which direction to go** and **how steep the hill is** to reach the top of the likelihood mountain.
+
+Here is the intuitive, step-by-step breakdown.
+
+---
+
+### 1. The Intuition: The "Treasure Hunter" on a Hill
+
+Imagine you are blindfolded on a mountain, and you are trying to find the **absolute peak** (the Maximum Likelihood Estimate). You can't see the top, but you can feel the slope beneath your feet.
+
+- If you are standing on the **left side** of the peak, the ground slopes **upward to the right**. 
+- If you are standing on the **right side** of the peak, the ground slopes **downward to the right**. 
+- If you are standing **exactly at the peak**, the ground is **perfectly flat** (slope = 0).
+
+The **Score Statistic** is simply a mathematical measurement of that **slope** at any given point. 
+
+- It is the **first derivative** (the slope) of the log-likelihood function.
+
+---
+
+### 2. The Mathematical Definition
+
+Let \( \ell(\theta) \) be the **log-likelihood function** (the log of the likelihood). 
+
+The Score Statistic, often written as \( U(\theta) \) or \( S(\theta) \), is defined as:
+
+\[
+U(\theta) = \frac{d}{d\theta} \ell(\theta)
+\]
+
+**What this tells you:**
+
+- **If \( U(\theta) > 0 \):** The slope is positive. The likelihood increases as \( \theta \) increases. You need to move **right** to find the peak.
+- **If \( U(\theta) < 0 \):** The slope is negative. The likelihood decreases as \( \theta \) increases. You need to move **left** to find the peak.
+- **If \( U(\theta) = 0 \):** The slope is flat. You have found the **Maximum Likelihood Estimate (MLE)**! 
+
+---
+
+### 3. A Salmon Example (The Score in action)
+
+Let’s go back to estimating the sea lice infection rate \( p \). 
+
+You sample 20 fish and find 4 have lice. The log-likelihood for a Binomial proportion is:
+
+\[
+\ell(p) = x \log(p) + (n-x) \log(1-p) + \text{constant}
+\]
+
+The Score statistic (the slope) is the derivative of this with respect to \( p \):
+
+\[
+U(p) = \frac{x}{p} - \frac{n-x}{1-p}
+\]
+
+**Let's test the slope at different guesses for \( p \):**
+
+- **Guess \( p = 0.10 \):**  
+  \( U(0.10) = \frac{4}{0.10} - \frac{16}{0.90} = 40 - 17.78 = 22.22 \) (Positive slope).  
+  *Meaning:* The hill is still going up to the right. Your guess of 10% is too low; the true MLE is higher.
+
+- **Guess \( p = 0.30 \):**  
+  \( U(0.30) = \frac{4}{0.30} - \frac{16}{0.70} = 13.33 - 22.86 = -9.53 \) (Negative slope).  
+  *Meaning:* The hill is going down to the right. Your guess of 30% is too high; the true MLE is lower.
+
+- **Guess \( p = 0.20 \) (The MLE):**  
+  \( U(0.20) = \frac{4}{0.20} - \frac{16}{0.80} = 20 - 20 = 0 \) (Flat slope).  
+  *Meaning:* You are standing exactly at the peak! This is your MLE.
+
+---
+
+### 4. The "Score Test" (The Rao Score Test)
+
+The Score Statistic isn't just for finding the MLE; it also forms the basis of a powerful hypothesis test called the **Score Test** (or Rao's Score Test).
+
+**The Problem:** You want to test \( H_0: \theta = \theta_0 \).
+**The Logic:** If the null hypothesis is true, the slope (\( U(\theta_0) \)) should be close to zero. If the slope is extremely steep (very positive or very negative), it means the data is screaming that \( \theta_0 \) is not the peak, so you should reject \( H_0 \).
+
+**The Formula for the Score Test Statistic:**
+\[
+\text{Score Test Statistic} = \frac{U(\theta_0)^2}{\text{Var}(U(\theta_0))}
+\]
+
+Under the null hypothesis, this statistic follows a **Chi-squared distribution** with 1 degree of freedom.
+
+---
+
+### 5. The "Big Three" Hypothesis Tests (Where the Score fits in)
+
+In statistics, there are three classic tests for evaluating parameters. They are mathematically equivalent in large samples, but they use different "views" of the likelihood:
+
+| Test | What it looks at | The "Treasure Hunter" Analogy |
+| :--- | :--- | :--- |
+| **Likelihood Ratio Test (LRT)** | Looks at the *height* of the likelihood mountain. | Compares how tall the mountain is at the null hypothesis vs. at the peak. |
+| **Wald Test** | Looks at the *horizontal distance* from the null to the peak. | Measures how far your guess is from the peak in standard errors. |
+| **Score Test (Rao)** | Looks at the *slope* of the mountain at the null. | Checks how steep the hill is at your starting point. |
+
+---
+
+### 6. Why use the Score Test?
+
+The Score Test has two massive advantages:
+
+1.  **It is fast:** You only have to calculate the likelihood under the **null hypothesis** (\( \theta_0 \)). You do not need to find the MLE (the peak). This makes it very computationally efficient, especially in complex models.
+2.  **It is invariant:** It often performs better than the Wald test for small sample sizes because it doesn't rely as heavily on a perfect estimate of the variance.
+
+**Salmon Application:** 
+Imagine you are testing whether a new gene is linked to sea lice resistance in salmon. Fitting the full model (finding the MLE) takes hours of computer time. With the Score Test, you just fit the model *without* the gene (under \( H_0 \)), calculate the slope, and test if that slope is steep enough to reject \( H_0 \). It saves massive amounts of time!
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Explanation |
+| :--- | :--- |
+| **Score Statistic \( U(\theta) \)** | The slope (first derivative) of the log-likelihood at a given parameter value. |
+| **If \( U = 0 \)** | You are at the MLE (the peak of the likelihood). |
+| **If \( U > 0 \)** | The likelihood increases as \( \theta \) increases (move right). |
+| **If \( U < 0 \)** | The likelihood decreases as \( \theta \) increases (move left). |
+| **Score Test** | A hypothesis test that uses the steepness of the slope under \( H_0 \) to decide if the null is plausible. |
+| **Advantage** | No need to calculate the MLE; fast and computationally efficient. |
+| **The Analogy** | The Score Statistic is your "slope sensor" on a foggy mountain, telling you exactly which way to walk to find the peak. |
+
+---
+
+### The One-Liner to Memorize
+
+> **"The Score Statistic is the slope of the likelihood hill. If the slope at your null hypothesis is steep, the data is screaming that you are nowhere near the peak—so you reject the null."**
