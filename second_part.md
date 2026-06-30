@@ -1703,3 +1703,128 @@ The Chi-Squared test is a **"large-sample"** test.
 ### The One-Liner to Memorize
 
 > *"The Chi-Squared test is the ultimate 'distance detector' for categorical data. It measures how far our observed counts are from our expected counts, squares that distance, and divides by the expected count. The bigger the sum, the stronger the evidence that our variables are related or that our model is wrong."*
+
+## Confounding, Simpson's Paradox, Weighting, and the Mantel-Haenszel Estimator
+
+
+### Confounding (The "Lurking Variable")
+
+**Definition:** A **confounder** is a third variable that is associated with **both** our exposure (e.g., feed type) and our outcome (e.g., sea lice), causing us to mistakenly think there is a direct causal relationship when there isn't.
+
+**Three conditions for a confounder:**
+
+| Condition | Description |
+| :--- | :--- |
+| 1 | It is associated with the exposure |
+| 2 | It is associated with the outcome |
+| 3 | It is not on the causal pathway (it's not caused by the exposure) |
+
+**Salmon Example:**
+
+We compare two pens:
+
+- **Pen A (New Feed):** Low mortality.
+- **Pen B (Old Feed):** High mortality.
+
+We conclude the new feed saves lives. But wait! We realize **Pen A** is in a deep, cold fjord, and **Pen B** is in a warm, shallow bay.
+
+- Water temperature (the confounder) affects **both** feed choice (we tried the new feed in the cold fjord) and mortality (cold water kills the disease).
+
+**Without accounting for temperature, we falsely credit the feed!**
+
+
+---
+
+### Simpson's Paradox (The "Flip-Flop")
+
+**Definition:** Simpson's Paradox occurs when a trend that appears in *separate* groups **disappears or reverses** when we combine the groups. It is caused entirely by ignoring a confounder.
+
+**Salmon Example (Numbers):**
+
+We test two treatments (New vs. Old) in **two different farms** (Cold Water vs. Warm Water).
+
+| | **Cold Water Farm** | **Warm Water Farm** | **Combined Total** |
+| :--- | :--- | :--- | :--- |
+| **New Feed** | 90/100 survive (90%) | 10/100 survive (10%) | 100/200 survive (50%) |
+| **Old Feed** | 80/100 survive (80%) | 20/100 survive (20%) | 100/200 survive (50%) |
+
+---
+
+**Looking at separate farms (Stratified):**
+
+| Farm | New Feed | Old Feed | Winner |
+| :--- | :--- | :--- | :--- |
+| **Cold Water** | 90% | 80% | **New Feed** ✅ |
+| **Warm Water** | 10% | 20% | **New Feed** ✅ |
+
+**Looking at the combined table (Collapsed):**
+
+| Feed | Survival |
+| :--- | :--- |
+| **New Feed** | 50% |
+| **Old Feed** | 50% |
+
+**This is Simpson's Paradox.** The combined average is misleading because the farms have different baseline mortality rates. The water temperature (confounder) is masking the true effect.
+
+---
+
+### Weighting (The "Fix" for Unequal Groups)
+
+**Definition:** **Weighting** is a statistical technique where we assign different "importance" (weights) to different subgroups to correct for imbalance in a confounder.
+
+Instead of giving every individual equal weight, we give *underrepresented* groups more weight and *overrepresented* groups less weight, so that the weighted average reflects a balanced population.
+
+**Salmon Example:**
+
+In the combined table above, the New Feed had 100 fish in the cold farm and 100 in the warm farm (balanced). The Old Feed also had 100 in each. In this case, a simple average works.
+
+But what if the New Feed was tested on **150 fish in the cold farm** and **50 in the warm farm**, while the Old Feed was tested on **50 in the cold farm** and **150 in the warm farm**?
+
+| | Cold Farm | Warm Farm |
+| :--- | :--- | :--- |
+| **New Feed** | 150 fish | 50 fish |
+| **Old Feed** | 50 fish | 150 fish |
+
+- If we just average the raw proportions, we are letting the cold farm dominate the New Feed result and the warm farm dominate the Old Feed result.
+- **Weighting** corrects this by giving each farm equal "say" in the final average, regardless of how many fish were actually sampled from each farm.
+
+---
+
+### The Mantel-Haenszel Estimator (The "Grand Unifier")
+
+**Definition:** The **Mantel-Haenszel (M-H) estimator** is a weighted average of the odds ratios (or risk ratios) across **multiple 2x2 tables** (strata). It is the gold-standard method for combining evidence from several stratified tables while controlling for a confounder.
+
+Instead of collapsing all the data into one big, misleading table, the M-H method:
+
+1. Calculates the odds ratio **separately** for each stratum (e.g., Cold Farm and Warm Farm).
+2. Assigns a weight to each stratum based on its sample size and variability.
+3. Combines them into a **single, summary odds ratio** that is free from confounding.
+
+**The M-H Odds Ratio Formula (for each stratum $i$):**
+
+$$OR_{MH} = \frac{\sum \left( \frac{a_i d_i}{N_i} \right)}{\sum \left( \frac{b_i c_i}{N_i} \right)}$$
+
+Where $a, b, c, d$ are the cells of the 2x2 table for stratum $i$, and $N_i$ is the total sample size in that stratum.
+
+| Why it's amazing | Explanation |
+| :--- | :--- |
+| **Automatically weights** | Gives more weight to larger, more precise strata |
+| **Controls for confounders** | Controls for water temperature without building a complex regression model |
+| **Computationally simple** | Widely used in epidemiology, meta-analysis, and observational studies |
+
+---
+
+### The Grand Connection (Putting it all together)
+
+| Concept | Definition | Salmon Example |
+| :--- | :--- | :--- |
+| **Confounding** | A third variable distorts the true relationship | Water temperature affects both feed choice and mortality |
+| **Simpson's Paradox** | The combined table shows the opposite of every separate table | New feed is better in cold and warm farms, but looks equal when combined |
+| **Weighting** | Giving more importance to certain subgroups to balance the confounder | Giving equal weight to cold/warm farms, regardless of sample size |
+| **Mantel-Haenszel Estimator** | A weighted average of stratum-specific odds ratios | Calculates the true feed effect, controlling for temperature |
+
+---
+
+### The One-Liner to Memorize
+
+> *"Confounding creates the illusion of an effect; Simpson's Paradox is that illusion on display. Weighting corrects for the imbalance, and the Mantel-Haenszel estimator sums it all up into one honest, confounder-adjusted odds ratio."*
