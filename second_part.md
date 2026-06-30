@@ -1424,3 +1424,127 @@ Since the log OR is the difference of the two log-odds, its variance is the sum 
 ### The One-Liner to Memorize
 
 > *"The Delta Method draws a straight tangent line to a curved function. It tells us that the variance of a transformed statistic is approximately the variance of the original statistic multiplied by the square of the slope ($g'(\theta)^2$). This gives us the standard errors for logs, odds, and risks without doing any complex calculus."*
+
+## Fisher's Exact Test, Hypergeometric Distribution, and Monte Carlo Simulation
+
+This is the **trifecta of "small sample" statistics**.
+
+When our sample size is tiny (like the 4 people in the Coke vs. Pepsi taste test), the Normal approximation (Z-tests) and Chi-Squared tests break down. They become unreliable.
+
+To fix this, we use **Fisher's Exact Test**, which relies on the **Hypergeometric Distribution**. And when the math for Fisher's test gets too complicated to do by hand, we use **Monte Carlo simulation** to approximate the answer.
+
+Here is the complete, step-by-step breakdown.
+
+---
+
+### Part 1: The Hypergeometric Distribution (The Engine)
+
+The **Hypergeometric distribution** is the probability distribution that describes **sampling without replacement**.
+
+Imagine we have a finite population of $N$ objects:
+- $m$ of them are "successes" (e.g., prefer Coke).
+- $N - m$ of them are "failures" (prefer Pepsi).
+
+We randomly draw $n$ objects *without replacement*. The probability of getting exactly $x$ successes is:
+
+$$P(X = x) = \frac{\binom{m}{x} \binom{N-m}{n-x}}{\binom{N}{n}}$$
+
+**Salmon Example:**
+
+We have 10 fish in a tank. 4 are infected with lice (successes), 6 are healthy (failures). We randomly catch 3 fish *without putting them back*. The probability that exactly 2 of them have lice is:
+
+$$P(X=2) = \frac{\binom{4}{2} \binom{6}{1}}{\binom{10}{3}} = \frac{6 \times 6}{120} = 0.30$$
+
+**Key Difference from Binomial:**
+
+| Feature | Binomial | Hypergeometric |
+| :--- | :--- | :--- |
+| **Population** | Infinite (or sampling *with* replacement) | Finite population |
+| **Sampling** | With replacement | **Without replacement** |
+| **Convergence** | - | As the population gets huge, the Hypergeometric converges to the Binomial |
+
+---
+
+### Part 2: Fisher's Exact Test (The Test)
+
+**Fisher's Exact Test** is a statistical test used to determine if there is a **non-random association** between two categorical variables in a **2x2 contingency table**, specifically when sample sizes are **small**.
+
+Instead of relying on the Normal approximation (like the Chi-Squared test), Fisher's test calculates the **exact** probability of observing our data (or something more extreme) using the Hypergeometric distribution.
+
+**The Logic:**
+
+1. We have a 2x2 table with fixed marginal totals (row totals and column totals are fixed).
+2. We calculate the probability of observing that exact table using the Hypergeometric formula.
+3. We then calculate the probabilities of all other tables that are "more extreme" (i.e., show even stronger association).
+4. We add them all up to get the **p-value**.
+
+**The Formula for the probability of a specific 2x2 table:**
+
+$$P = \frac{(a+b)! (c+d)! (a+c)! (b+d)!}{a! b! c! d! N!}$$
+
+---
+
+**Coke vs. Pepsi Example (n=4, 3 chose Coke):**
+
+| | Coke | Pepsi | Total |
+| :--- | :--- | :--- | :--- |
+| **Chose** | 3 | 1 | 4 |
+| **Did not choose** | 0 | 0 | 0 |
+| **Total** | 3 | 1 | 4 |
+
+Under the null hypothesis ($p = 0.5$), the probability of exactly 3 out of 4 choosing Coke is:
+
+$$P(X=3) = \frac{\binom{4}{3} \binom{0}{0}}{\binom{4}{3}} = \frac{4}{16} = 0.25$$
+
+*(The p-value is the probability of getting 3 or more out of 4 under $H_0$, which is 0.3125 for a one-sided test.)*
+
+---
+
+### Part 3: Monte Carlo Simulation (The "Brute Force" Approximation)
+
+**Monte Carlo simulation** is used in Fisher's Exact Test when the table is larger than 2x2 (e.g., 3x3 or 5x4).
+
+In a 2x2 table, the math is easy. But in a 5x4 table with fixed margins, there are **thousands or millions** of possible tables. Calculating the exact probability of every single table by hand (or even by computer) can be computationally impossible.
+
+**The Monte Carlo Solution:**
+
+Instead of enumerating all possible tables, the computer does this:
+
+| Step | Action |
+| :--- | :--- |
+| **1** | Generates thousands (e.g., 10,000) of random tables that have the exact same row and column totals as our observed table |
+| **2** | For each random table, it calculates the test statistic (e.g., the Chi-Square or the exact probability) |
+| **3** | It counts how many of these simulated tables have a statistic **as extreme as** (or more extreme than) our observed data |
+| **4** | **The P-value = (Number of extreme simulated tables) / (Total number of simulations)** |
+
+**Why we use it:**
+
+- It is **exact** in the limit (as the number of simulations goes to infinity, it converges to the true exact p-value).
+- It is **fast** and works for any size of contingency table.
+
+---
+
+### Part 4: The Grand Connection (Putting it all together)
+
+| Concept | Definition | Role in Fisher's Test |
+| :--- | :--- | :--- |
+| **Hypergeometric Distribution** | The probability of getting exactly $x$ successes in $n$ draws *without replacement* from a finite population | **This is the mathematical engine.** It calculates the exact probability of our specific 2x2 table |
+| **Fisher's Exact Test** | A statistical test that computes the exact p-value for a 2x2 table by summing the hypergeometric probabilities of all tables as extreme as the observed one | **This is the hypothesis test.** It gives us a valid p-value even when sample sizes are tiny |
+| **Monte Carlo Simulation** | A computational method that uses random sampling to approximate a complex probability distribution | **This is the "cheat code."** Used when the table is too large (e.g., 5x4) to enumerate all possible tables. It simulates thousands of random tables to approximate the exact p-value |
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Definition | Coke vs. Pepsi (n=4, x=3) |
+| :--- | :--- | :--- |
+| **Hypergeometric Formula** | $P(X=x) = \frac{\binom{m}{x} \binom{N-m}{n-x}}{\binom{N}{n}}$ | $P(X=3) = \frac{\binom{4}{3} \binom{0}{0}}{\binom{4}{3}} = 0.25$ |
+| **Fisher's Exact P-value (One-sided)** | Sum of probabilities of all tables with $X \geq 3$ | $P(X=3) + P(X=4) = 0.25 + 0.0625 = 0.3125$ |
+| **Fisher's Exact P-value (Two-sided)** | Sum of probabilities of all tables as extreme as $X=3$ in *either direction* | $P(X \leq 1) + P(X \geq 3) = 0.3125 + 0.3125 = 0.625$ |
+| **Monte Carlo** | Simulate 10,000 random tables under $H_0$, count how many have $X \geq 3$ | Approximates 0.3125 |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Hypergeometric distribution calculates exact probabilities for small, finite populations. Fisher's Exact Test uses it to get exact p-values for 2x2 tables. When the table gets too big to calculate by hand, Monte Carlo simulates thousands of random tables to approximate the same exact p-value."*
