@@ -172,3 +172,158 @@ We are **95% confident** that the true difference in mean log-growth rate betwee
 | 5 | $2 \pm 2.145 \times 1$ | $[-0.14, 4.14]$ |
 
 **The Bottom Line:** With only 8 fish per group, we can't conclude the diet works. We need a larger sample size to get a precise estimate!
+
+## Example 3 Delta Method
+Here is the **definitive version** of the Delta Method applied to two-sample binomial statistics, **completely integrated with the salmon farm example**. 
+
+We will use a consistent 2x2 table throughout to make every formula tangible.
+
+---
+
+### Data
+
+We run a trial comparing a new feed to an old feed to see if it reduces sea lice.
+
+| | **Sea Lice (Disease)** | **No Sea Lice** | **Total** |
+| :--- | :--- | :--- | :--- |
+| **Old Feed (Group 1)** | 40 (a) | 60 (b) | 100 |
+| **New Feed (Group 2)** | 20 (c) | 80 (d) | 100 |
+
+From this table:
+- **Group 1 (Old):** \( \hat{p}_1 = 40/100 = 0.40 \)
+- **Group 2 (New):** \( \hat{p}_2 = 20/100 = 0.20 \)
+- **Risk Difference (RD):** \( 0.40 - 0.20 = 0.20 \)
+- **Relative Risk (RR):** \( 0.40 / 0.20 = 2.0 \)
+- **Odds Ratio (OR):** \( (40 \times 80) / (60 \times 20) = 3200 / 1200 = 2.67 \)
+
+---
+
+### Part 1: The Delta Method (The Mathematical Engine)
+
+**The Problem:** 
+We have a statistic \( \hat{\theta} \) (like \( \hat{p} \)) that is asymptotically Normal. We want the distribution of a transformed version \( g(\hat{\theta}) \) (like \( \log(\hat{p}) \)). 
+
+**The Delta Method Formula:**
+\[
+\text{Var}(g(\hat{\theta})) \approx \left( g'(\theta) \right)^2 \times \text{Var}(\hat{\theta})
+\]
+
+**In plain English:** 
+The variance of a transformed statistic is approximately the variance of the original statistic multiplied by the **square of the slope** of the transformation.
+
+---
+
+### Part 2: Three Key Transformations (Applied to Salmon)
+
+Here are the three most common transformations in epidemiology, with their derivatives and final formulas.
+
+| Transformation \( g(p) \) | Derivative \( g'(p) \) | Variance Formula (Delta Method) |
+| :--- | :--- | :--- |
+| **Linear (\( p \))** | \( 1 \) | \( \text{Var}(p) \) |
+| **Log (\( \log(p) \))** | \( 1/p \) | \( \text{Var}(p) / p^2 \) |
+| **Logit (\( \log(p/(1-p)) \))** | \( 1/(p(1-p)) \) | \( \text{Var}(p) / (p(1-p))^2 \) |
+
+---
+
+### Part 3: Two-Sample Binomial Methods (Complete Salmon Examples)
+
+Because we have *two* independent groups, the variance of any difference (or ratio) is the **sum** of the individual variances. 
+
+---
+
+#### A. Risk Difference (RD = \( p_1 - p_2 \))
+
+This is the simplest; it is perfectly linear, so the Delta Method is exact.
+
+- **Point Estimate:** \( \hat{p}_1 - \hat{p}_2 = 0.40 - 0.20 = \mathbf{0.20} \)
+- **Asymptotic SE (Delta Method):**
+\[
+SE(\hat{p}_1 - \hat{p}_2) = \sqrt{ \frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2(1-\hat{p}_2)}{n_2} }
+\]
+\[
+SE = \sqrt{ \frac{0.40(0.60)}{100} + \frac{0.20(0.80)}{100} } = \sqrt{ 0.0024 + 0.0016 } = \sqrt{0.004} = 0.0632
+\]
+- **95% Confidence Interval:** 
+\[
+0.20 \pm 1.96(0.0632) = 0.20 \pm 0.124
+\]
+- **Final CI:** **\[0.076, \ 0.324\]**
+
+**Salmon Interpretation:** We are 95% confident that the new feed reduces the sea lice infection rate by between **7.6% and 32.4%**. Since this interval does not contain 0, it is statistically significant.
+
+---
+
+#### B. Log Relative Risk (log RR = \( \log(p_1 / p_2) \))
+
+Relative risk is a ratio. We use the Delta Method because the ratio is non-linear.
+
+- **Point Estimate (RR):** \( 2.0 \)
+- **Point Estimate (log RR):** \( \log(2.0) = \mathbf{0.693} \)
+- **Derivation of SE (Delta Method):**
+For a single proportion, \( \text{Var}(\log(\hat{p})) = \frac{1-p}{n p} \). Because \( \log(RR) = \log(p_1) - \log(p_2) \), we add the variances:
+
+\[
+SE(\log RR) = \sqrt{ \frac{1-\hat{p}_1}{n_1 \hat{p}_1} + \frac{1-\hat{p}_2}{n_2 \hat{p}_2} }
+\]
+\[
+SE = \sqrt{ \frac{0.60}{100 \times 0.40} + \frac{0.80}{100 \times 0.20} } = \sqrt{ 0.015 + 0.04 } = \sqrt{0.055} = 0.2345
+\]
+- **95% CI (on the log scale):** 
+\[
+0.693 \pm 1.96(0.2345) = 0.693 \pm 0.460
+\]
+- **95% CI (Exponentiate to get back to RR):**
+\[
+[e^{0.233}, \ e^{1.153}] = \mathbf{[1.26, \ 3.17]}
+\]
+
+**Salmon Interpretation:** Fish on the old feed are between **1.26 and 3.17 times more likely** to get sea lice than fish on the new feed. Since this interval does not contain 1.0, it is significant.
+
+---
+
+#### C. Log Odds Ratio (log OR = \( \log \left( \frac{p_1/(1-p_1)}{p_2/(1-p_2)} \right) \))
+
+This is the most common output of logistic regression. 
+
+- **Point Estimate (OR):** \( 2.67 \)
+- **Point Estimate (log OR):** \( \log(2.67) = \mathbf{0.982} \)
+- **Derivation of SE (Delta Method):**
+For a single proportion, \( \text{Var}(\text{logit}(p)) = \frac{1}{n p (1-p)} \). Because log OR is the difference of two logits, we add the variances:
+
+\[
+SE(\log OR) = \sqrt{ \frac{1}{n_1 \hat{p}_1 (1-\hat{p}_1)} + \frac{1}{n_2 \hat{p}_2 (1-\hat{p}_2)} }
+\]
+\[
+SE = \sqrt{ \frac{1}{100(0.40)(0.60)} + \frac{1}{100(0.20)(0.80)} } = \sqrt{ \frac{1}{24} + \frac{1}{16} } = \sqrt{ 0.04167 + 0.0625 } = \sqrt{0.10417} = 0.3227
+\]
+
+*(If you use the shortcut formula using cell counts: \( SE = \sqrt{ \frac{1}{40} + \frac{1}{60} + \frac{1}{20} + \frac{1}{80} } = \sqrt{0.1042} = 0.3227 \))*
+
+- **95% CI (on the log scale):** 
+\[
+0.982 \pm 1.96(0.3227) = 0.982 \pm 0.632
+\]
+- **95% CI (Exponentiate):**
+\[
+[e^{0.350}, \ e^{1.614}] = \mathbf{[1.42, \ 5.03]}
+\]
+
+**Salmon Interpretation:** The odds of sea lice on the old feed are between **1.42 and 5.03 times higher** than on the new feed. 
+
+---
+
+### Part 4: The Asymptotic Summary (The Fine Print)
+
+| Concept | Definition | Salmon Example |
+| :--- | :--- | :--- |
+| **Asymptotic Mean** | The mean of the transformed statistic converges to the true transformed value. | The mean of \( \log(OR) \) converges to \( \log(2.67) \). |
+| **Asymptotic Variance** | The variance we calculate using the Delta Method. | \( \text{Var}(\log OR) \approx 0.1042 \) |
+| **Asymptotic SE** | The square root of the asymptotic variance. | \( SE(\log OR) \approx 0.3227 \) |
+| **When does it fail?** | If cell counts are zero (e.g., a=0), the SE blows up. | Add 0.5 to all cells (Haldane correction) to fix this. |
+| **The Golden Rule** | The Delta Method requires large samples. For small samples, use **exact methods** (Clopper-Pearson, Fisher's Exact Test). | Our sample size (100 per group) is large enough. |
+
+---
+
+### The One-Liner to Memorize
+
+> **"The Delta Method draws a straight tangent line through a curved statistic. It tells us that the variance of a log(OR) or log(RR) is just the sum of the variances of the individual logits or logs, multiplied by the square of their slopes. This gives us reliable standard errors and confidence intervals for any ratio—as long as our sample size is large and no cell counts are zero."**
