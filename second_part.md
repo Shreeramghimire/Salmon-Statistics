@@ -2109,3 +2109,38 @@ p-value = 0.2065
   0.6229 745.1493
 sample estimates:
 odds ratio: 11.248
+
+
+
+
+Notice the massively wide confidence interval: $[0.62, 745]$. This reflects the extreme uncertainty with such a small sample.
+
+---
+
+### Part 6: The Connection to the Mantel-Haenszel Test
+
+In the previous section, we discussed the **CMH test** for combining multiple 2x2 tables (stratified by a confounder).
+
+- The **exact inference** we just did is the **single-stratum** version.
+- When we have multiple strata (e.g., Cold Farm and Warm Farm), we use the **Mantel-Haenszel (MH) estimator** for the OR, and the **CMH test** for the p-value.
+- For small samples across multiple strata, we can perform an **exact version of the CMH test**, which is essentially a **multivariate hypergeometric distribution**.
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Definition | Salmon Example |
+| :--- | :--- | :--- |
+| **Case-Control Study** | Sampling based on outcome (cases vs. controls), looking backward for exposure | Sampled 40 with lice, 40 without, checked feed history |
+| **Odds Ratio (OR)** | Measure of association: $\frac{a \times d}{b \times c}$ | OR = 9.0 (strong risk factor) |
+| **Exact Inference** | Using the Hypergeometric distribution to calculate exact p-values (Fisher's Exact Test) | For small samples, avoids relying on Normal approximation |
+| **Hypergeometric Probability** | $P(a) = \frac{\binom{n_1}{a} \binom{n_2}{m_1 - a}}{\binom{N}{m_1}}$ | Calculates the probability of a specific table given fixed margins |
+| **Fisher's Exact Test** | Sums hypergeometric probabilities of observed + more extreme tables | Gives exact p-value for OR $\neq$ 1 |
+| **Exact Confidence Interval** | Based on inverting the Fisher test (Cornfield method) | Wide intervals for small samples |
+| **The Golden Rule** | If sample sizes are small or expected counts $< 5$, **always** use exact inference (Fisher's Exact Test) instead of the Wald test | - |
+
+---
+
+### The One-Liner to Memorize
+
+> *"In a case-control study, we fix the number of cases and controls, so we can't calculate risk—only odds. When sample sizes are small, the Normal approximation fails, so we must use exact inference (Fisher's Exact Test) based on the Hypergeometric distribution to get honest p-values and confidence intervals."*
