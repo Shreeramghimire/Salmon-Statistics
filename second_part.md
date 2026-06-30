@@ -2146,3 +2146,170 @@ In the previous section, we discussed the **CMH test** for combining multiple 2x
 ### The One-Liner to Memorize
 
 > *"In a case-control study, we fix the number of cases and controls, so we can't calculate risk—only odds. When sample sizes are small, the Normal approximation fails, so we must use exact inference (Fisher's Exact Test) based on the Hypergeometric distribution to get honest p-values and confidence intervals."*
+
+## Matched Case-Control Studies and McNemar's Test
+
+We have just stepped into the world of **matched case-control studies** and **dependent proportions**.
+
+Unlike standard 2x2 tables (where subjects in one group are independent of the other), **matched 2x2 tables** involve **pairing**—like twins, or the same patient measured before and after a treatment, or a case matched to a control based on age and sex.
+
+This changes **everything**: the structure of the data, the hypothesis tests, and how we calculate the odds ratio.
+
+Here is the complete, step-by-step guide.
+
+---
+
+### Part 1: The Structure of a Matched 2x2 Table
+
+In a matched study, we create **pairs**. Each pair contains one exposed and one unexposed subject (or one case and one matched control).
+
+The data are displayed as:
+
+| **Control Exposed?** | **Case Exposed?** | **Count of Pairs** |
+| :--- | :--- | :--- |
+| Yes | Yes | **a** (Both exposed) |
+| No | Yes | **b** (Case exposed, Control not) |
+| Yes | No | **c** (Control exposed, Case not) |
+| No | No | **d** (Neither exposed) |
+
+**Salmon Matched Example:**
+
+We want to know if a new feed increases the risk of sea lice. We match each case (fish with lice) to a control (fish without lice) of the same age and from the same pen. We examine their feed history:
+
+| **Control Exposed?** | **Case Exposed?** | **Number of Pairs** |
+| :--- | :--- | :--- |
+| Yes | Yes | 10 |
+| No | Yes | 20 |
+| Yes | No | 5 |
+| No | No | 15 |
+
+---
+
+### Part 2: Why Matched Tables are "Dependent"
+
+In an **unmatched** (independent) 2x2 table, the rows are independent. But in a **matched** 2x2 table:
+
+- The **discordant pairs** ($b$ and $c$) are the only pairs that provide information about the association.
+- The **concordant pairs** ($a$ and $d$) provide **no information** about the association because both members are either exposed or unexposed. They cancel out!
+
+This dependency means we **cannot** use the standard Chi-Squared test or the regular Odds Ratio formula. We must use methods specifically designed for matched data.
+
+---
+
+### Part 3: Estimation of the Odds Ratio in Matched Tables
+
+The **Mantel-Haenszel estimator** for the matched-pair odds ratio is beautifully simple:
+
+$$OR_{MH} = \frac{b}{c}$$
+
+Where:
+- **$b$** = number of pairs where the **case is exposed** and the control is **not**
+- **$c$** = number of pairs where the **control is exposed** and the case is **not**
+
+**Salmon Example:**
+
+From our table: $b = 20$ (Case exposed, Control not), $c = 5$ (Control exposed, Case not).
+
+$$OR = \frac{b}{c} = \frac{20}{5} = 4.0$$
+
+**Interpretation:** The odds of being exposed to the new feed are **4 times higher** among cases (fish with lice) than among controls. The new feed is a significant risk factor.
+
+---
+
+### Part 4: McNemar's Test (Testing Marginal Homogeneity)
+
+**Marginal homogeneity** means that the probability of exposure is the same for cases and controls. In other words, the row totals and column totals should be balanced.
+
+In a matched table, we test this using **McNemar's Test**.
+
+**The Logic:** Under the null hypothesis ($OR = 1$, i.e., $b = c$), the discordant pairs ($b$ and $c$) should be equally split. McNemar's test checks if the proportion of discordant pairs where the case is exposed ($b$) is significantly different from the proportion where the control is exposed ($c$).
+
+**The Formula (with Continuity Correction):**
+
+$$\chi^2_{McNemar} = \frac{(|b - c| - 1)^2}{b + c}$$
+
+**Salmon Example:** $b = 20, c = 5$.
+
+$$\chi^2 = \frac{(|20 - 5| - 1)^2}{20 + 5} = \frac{(15 - 1)^2}{25} = \frac{14^2}{25} = \frac{196}{25} = 7.84$$
+
+**Degrees of Freedom:** $df = 1$
+
+**P-value:** For $\chi^2 = 7.84$, the p-value is approximately **0.005**.
+
+**Conclusion:** We strongly reject the null hypothesis. There is strong evidence that the odds of exposure differ between cases and controls (the new feed is associated with lice).
+
+---
+
+### Part 5: Estimation of the Marginal Difference in Proportions
+
+**Marginal difference** compares the overall exposure rates between cases and controls.
+
+- **Proportion of cases exposed:** $p_{\text{cases}} = \frac{a + b}{n}$
+- **Proportion of controls exposed:** $p_{\text{controls}} = \frac{a + c}{n}$
+
+The difference is:
+
+$$\hat{d} = p_{\text{cases}} - p_{\text{controls}} = \frac{(a + b) - (a + c)}{n} = \frac{b - c}{n}$$
+
+**Salmon Example:** $n = a+b+c+d = 10+20+5+15 = 50$.
+
+$$\hat{d} = \frac{20 - 5}{50} = \frac{15}{50} = 0.30$$
+
+**Interpretation:** The exposure rate among cases is **30 percentage points higher** than among controls.
+
+---
+
+### Part 6: Confidence Interval for the Matched Odds Ratio
+
+The standard error of the log(OR) for a matched pair is calculated using only the discordant pairs:
+
+$$SE(\log OR) = \sqrt{ \frac{1}{b} + \frac{1}{c} }$$
+
+**Salmon Example:** $b = 20, c = 5$.
+
+$$SE(\log OR) = \sqrt{ \frac{1}{20} + \frac{1}{5} } = \sqrt{0.05 + 0.20} = \sqrt{0.25} = 0.5$$
+
+**95% CI for log(OR):**
+
+$$\log(4) \pm 1.96 \times 0.5 = 1.386 \pm 0.98 = [0.406, \ 2.366]$$
+
+**95% CI for OR (Exponentiate):**
+
+$$[e^{0.406}, \ e^{2.366}] = [1.50, \ 10.66]$$
+
+**Interpretation:** We are 95% confident that the true matched odds ratio is between **1.50 and 10.66**. Since this interval does **not** contain 1.0, it is statistically significant.
+
+---
+
+### Part 7: The "Odds and Ends" (Important Nuances)
+
+1. **When to use McNemar vs. CMH:**
+   - **McNemar** is for **one stratum** (a single matched pair design).
+   - **Cochran-Mantel-Haenszel (CMH)** is for **multiple strata** (e.g., matched pairs across different age groups).
+
+2. **Continuity Correction:**
+   - The -1 in McNemar's formula is a continuity correction. It makes the test slightly more conservative (avoids false positives).
+
+3. **Small Sample Exact Test:**
+   - If $b + c$ is small (e.g., $< 25$), the Chi-Squared approximation for McNemar's test can be inaccurate. Use the **exact binomial test** instead:
+   - Under $H_0$, $b \sim \text{Binomial}(b+c, 0.5)$.
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Definition | Matched Salmon Example |
+| :--- | :--- | :--- |
+| **Matched 2x2 Table** | Pairs of subjects (case + control) | 50 pairs: (10,20,5,15) |
+| **Odds Ratio** | $OR = b / c$ | $20 / 5 = 4.0$ |
+| **McNemar's Test** | Tests marginal homogeneity ($b = c$) | $\chi^2 = 7.84$, p = 0.005 |
+| **Marginal Difference** | $(b - c) / n$ | $(20 - 5) / 50 = 0.30$ |
+| **SE(log OR)** | $\sqrt{1/b + 1/c}$ | $\sqrt{0.05 + 0.20} = 0.5$ |
+| **95% CI for OR** | Exponentiate log OR $\pm$ 1.96 SE | $[1.50, 10.66]$ |
+| **The Golden Rule** | In matched studies, **only the discordant pairs ($b$ and $c$) matter**. Concordant pairs ($a$ and $d$) carry no information about the association | If $b = c$, OR = 1 and McNemar is not significant |
+
+---
+
+### The One-Liner to Memorize
+
+> *"In matched 2x2 tables, we have pairs, not independent subjects. The only numbers that matter are the discordant pairs ($b$ and $c$): $b/c$ gives us the odds ratio, and McNemar's test tells us if $b$ and $c$ are significantly different."*
