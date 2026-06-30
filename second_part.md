@@ -1973,3 +1973,139 @@ They are two sides of the same coin. The M-H estimator tells us *how much*; the 
 ### The One-Liner to Memorize
 
 > *"The Cochran-Mantel-Haenszel test is the 'truth serum' for 2x2 tables. It stratifies by the confounder, calculates the expected values in each stratum, and tests if the overall association is still significant after adjusting for the lurking variable."*
+
+## Case-Control Studies: Odds Ratios, Exact Inference, and Fisher's Exact Test
+
+We have just stepped into the **heart of epidemiology**—the case-control study.
+
+A **case-control study** is retrospective. We start with the *outcome* (e.g., "Has disease") and look *backward* to see who was exposed. Because we deliberately sample a fixed number of cases and a fixed number of controls, **we cannot calculate risk** (incidence). However, we **can** calculate the **Odds Ratio (OR)** to estimate the strength of association.
+
+When sample sizes are small, the Normal approximation (Wald test) fails, so we use **exact inference** (Fisher's Exact Test) based on the **Hypergeometric distribution**.
+
+Here is the complete, step-by-step guide.
+
+---
+
+### Part 1: Case-Control Sampling (The 2x2 Table)
+
+In a case-control study, we fix the number of cases and controls. The data are arranged as:
+
+| | **Cases (Disease +)** | **Controls (Disease -)** | **Total** |
+| :--- | :--- | :--- | :--- |
+| **Exposed (e.g., New Feed)** | $a$ | $b$ | $n_1$ |
+| **Unexposed (Old Feed)** | $c$ | $d$ | $n_2$ |
+| **Total** | $m_1$ | $m_2$ | $N$ |
+
+**Salmon Case-Control Example:**
+
+We hypothesize that a new feed causes sea lice. We sample **40 salmon with lice (cases)** and **40 salmon without lice (controls)**. We look back at their feed history:
+
+| | **Lice (Cases)** | **No Lice (Controls)** | **Total** |
+| :--- | :--- | :--- | :--- |
+| **New Feed (Exposed)** | 30 (a) | 10 (b) | 40 |
+| **Old Feed (Unexposed)** | 10 (c) | 30 (d) | 40 |
+| **Total** | 40 | 40 | 80 |
+
+- **Exposure rate among cases:** $30/40 = 75\%$
+- **Exposure rate among controls:** $10/40 = 25\%$
+
+---
+
+### Part 2: The Odds Ratio (The Measure of Association)
+
+Since we cannot calculate risk (because we fixed the number of cases/controls), we calculate the **Odds Ratio (OR)**:
+
+$$OR = \frac{a \times d}{b \times c} = \frac{30 \times 30}{10 \times 10} = \frac{900}{100} = 9.0$$
+
+**Interpretation:** The odds of being exposed to the new feed are **9 times higher** among salmon with lice than among those without lice. This strongly suggests the new feed is a risk factor.
+
+---
+
+### Part 3: The Problem with Small Samples (Why exact inference?)
+
+In our example, we have 80 fish. A large-sample Wald test (Z-test) works fine.
+
+But what if we only had 10 cases and 10 controls?
+
+- If any cell count is very small (e.g., $< 5$), the Normal approximation used by the Wald test **breaks down**.
+- The p-value becomes unreliable, and the confidence intervals may include impossible values (e.g., below 0).
+
+**The Solution:** Use **Exact Inference** based on the **Hypergeometric Distribution**.
+
+---
+
+### Part 4: Exact Inference for the Odds Ratio (Fisher's Exact Test)
+
+In a case-control study, the margins (row totals and column totals) are considered **fixed**:
+
+- Column totals (number of cases and controls) are fixed by design.
+- Row totals (exposed/unexposed) are random, but we condition on them for the exact test.
+
+Under the null hypothesis ($OR = 1$, i.e., no association), the probability of observing a specific table (with cell $a$) is given by the **Hypergeometric distribution**:
+
+$$P(a) = \frac{\binom{n_1}{a} \binom{n_2}{m_1 - a}}{\binom{N}{m_1}}$$
+
+Where:
+- $\binom{n_1}{a}$ = ways to choose $a$ exposed cases from $n_1$ exposed total
+- $\binom{n_2}{m_1 - a}$ = ways to choose unexposed cases
+- $\binom{N}{m_1}$ = total ways to choose $m_1$ cases from $N$ total
+
+---
+
+### Step-by-Step Salmon Example (Small Sample)
+
+Imagine a smaller case-control study:
+
+| | **Cases** | **Controls** | **Total** |
+| :--- | :--- | :--- | :--- |
+| **Exposed** | 4 (a) | 1 (b) | 5 |
+| **Unexposed** | 1 (c) | 4 (d) | 5 |
+| **Total** | 5 | 5 | 10 |
+
+- **OR = $4 \times 4 / (1 \times 1) = 16$** (Strong effect)
+- But is it statistically significant?
+
+**Step 1: Calculate the probability of the observed table.**
+
+$$P(a=4) = \frac{\binom{5}{4} \binom{5}{1}}{\binom{10}{5}} = \frac{5 \times 5}{252} = \frac{25}{252} \approx 0.0992$$
+
+**Step 2: Identify more extreme tables (One-sided test).**
+
+We are testing if exposure *increases* risk (alternative: OR > 1).
+
+"More extreme" means even *more* exposed cases ($a$ larger).
+
+The only possible table with $a = 5$ is:
+
+| | Cases | Controls | Total |
+| :--- | :--- | :--- | :--- |
+| **Exposed** | 5 | 0 | 5 |
+| **Unexposed** | 0 | 5 | 5 |
+| **Total** | 5 | 5 | 10 |
+
+$$P(a=5) = \frac{\binom{5}{5} \binom{5}{0}}{\binom{10}{5}} = \frac{1 \times 1}{252} \approx 0.00397$$
+
+**Step 3: One-sided P-value.**
+
+$$P_{\text{one-sided}} = P(a=4) + P(a=5) = 0.0992 + 0.00397 \approx 0.1032$$
+
+**Conclusion:** With a p-value of $\sim 0.10$, we **fail to reject** the null hypothesis. There is not enough evidence to say exposure is associated with disease in this tiny sample.
+
+---
+
+### Part 5: Confidence Interval for the Odds Ratio (Exact)
+
+Exact confidence intervals for the OR are based on the **Cornfield method** or the **Fisher exact method** (inverting the test). They are asymmetric and guarantee 95% coverage even for small samples.
+
+In R, we would run:
+
+```r
+matrix <- matrix(c(4,1,1,4), nrow=2)
+fisher.test(matrix, alternative="two.sided")
+
+	Fisher's Exact Test for Count Data
+p-value = 0.2065
+95 percent confidence interval:
+  0.6229 745.1493
+sample estimates:
+odds ratio: 11.248
