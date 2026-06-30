@@ -1548,3 +1548,158 @@ Instead of enumerating all possible tables, the computer does this:
 ### The One-Liner to Memorize
 
 > *"The Hypergeometric distribution calculates exact probabilities for small, finite populations. Fisher's Exact Test uses it to get exact p-values for 2x2 tables. When the table gets too big to calculate by hand, Monte Carlo simulates thousands of random tables to approximate the same exact p-value."*
+
+## The Chi-Squared Test: Goodness-of-Fit, Independence, and Generalizations
+
+We have just asked about the **most versatile workhorse** in all of categorical data analysis.
+
+The **Chi-Squared test** is actually a **family of tests**, not just one test. At its core, it is a **"goodness-of-fit"** measure: it answers the question:
+
+> *"How far are our observed counts from what we would expect to see if nothing interesting were happening?"*
+
+Let's break this down into three parts: **The Basic Test**, **Goodness-of-Fit**, and **Generalizations** (testing for independence in larger tables).
+
+---
+
+### Part 1: The Chi-Squared Test Statistic (The Core Engine)
+
+Whether we are testing a single proportion, a 2x2 table, or a complex model, the Chi-Squared test statistic always follows the same fundamental formula:
+
+$$\chi^2 = \sum \frac{(\text{Observed} - \text{Expected})^2}{\text{Expected}}$$
+
+**The Intuition:**
+
+| Result | $\chi^2$ Value | Decision |
+| :--- | :--- | :--- |
+| Observed counts are **very close** to expected counts | Small $\chi^2$ | Fail to reject the null hypothesis |
+| Observed counts are **very different** from expected counts | Large $\chi^2$ | Reject the null hypothesis |
+
+**The Distribution:** Under the null hypothesis, this test statistic follows a **Chi-Squared distribution** with $df$ degrees of freedom.
+
+---
+
+### Part 2: The Chi-Squared Goodness-of-Fit Test (One Categorical Variable)
+
+This is the simplest version of the test. We have **one categorical variable** and we want to test if the observed proportions match a theoretical (or known) distribution.
+
+**Salmon Example:**
+
+We suspect that sea lice are randomly distributed across three different pens (Pen A, B, and C) in a 1:1:1 ratio. We sample 300 fish and find:
+
+| Pen | Observed | Expected (if equal) |
+| :--- | :--- | :--- |
+| A | 120 | 100 |
+| B | 90  | 100 |
+| C | 90  | 100 |
+
+**Step 1: Calculate the Chi-Squared statistic.**
+
+$$\chi^2 = \frac{(120-100)^2}{100} + \frac{(90-100)^2}{100} + \frac{(90-100)^2}{100} = \frac{400}{100} + \frac{100}{100} + \frac{100}{100} = 4 + 1 + 1 = 6$$
+
+**Step 2: Find the degrees of freedom.**
+
+$$df = \text{Number of categories} - 1 = 3 - 1 = 2$$
+
+**Step 3: Find the p-value.**
+
+For $\chi^2 = 6$ with $df = 2$, the p-value is approximately **0.05**.
+
+We would fail to reject the null hypothesis at the 5% level—there is not enough evidence to say the lice are unevenly distributed.
+
+---
+
+### Part 3: The Chi-Squared Test of Independence (Two Categorical Variables)
+
+This is the **generalization** to a **contingency table** (e.g., a 2x2, 3x3, or 3x4 table).
+
+Here, we have **two categorical variables**, and we want to know if they are **independent** of each other (i.e., does knowing the value of one variable tell us anything about the other?).
+
+**Salmon Example:**
+
+We want to know if infection status (Lice / No Lice) is independent of feed type (Old / New). We collect data on 200 fish:
+
+| | **Lice** | **No Lice** | **Total** |
+| :--- | :--- | :--- | :--- |
+| **Old Feed** | 40 | 60 | 100 |
+| **New Feed** | 20 | 80 | 100 |
+| **Total** | 60 | 140 | 200 |
+
+**Step 1: Calculate the Expected Counts under Independence.**
+
+The expected count for each cell is:
+
+$$E = \frac{\text{Row Total} \times \text{Column Total}}{\text{Grand Total}}$$
+
+| Cell | Calculation | Expected |
+| :--- | :--- | :--- |
+| Old & Lice | $100 \times 60 / 200$ | 30 |
+| Old & No Lice | $100 \times 140 / 200$ | 70 |
+| New & Lice | $100 \times 60 / 200$ | 30 |
+| New & No Lice | $100 \times 140 / 200$ | 70 |
+
+**Step 2: Calculate the Chi-Squared statistic.**
+
+$$\chi^2 = \frac{(40-30)^2}{30} + \frac{(60-70)^2}{70} + \frac{(20-30)^2}{30} + \frac{(80-70)^2}{70}$$
+
+$$= \frac{100}{30} + \frac{100}{70} + \frac{100}{30} + \frac{100}{70} = 3.33 + 1.43 + 3.33 + 1.43 = 9.52$$
+
+**Step 3: Find the degrees of freedom.**
+
+For a contingency table:
+
+$$df = (\text{Number of rows} - 1) \times (\text{Number of columns} - 1) = (2-1) \times (2-1) = 1$$
+
+**Step 4: Find the p-value.**
+
+For $\chi^2 = 9.52$ with $df = 1$, the p-value is about **0.002**.
+
+We strongly reject the null hypothesis. The new feed is significantly reducing lice!
+
+---
+
+### Part 4: Generalization to Larger Tables (R x C Tables)
+
+The same logic extends to **any size** of contingency table.
+
+| Table Size | Degrees of Freedom | Example |
+| :--- | :--- | :--- |
+| **3x3 Table** | $(3-1) \times (3-1) = 4$ | Compare three feed types across three disease severity levels |
+| **4x5 Table** | $(4-1) \times (5-1) = 12$ | Compare four age groups across five symptom types |
+
+The formula for $\chi^2$ remains identical: sum the squared differences divided by the expected counts.
+
+---
+
+### Part 5: The "Yates' Continuity Correction" (The 2x2 Fix)
+
+For a **2x2 table**, the Chi-Squared test can be slightly inaccurate (too liberal) when sample sizes are small. To fix this, we use **Yates' Continuity Correction**:
+
+$$\chi^2_{Yates} = \sum \frac{(|O - E| - 0.5)^2}{E}$$
+
+This subtracts 0.5 from the absolute difference before squaring, which reduces the Chi-Squared value and makes the test more conservative. It is the Pearson Chi-Squared equivalent of Fisher's Exact Test.
+
+---
+
+### Summary Table: Chi-Squared Applications
+
+| Scenario | Test | Degrees of Freedom | Null Hypothesis |
+| :--- | :--- | :--- | :--- |
+| One categorical variable vs. known proportions | **Goodness-of-Fit** | $k - 1$ | The proportions match the hypothesized distribution |
+| Two categorical variables (e.g., 2x2) | **Test of Independence** | $(r-1)(c-1)$ | The two variables are independent (no association) |
+| Testing a specific model (e.g., Hardy-Weinberg) | **Goodness-of-Fit** | $k - 1 - m$ | The data fit the theoretical model |
+| Comparing multiple proportions (e.g., 3 feeds) | **Test of Homogeneity** | $(r-1)(c-1)$ | The proportions are the same across all groups |
+
+---
+
+### The Golden Rule of Chi-Squared
+
+The Chi-Squared test is a **"large-sample"** test.
+
+- **Rule of Thumb:** All expected cell counts should be **$\geq 5$**.
+- If any expected count is $< 5$, the Chi-Squared approximation fails. In that case, use **Fisher's Exact Test** (for 2x2 tables) or **Monte Carlo simulation** (for larger tables).
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Chi-Squared test is the ultimate 'distance detector' for categorical data. It measures how far our observed counts are from our expected counts, squares that distance, and divides by the expected count. The bigger the sum, the stronger the evidence that our variables are related or that our model is wrong."*
