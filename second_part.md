@@ -1828,3 +1828,148 @@ Where $a, b, c, d$ are the cells of the 2x2 table for stratum $i$, and $N_i$ is 
 ### The One-Liner to Memorize
 
 > *"Confounding creates the illusion of an effect; Simpson's Paradox is that illusion on display. Weighting corrects for the imbalance, and the Mantel-Haenszel estimator sums it all up into one honest, confounder-adjusted odds ratio."*
+
+
+## The Cochran-Mantel-Haenszel (CMH) Test
+
+To understand the **Cochran-Mantel-Haenszel (CMH) Test**, we have to go back to the **Mantel-Haenszel estimator** we just discussed.
+
+If the Mantel-Haenszel estimator gives us the *size* of the effect (the adjusted odds ratio), the **CMH Test** gives us the *p-value* for that effect.
+
+It is the **hypothesis test** that asks: *"After controlling for the confounder, is there still a statistically significant association between the exposure and the outcome?"*
+
+Here is the definitive guide.
+
+---
+
+### Part 1: The Intuition (The "Stratified" Chi-Squared)
+
+Imagine we have a 2x2 contingency table (Exposure vs. Outcome). But we know there is a confounder (like Age, Sex, or Farm Location).
+
+We decide to **stratify** (split) our data into $K$ separate 2x2 tables based on the levels of the confounder (e.g., one table for Cold Farms, one for Warm Farms).
+
+The **CMH Test** is a **single, overall test** that combines all $K$ tables to answer one question:
+
+> *"Is there a consistent association between exposure and outcome **across all strata**, after removing the effect of the confounder?"*
+
+It is essentially a **weighted average of the differences** between observed and expected counts across all strata.
+
+---
+
+### Part 2: The Formula (The Mathematical Engine)
+
+For each stratum $i$ (e.g., each farm), we have a 2x2 table:
+
+| | Outcome + | Outcome - | Total |
+| :--- | :--- | :--- | :--- |
+| **Exposed +** | $a_i$ | $b_i$ | $n_{1i}$ |
+| **Exposed -** | $c_i$ | $d_i$ | $n_{2i}$ |
+| **Total** | $m_{1i}$ | $m_{2i}$ | $N_i$ |
+
+**The CMH Test Statistic:**
+
+$$Q_{CMH} = \frac{ \left( \sum_{i=1}^{K} (a_i - E[a_i]) \right)^2 }{ \sum_{i=1}^{K} \text{Var}(a_i) }$$
+
+Where:
+
+- **$E[a_i]$** = The expected count of $a_i$ under the null hypothesis of no association (calculated using row and column margins, just like in a regular Chi-squared test):
+
+$$E[a_i] = \frac{n_{1i} \times m_{1i}}{N_i}$$
+
+- **$\text{Var}(a_i)$** = The variance of $a_i$ under the null hypothesis:
+
+$$\text{Var}(a_i) = \frac{n_{1i} n_{2i} m_{1i} m_{2i}}{N_i^2 (N_i - 1)}$$
+
+**The Distribution:**
+
+Under the null hypothesis, $Q_{CMH}$ follows a **Chi-Squared distribution** with **1 degree of freedom** (for a 2x2 table). For larger tables (R x C), it has $(R-1) \times (C-1)$ df.
+
+---
+
+### Part 3: A Salmon Example (Putting numbers to it)
+
+Let's use the confounded data from the previous section:
+
+**Cold Farm (Stratum 1):**
+
+| | Survive | Die | Total |
+| :--- | :--- | :--- | :--- |
+| **New Feed** | 90 (a1) | 10 (b1) | 100 |
+| **Old Feed** | 80 (c1) | 20 (d1) | 100 |
+| **Total** | 170 | 30 | 200 |
+
+**Warm Farm (Stratum 2):**
+
+| | Survive | Die | Total |
+| :--- | :--- | :--- | :--- |
+| **New Feed** | 10 (a2) | 90 (b2) | 100 |
+| **Old Feed** | 20 (c2) | 80 (d2) | 100 |
+| **Total** | 30 | 170 | 200 |
+
+---
+
+**Step 1: Calculate the expected and variance for each stratum.**
+
+**Stratum 1 (Cold Farm):**
+- $E[a_1] = \frac{100 \times 170}{200} = 85$
+- $\text{Var}(a_1) = \frac{100 \times 100 \times 170 \times 30}{200^2 \times 199} = \frac{51,000,000}{7,960,000} \approx 6.407$
+
+**Stratum 2 (Warm Farm):**
+- $E[a_2] = \frac{100 \times 30}{200} = 15$
+- $\text{Var}(a_2) = \frac{100 \times 100 \times 30 \times 170}{200^2 \times 199} = 6.407$ (Symmetric, same variance)
+
+---
+
+**Step 2: Calculate the CMH Statistic.**
+
+$$Q_{CMH} = \frac{ \left( (90 - 85) + (10 - 15) \right)^2 }{ 6.407 + 6.407 }$$
+
+$$Q_{CMH} = \frac{ (5 - 5)^2 }{ 12.814 } = \frac{0}{12.814} = 0$$
+
+**Step 3: The P-value.**
+
+A Chi-Squared of 0 with 1 df gives a P-value of **1.0**.
+
+**Interpretation:**
+
+After controlling for water temperature (the confounder), there is **absolutely no evidence** that the new feed affects survival. The apparent effect in the raw data was entirely due to the imbalance in the farms!
+
+---
+
+### Part 4: The Connection to the Mantel-Haenszel Estimator
+
+| Method | What it gives | Our Example |
+| :--- | :--- | :--- |
+| **Mantel-Haenszel Estimator** | The **adjusted odds ratio** (the size of the effect) | M-H OR = **1.0** (no effect) |
+| **CMH Test** | The **p-value** for that adjusted effect | p-value = **1.0** (not significant) |
+
+They are two sides of the same coin. The M-H estimator tells us *how much*; the CMH test tells us *how sure*.
+
+---
+
+### Part 5: When to Use the CMH Test
+
+| Application | Description |
+| :--- | :--- |
+| **Case-Control Studies** | Control for age, sex, or other categorical confounders |
+| **Meta-Analysis** | Combining results from multiple studies (each study is a "stratum") |
+| **Longitudinal Data** | Repeated measures across time (each time point is a stratum) |
+| **Large R x C Tables** | Extended to handle tables larger than 2x2, testing for general association across multiple strata |
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Definition | Salmon Example |
+| :--- | :--- | :--- |
+| **CMH Test** | A stratified Chi-squared test that controls for a confounder | Testing feed effect while controlling for water temperature |
+| **Null Hypothesis** | No association between exposure and outcome **after** stratifying by the confounder | The feed does not affect survival, regardless of temperature |
+| **Formula** | $Q_{CMH} = \frac{(\sum (a_i - E_i))^2}{\sum \text{Var}(a_i)}$ | - |
+| **Distribution** | Chi-Squared with 1 df (for 2x2 tables) | - |
+| **The Golden Rule** | If CMH is significant, the association persists even after removing the confounder. If CMH is not significant, the apparent effect was likely due to confounding | In our example, CMH = 0, p = 1.0 → No true feed effect |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Cochran-Mantel-Haenszel test is the 'truth serum' for 2x2 tables. It stratifies by the confounder, calculates the expected values in each stratum, and tests if the overall association is still significant after adjusting for the lurking variable."*
