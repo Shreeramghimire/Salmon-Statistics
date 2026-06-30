@@ -610,3 +610,119 @@ $$0.4038 \pm 0.0943 = [0.3095, \ 0.4981]$$
 ### The One-Liner to Memorize
 
 > *"The Wald test gambles by guessing the variance from the data; the Score test plays it safe by using the null hypothesis. And if we want a confidence interval that actually works, use the Wilson method or the Agresti-Coull quick-fix—never trust the Wald interval for proportions!"*
+
+## Pearson Interval and Clopper-Pearson Interval
+### The Pearson Interval (The "Classic" Wald Interval)
+
+**What it is:**
+
+This is the standard, textbook interval we learn in introductory statistics. It is also called the Wald Interval (named after Abraham Wald). It uses the Normal approximation to the Binomial distribution.
+
+**The Formula:**
+
+$$\hat{p} \pm Z_{1-\alpha/2} \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+**Salmon Example ($n = 20$, $x = 4$, $\hat{p} = 0.20$):**
+
+$$SE = \sqrt{0.20 \times 0.80 / 20} = 0.089$$
+
+$$95\% \text{ CI: } 0.20 \pm 1.96 \times 0.089 = 0.20 \pm 0.175$$
+
+**Result:** $[0.025, 0.375]$
+
+---
+
+**The Pros:**
+
+- Incredibly easy to calculate by hand.
+- Works fine if $n$ is huge (e.g., $> 100$) and $p$ is not near 0 or 1.
+
+**The Cons (The "Pearson" Problem):**
+
+- It is based on the Central Limit Theorem, which assumes $n$ is large.
+- If $p$ is near 0 or 1, or if $n$ is small, the Normal approximation breaks down.
+- **Worst Offense:** It can produce impossible intervals. If we have 0 successes out of 10 ($\hat{p} = 0$), the Wald interval gives $0 \pm 0$, which is $[0, 0]$. This says we are 100% certain the true proportion is zero—which is statistically nonsense!
+
+---
+
+### The Clopper-Pearson Interval (The "Exact" Interval)
+
+**What it is:**
+
+Named after Charles Clopper and Egon Pearson (Karl Pearson's son), this is the **exact** binomial interval. Instead of using a Normal approximation, it uses the actual Binomial distribution to find two values of $p$ that satisfy a strict probability statement.
+
+**The Philosophy:**
+
+It finds a lower bound $p_L$ and an upper bound $p_U$ such that:
+
+$$P(X \geq x \mid p = p_L) = \alpha/2 \quad \text{and} \quad P(X \leq x \mid p = p_U) = \alpha/2$$
+
+**In plain English:**
+
+- The lower bound $p_L$ is the value of $p$ where observing $x$ or more successes becomes too unlikely (only 2.5% chance).
+- The upper bound $p_U$ is the value of $p$ where observing $x$ or fewer successes becomes too unlikely (only 2.5% chance).
+
+**Salmon Example ($n = 20$, $x = 4$):**
+
+Using the Clopper-Pearson method (which requires looking up the F-distribution or using software):
+
+$$95\% \text{ CI: Approximately } [0.064, 0.414]$$
+
+**Notice:** This interval is **wider** than the Pearson interval ($[0.025, 0.375]$). It is shifted upward and is asymmetric.
+
+---
+
+**The Pros:**
+
+- It is **exact**. It guarantees that the true coverage probability is at least 95% for any sample size and any value of $p$.
+- It never produces impossible bounds (it will never go below 0 or above 1).
+
+**The Cons (The "Clopper-Pearson" Problem):**
+
+- It is **conservative** (overly wide). Because it uses discrete binomial probabilities, it forces the coverage to be at least 95%, which often means it is actually greater than 95%.
+- For small samples, this interval can be ridiculously wide. (If we flip a coin 3 times and get 0 heads, the 95% Clopper-Pearson CI for the true probability of heads is $[0, 0.708]$—a massive range!).
+
+---
+
+### The Side-by-Side Showdown
+
+Let's compare them head-to-head for our salmon data ($n = 20$, $x = 4$):
+
+| Feature | Pearson (Wald) Interval | Clopper-Pearson Interval |
+| :--- | :--- | :--- |
+| **Method** | Normal approximation to the Binomial | Exact Binomial calculation |
+| **Formula** | $\hat{p} \pm z \times SE$ | Uses the F-distribution or Beta quantiles |
+| **95% CI for n=20, x=4** | $[0.025, 0.375]$ | $[0.064, 0.414]$ |
+| **Coverage Guarantee** | Approximate (only works well if $n$ is large) | **Exact** (guarantees at least 95% coverage) |
+| **Can it go below 0 or above 1?** | Yes (e.g., if $x = 0$, gives $[0, 0]$) | **No.** It respects the $[0, 1]$ bounds |
+| **Is it symmetric?** | Symmetric around $\hat{p}$ | **Asymmetric** (accounts for skewness) |
+| **Best for...** | Quick, large-sample back-of-the-envelope calculations | Scientific reporting, small samples, or when $p$ is near 0 or 1 |
+
+---
+
+### The "Practical" Truth (What to actually use)
+
+**Forget the Pearson (Wald) interval for proportions.** It is dangerously misleading for small samples or extreme probabilities. Many statisticians argue it should never be taught.
+
+| Recommendation | Method | Why |
+| :--- | :--- | :--- |
+| **Default** | **Wilson (Score) interval** | Excellent compromise: simple enough to compute, gives good coverage, and never goes outside $[0, 1]$ |
+| **When you need an exact guarantee** | **Clopper-Pearson interval** | For regulatory submissions (e.g., FDA) or reporting serious health risks. Just be aware it is intentionally conservative (wide) |
+
+---
+
+### The Connection to the Beta Distribution
+
+Here is a beautiful piece of math that ties everything together:
+
+The Clopper-Pearson interval is exactly the Bayesian Credible Interval we get when we use the **Beta(0.5, 0.5) prior** (Jeffreys' prior) and then force it to have frequentist coverage properties!
+
+$$\text{Beta}(0.5, 0.5) + \text{Data} \rightarrow \text{Beta}(0.5 + x, 0.5 + n - x)$$
+
+The quantiles of this posterior distribution give us the exact Clopper-Pearson bounds!
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Pearson (Wald) interval is dangerously misleading for small samples or extreme proportions. Use the Clopper-Pearson interval when you need an exact guarantee, but for everyday use, the Wilson (Score) interval is the gold standard—it never gives impossible bounds and works for any sample size!"*
