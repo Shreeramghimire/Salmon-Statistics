@@ -327,3 +327,207 @@ SE = \sqrt{ \frac{1}{100(0.40)(0.60)} + \frac{1}{100(0.20)(0.80)} } = \sqrt{ \fr
 ### The One-Liner to Memorize
 
 > **"The Delta Method draws a straight tangent line through a curved statistic. It tells us that the variance of a log(OR) or log(RR) is just the sum of the variances of the individual logits or logs, multiplied by the square of their slopes. This gives us reliable standard errors and confidence intervals for any ratio—as long as our sample size is large and no cell counts are zero."**
+
+
+## Example 4
+Practice Questions: Delta Method, Odds Ratios, and Bayesian Inference
+
+---
+
+### Question 1
+**Topic:** Delta Method for log(Proportion)
+
+**Stem:**  
+Researchers are interested in estimating the natural log of the proportion of people in the population with hypertension. In a random sample of $n$ subjects, let $X$ be the number with hypertension. Create a confidence interval for the natural log of the proportion of people with hypertension. Assume that $n$ is very large.
+
+**Options:**
+
+1. The answer cannot be determined from the information given.
+2. $\log(\hat{p}) \pm Z_{1-\alpha/2} \sqrt{\frac{1-\hat{p}}{\hat{p} n}}$
+3. $\log\left( \hat{p} \pm Z_{1-\alpha/2} \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \right)$ where $\log$ acts componentwise
+4. $\log(\hat{p}) \pm Z_{1-\alpha/2} \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$
+
+---
+
+**Correct Answer:**  
+**Option 2:**
+
+$$\log(\hat{p}) \pm Z_{1-\alpha/2} \sqrt{\frac{1-\hat{p}}{\hat{p} n}}$$
+
+**Explanation:**  
+We want the CI for $\log(p)$.
+
+- The estimator is $\log(\hat{p})$.
+- By the **Delta Method**, the asymptotic variance of $\log(\hat{p})$ is:
+  $$\text{Var}(\log(\hat{p})) \approx \left( \frac{1}{p} \right)^2 \frac{p(1-p)}{n} = \frac{1-p}{np}$$
+- Plugging in $\hat{p}$ for $p$ gives $SE = \sqrt{\frac{1-\hat{p}}{\hat{p} n}}$.
+- Option 3 is wrong because you cannot take the log of a confidence interval (the log does not distribute over addition/subtraction). Option 4 is the SE for $\hat{p}$, not $\log(\hat{p})$.
+
+---
+
+### Question 2
+**Topic:** Odds to Probability Conversion
+
+**Stem:**  
+If the odds are 4 to 1 (i.e., just 4) of the NFL Ravens losing, what is the implied probability that they win?
+
+**Options:**
+
+- 0.10
+- 0.50
+- 0.70
+- 0.80
+- 0.20
+- 0.30
+- 0.60
+- 0.40
+
+---
+
+**Correct Answer:**  
+**0.20**
+
+**Explanation:**
+
+- Odds of losing = $\frac{P(\text{Lose})}{P(\text{Win})} = 4$.
+- So $P(\text{Lose}) = 4 \times P(\text{Win})$.
+- Since probabilities sum to 1:
+  $$P(\text{Win}) + 4P(\text{Win}) = 1 \implies 5P(\text{Win}) = 1 \implies P(\text{Win}) = 0.20$$
+
+---
+
+### Question 3
+**Topic:** Score Test for Two Proportions
+
+**Stem:**  
+In a randomly sampled survey of self-reported stress levels from two occupations, the following data were obtained where there were 100 in each group:
+
+| Occupation | High Stress |
+| :--- | :--- |
+| Professor | 70 |
+| Lion Tamer | 17 |
+
+What is the value of the score Z test statistic for evaluating equality of the two proportions of high stress?
+
+**Options:**
+
+- Around 8 (or -8, depending on which you subtract first)
+- Around 5 (or -5, depending on which you subtract first)
+- Around 4 (or -4, depending on which you subtract first)
+- Around 3 (or -3, depending on which you subtract first)
+
+---
+
+**Correct Answer:**  
+**Around 8 (or -8, depending on which you subtract first)**
+
+**Explanation:**
+
+- $\hat{p}_1 = 0.70$, $\hat{p}_2 = 0.17$, $n_1 = n_2 = 100$.
+- Pooled proportion:
+  $$\hat{p}_{pool} = \frac{70 + 17}{100 + 100} = \frac{87}{200} = 0.435$$
+- Standard Error under $H_0$:
+  $$SE = \sqrt{ \hat{p}_{pool}(1-\hat{p}_{pool}) \left( \frac{1}{n_1} + \frac{1}{n_2} \right) } = \sqrt{ 0.435 \times 0.565 \times 0.02 } = \sqrt{0.004916} \approx 0.0701$$
+- Test statistic:
+  $$Z = \frac{0.70 - 0.17}{0.0701} \approx 7.56 \approx 8$$
+
+---
+
+### Question 4
+**Topic:** Standard Error of the Log Odds Ratio
+
+**Stem:**  
+Consider the following data recording case status relative to an environmental exposure:
+
+| | Cases | Controls |
+| :--- | :--- | :--- |
+| **Exposed** | 45 | 21 |
+| **Unexposed** | 15 | 52 |
+
+What would be the estimated asymptotic standard error for the log odds ratio for this data?
+
+**Options:**
+
+- Around 1.2
+- Around 0.4
+- Around 1.5
+- Around 0.2
+
+---
+
+**Correct Answer:**  
+**Around 0.4**
+
+**Explanation:**
+
+- The SE of the log odds ratio is:
+  $$SE(\log OR) = \sqrt{ \frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d} }$$
+- Plugging in $a=45, b=21, c=15, d=52$:
+  $$SE = \sqrt{ \frac{1}{45} + \frac{1}{21} + \frac{1}{15} + \frac{1}{52} } = \sqrt{ 0.0222 + 0.0476 + 0.0667 + 0.0192 } = \sqrt{0.1557} \approx 0.3946 \approx 0.4$$
+
+---
+
+### Question 5
+**Topic:** Bayesian Posterior Mean (Beta-Binomial)
+
+**Stem:**  
+If $x \sim \text{Binomial}(n, p)$ and a $\text{Beta}(2, 2)$ prior is placed on $p$, what is the posterior mean for $p$?
+
+**Options:**
+
+- $\frac{x+2}{n+4}$
+- $\frac{x+2}{n+2}$
+- $\frac{x}{n}$
+- $\frac{x+1}{n+1}$
+
+---
+
+**Correct Answer:**
+
+$$\frac{x+2}{n+4}$$
+
+**Explanation:**
+
+- Prior: $\text{Beta}(2, 2)$ → $\alpha = 2, \beta = 2$.
+- Posterior: $\text{Beta}(\alpha + x, \beta + n - x) = \text{Beta}(2 + x, 2 + n - x)$.
+- Posterior mean = $\frac{\alpha + x}{\alpha + \beta + n} = \frac{x + 2}{n + 4}$.
+
+---
+
+### Question 6
+**Topic:** One-Sided Exact Binomial Test
+
+**Stem:**  
+Researchers conducted a blind taste test of Coke versus Pepsi. Each of four people was asked which of two blinded drinks given in random order they preferred. The data was such that 3 of the 4 people chose Coke. Assuming that this sample is representative, report a P-value for a test of the hypothesis that Coke is preferred to Pepsi using a one-sided exact test.
+
+**Options:**
+
+- Around 0.4
+- Around 0.2
+- Around 0.1
+- Around 0.3
+
+---
+
+**Correct Answer:**  
+**Around 0.3**
+
+**Explanation:**
+
+- $H_0: p = 0.5$ vs. $H_A: p > 0.5$.
+- $n = 4, x = 3$.
+- P-value = $P(X \geq 3 \mid p = 0.5) = P(X=3) + P(X=4)$.
+- $= \binom{4}{3}(0.5)^4 + \binom{4}{4}(0.5)^4 = 4(0.0625) + 1(0.0625) = 0.25 + 0.0625 = 0.3125 \approx 0.3$.
+
+---
+
+### Final Answer Key (Quick Reference)
+
+| Question | Correct Option | Answer |
+| :--- | :--- | :--- |
+| 1 | Option 2 | $\log(\hat{p}) \pm Z_{1-\alpha/2} \sqrt{\frac{1-\hat{p}}{\hat{p} n}}$ |
+| 2 | - | 0.20 |
+| 3 | Around 8 | Score Z ≈ 7.56 ≈ 8 |
+| 4 | Around 0.4 | SE(log OR) ≈ 0.3946 ≈ 0.4 |
+| 5 | Option 1 | $\frac{x+2}{n+4}$ |
+| 6 | Around 0.3 | P-value ≈ 0.3125 ≈ 0.3 |
