@@ -729,58 +729,64 @@ The quantiles of this posterior distribution give us the exact Clopper-Pearson b
 
 ## Bayesian and likelihood inference for two binomial proportions
 
-To understand **Bayesian and likelihood inference for two binomial proportions**, we are moving from the "Frequentist" world (p-values, Z-tests, and confidence intervals) into the **likelihood** and **Bayesian** frameworks. 
+
+To understand **Bayesian and likelihood inference for two binomial proportions**, we are moving from the "Frequentist" world (p-values, Z-tests, and confidence intervals) into the **likelihood** and **Bayesian** frameworks.
 
 Instead of asking *"What is the probability of seeing this data if the null is true?"*, we ask: **"Given the data we observed, what is the relative plausibility of different values for the true difference between the two proportions?"**
 
 We will stick with our salmon example:
-- **Group 1 (Old Feed):** \( n_1 = 100 \), \( x_1 = 40 \) lice → \( \hat{p}_1 = 0.40 \)
-- **Group 2 (New Feed):** \( n_2 = 120 \), \( x_2 = 36 \) lice → \( \hat{p}_2 = 0.30 \)
-- **Parameter of interest:** The true difference \( \delta = p_1 - p_2 \).
 
-Let’s break down how **Likelihood** and **Bayesian** inference handle this.
+| Group | Sample Size | Lice Count | Proportion |
+| :--- | :--- | :--- | :--- |
+| **Group 1 (Old Feed)** | $n_1 = 100$ | $x_1 = 40$ | $\hat{p}_1 = 0.40$ |
+| **Group 2 (New Feed)** | $n_2 = 120$ | $x_2 = 36$ | $\hat{p}_2 = 0.30$ |
+
+**Parameter of interest:** The true difference $\delta = p_1 - p_2$.
+
+Let's break down how **Likelihood** and **Bayesian** inference handle this.
 
 ---
 
 ### Part 1: Likelihood Inference (The "Pure Data" Approach)
 
-Likelihood inference is the bridge between Frequentist and Bayesian. It uses only the data to create a **likelihood function** for the parameter \( \delta \), without using prior beliefs.
+Likelihood inference is the bridge between Frequentist and Bayesian. It uses only the data to create a **likelihood function** for the parameter $\delta$, without using prior beliefs.
 
 **Step 1: Write the Likelihood**
+
 For two independent binomial groups, the likelihood is the product of the two individual binomial likelihoods:
 
-\[
-\mathcal{L}(p_1, p_2) \propto p_1^{x_1} (1-p_1)^{n_1 - x_1} \times p_2^{x_2} (1-p_2)^{n_2 - x_2}
-\]
+$$\mathcal{L}(p_1, p_2) \propto p_1^{x_1} (1-p_1)^{n_1 - x_1} \times p_2^{x_2} (1-p_2)^{n_2 - x_2}$$
 
-**Step 2: Profile Likelihood for \( \delta = p_1 - p_2 \)**
-We don't care about the individual \( p_1 \) and \( p_2 \); we care about their **difference** \( \delta \). 
+**Step 2: Profile Likelihood for $\delta = p_1 - p_2$**
 
-To get the likelihood for \( \delta \) alone, we use the **Profile Likelihood** (which you asked about earlier!). For every possible value of \( \delta \), we mathematically "maximize out" \( p_1 \) and \( p_2 \) to find the absolute highest likelihood.
+We don't care about the individual $p_1$ and $p_2$; we care about their **difference** $\delta$.
+
+To get the likelihood for $\delta$ alone, we use the **Profile Likelihood**. For every possible value of $\delta$, we mathematically "maximize out" $p_1$ and $p_2$ to find the absolute highest likelihood.
 
 **Step 3: The Profile Likelihood Curve**
-If you plot this profile likelihood against \( \delta \), you get a curve that:
-- Peaks at \( \hat{\delta} = \hat{p}_1 - \hat{p}_2 = 0.10 \) (the MLE).
-- Falls off as \( \delta \) moves away from 0.10.
+
+If we plot this profile likelihood against $\delta$, we get a curve that:
+- Peaks at $\hat{\delta} = \hat{p}_1 - \hat{p}_2 = 0.10$ (the MLE).
+- Falls off as $\delta$ moves away from 0.10.
 
 **The Likelihood Ratio Test (LRT):**
-To test \( H_0: \delta = 0 \), we compare the height of the likelihood at \( \delta = 0 \) to the height at the peak (\( \delta = 0.10 \)):
 
-\[
-\text{Likelihood Ratio} = \frac{\mathcal{L}(\delta = 0)}{\mathcal{L}(\delta = \hat{\delta})}
-\]
+To test $H_0: \delta = 0$, we compare the height of the likelihood at $\delta = 0$ to the height at the peak ($\delta = 0.10$):
 
-- If this ratio is very small (i.e., the likelihood at 0 is much lower than at the peak), we reject \( H_0 \).
-- In large samples, \( -2 \log(\text{Likelihood Ratio}) \) follows a Chi-squared distribution (giving us a p-value).
+$$\text{Likelihood Ratio} = \frac{\mathcal{L}(\delta = 0)}{\mathcal{L}(\delta = \hat{\delta})}$$
+
+- If this ratio is very small (i.e., the likelihood at 0 is much lower than at the peak), we reject $H_0$.
+- In large samples, $-2 \log(\text{Likelihood Ratio})$ follows a Chi-squared distribution (giving us a p-value).
 
 **The "Likelihood Interval" (Similar to a CI):**
-A 95% likelihood-based confidence interval is the set of \( \delta \) values for which:
-\[
--2 \log\left( \frac{\mathcal{L}(\delta)}{\mathcal{L}(\hat{\delta})} \right) < 3.84
-\]
+
+A 95% likelihood-based confidence interval is the set of $\delta$ values for which:
+
+$$-2 \log\left( \frac{\mathcal{L}(\delta)}{\mathcal{L}(\hat{\delta})} \right) < 3.84$$
+
 (This is the Chi-squared 1 df critical value).
 
-**Result:** For our salmon data, the profile likelihood interval for \( \delta = p_1 - p_2 \) is approximately **[-0.025, 0.225]**.
+**Result:** For our salmon data, the profile likelihood interval for $\delta = p_1 - p_2$ is approximately **[-0.025, 0.225]**.
 
 **Interpretation:** This is very close to the Agresti-Caffo interval we calculated earlier. It does not contain 0, so we fail to reject the null (no significant difference).
 
@@ -790,49 +796,58 @@ A 95% likelihood-based confidence interval is the set of \( \delta \) values for
 
 Bayesian inference adds a **prior distribution** to the mix. For two binomial proportions, the **conjugate prior** is the Beta distribution.
 
-**Step 1: Choose Priors for \( p_1 \) and \( p_2 \).**
+**Step 1: Choose Priors for $p_1$ and $p_2$**
 
-- **Non-informative (Jeffreys) prior:** \( p_1 \sim \text{Beta}(0.5, 0.5) \) and \( p_2 \sim \text{Beta}(0.5, 0.5) \). This lets the data speak entirely for itself.
-- **Informative prior:** If you have historical data, you might use \( p_1 \sim \text{Beta}(10, 90) \) (belief that the old feed has ~10% infection rate).
+| Prior Type | Distribution | Description |
+| :--- | :--- | :--- |
+| **Non-informative (Jeffreys) prior** | $p_1 \sim \text{Beta}(0.5, 0.5)$ and $p_2 \sim \text{Beta}(0.5, 0.5)$ | Lets the data speak entirely for itself |
+| **Informative prior** | $p_1 \sim \text{Beta}(10, 90)$ | Belief that the old feed has ~10% infection rate (based on historical data) |
 
 **Step 2: Calculate the Posterior**
+
 Because the Beta is conjugate to the Binomial, the posterior for each proportion is just:
 
-- \( p_1 | \text{data} \sim \text{Beta}(\alpha_1 + x_1, \ \beta_1 + n_1 - x_1) \)
-- \( p_2 | \text{data} \sim \text{Beta}(\alpha_2 + x_2, \ \beta_2 + n_2 - x_2) \)
+- $p_1 \mid \text{data} \sim \text{Beta}(\alpha_1 + x_1, \ \beta_1 + n_1 - x_1)$
+- $p_2 \mid \text{data} \sim \text{Beta}(\alpha_2 + x_2, \ \beta_2 + n_2 - x_2)$
 
-For Jeffreys prior (\( \alpha = \beta = 0.5 \)):
+For Jeffreys prior ($\alpha = \beta = 0.5$):
 
-- Posterior for \( p_1 \): Beta(40.5, 60.5)
-- Posterior for \( p_2 \): Beta(36.5, 84.5)
+- Posterior for $p_1$: Beta(40.5, 60.5)
+- Posterior for $p_2$: Beta(36.5, 84.5)
 
-**Step 3: Get the Posterior for \( \delta = p_1 - p_2 \)**
-This is the tricky part. The difference of two Beta distributions does not have a simple closed-form formula. 
+**Step 3: Get the Posterior for $\delta = p_1 - p_2$**
 
-**How we do it today (MCMC):** 
-We use a computer to take **thousands of random draws** from the posterior of \( p_1 \) and \( p_2 \), subtract them, and plot the histogram of the differences. This histogram is the **posterior distribution of \( \delta \)**.
+This is the tricky part. The difference of two Beta distributions does not have a simple closed-form formula.
+
+**How we do it today (MCMC):**
+
+We use a computer to take **thousands of random draws** from the posterior of $p_1$ and $p_2$, subtract them, and plot the histogram of the differences. This histogram is the **posterior distribution of $\delta$**.
 
 **Step 4: The Bayesian Credible Interval**
-We look at the histogram of \( \delta \) and find the 2.5th percentile and the 97.5th percentile. 
 
-**Result (Using Jeffreys prior):** 
-The 95% credible interval for \( \delta \) is approximately **[-0.023, 0.223]**.
+We look at the histogram of $\delta$ and find the 2.5th percentile and the 97.5th percentile.
 
-**Interpretation:** 
-We can say: *"There is a 95% probability that the true difference in infection rates is between -2.3% and 22.3%."* 
+**Result (Using Jeffreys prior):**
+
+The 95% credible interval for $\delta$ is approximately **[-0.023, 0.223]**.
+
+**Interpretation:**
+
+We can say: *"There is a 95% probability that the true difference in infection rates is between -2.3% and 22.3%."*
+
 *(Notice: this is a direct probabilistic statement, which is strictly forbidden in Frequentist statistics!)*
 
 ---
 
 ### Part 3: The Grand Comparison (Frequentist vs. Likelihood vs. Bayesian)
 
-Let’s put all three side-by-side for the same salmon data:
+Let's put all three side-by-side for the same salmon data:
 
-| Method | Interval for \( \delta = p_1 - p_2 \) | Interpretation |
+| Method | Interval for $\delta = p_1 - p_2$ | Interpretation |
 | :--- | :--- | :--- |
-| **Frequentist (Agresti-Caffo)** | [-0.0265, 0.2239] | *"If we repeated this experiment infinitely, 95% of these intervals would contain the true \( \delta \)."* |
-| **Likelihood (Profile)** | [-0.025, 0.225] | *"These are the values of \( \delta \) most compatible with the data."* |
-| **Bayesian (Jeffreys Prior)** | [-0.023, 0.223] | *"There is a 95% **probability** that \( \delta \) lies in this range."* (The most intuitive!). |
+| **Frequentist (Agresti-Caffo)** | [-0.0265, 0.2239] | *"If we repeated this experiment infinitely, 95% of these intervals would contain the true $\delta$."* |
+| **Likelihood (Profile)** | [-0.025, 0.225] | *"These are the values of $\delta$ most compatible with the data."* |
+| **Bayesian (Jeffreys Prior)** | [-0.023, 0.223] | *"There is a 95% **probability** that $\delta$ lies in this range."* (The most intuitive!) |
 
 ---
 
@@ -840,11 +855,12 @@ Let’s put all three side-by-side for the same salmon data:
 
 Here is where Bayesian inference shines (and gets criticized).
 
-- **Jeffreys Prior (Beta(0.5, 0.5)):** Gives almost identical results to the likelihood/Frequentist intervals. The data completely drives the result.
-- **Strong Informative Prior:** Imagine you have 10 years of data showing the old feed has a 10% infection rate. You use a strong prior \( p_1 \sim \text{Beta}(50, 450) \). 
-  - Your prior "pulls" the estimate of \( p_1 \) toward 0.10.
-  - The resulting credible interval for \( \delta \) might shrink and shift, perhaps becoming **[-0.05, 0.12]**. 
-  - You are now formally combining historical knowledge with new data!
+| Prior Type | Effect | Result |
+| :--- | :--- | :--- |
+| **Jeffreys Prior (Beta(0.5, 0.5))** | Almost identical to likelihood/Frequentist intervals | The data completely drives the result |
+| **Strong Informative Prior** | Imagine 10 years of data showing the old feed has a 10% infection rate. Use $p_1 \sim \text{Beta}(50, 450)$ | The prior "pulls" the estimate of $p_1$ toward 0.10. The resulting credible interval for $\delta$ might shrink and shift, perhaps becoming **[-0.05, 0.12]** |
+
+**The Bayesian Superpower:** We are now formally combining historical knowledge with new data!
 
 ---
 
@@ -852,14 +868,14 @@ Here is where Bayesian inference shines (and gets criticized).
 
 | Concept | Definition | Salmon Example |
 | :--- | :--- | :--- |
-| **Likelihood Inference** | Uses the profile likelihood to find plausible values of \( \delta \). No priors. | Profile likelihood interval: [-0.025, 0.225]. |
-| **Bayesian Inference** | Uses priors + data = posterior. Gives direct probability statements. | Posterior for \( p_1 \): Beta(40.5, 60.5). |
-| **Jeffreys Prior** | A non-informative prior (Beta(0.5, 0.5)). Lets data speak. | Credible interval: [-0.023, 0.223]. |
-| **Informative Prior** | Uses real prior knowledge (e.g., historical data). | Shrinks the interval toward historical values. |
-| **The Key Difference** | Frequentist = "Long-run coverage." <br> Bayesian = "Direct probability of the parameter." | Bayesian gives the intuitive answer most people actually want! |
+| **Likelihood Inference** | Uses the profile likelihood to find plausible values of $\delta$. No priors | Profile likelihood interval: [-0.025, 0.225] |
+| **Bayesian Inference** | Uses priors + data = posterior. Gives direct probability statements | Posterior for $p_1$: Beta(40.5, 60.5) |
+| **Jeffreys Prior** | A non-informative prior (Beta(0.5, 0.5)). Lets data speak | Credible interval: [-0.023, 0.223] |
+| **Informative Prior** | Uses real prior knowledge (e.g., historical data) | Shrinks the interval toward historical values |
+| **The Key Difference** | Frequentist = "Long-run coverage." Bayesian = "Direct probability of the parameter" | Bayesian gives the intuitive answer most people actually want! |
 
 ---
 
 ### The One-Liner to Memorize
 
-> **"Likelihood inference listens only to the data; Bayesian inference combines the data with prior knowledge. When you use a non-informative prior, they shake hands and give nearly identical results—but only Bayesian allows you to say, 'There is a 95% chance the true difference lies in this interval.'"**
+> *"Likelihood inference listens only to the data; Bayesian inference combines the data with prior knowledge. When we use a non-informative prior, they shake hands and give nearly identical results—but only Bayesian allows us to say, 'There is a 95% chance the true difference lies in this interval.'"*
