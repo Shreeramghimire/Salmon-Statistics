@@ -2105,7 +2105,7 @@ fisher.test(matrix, alternative="two.sided")
 ```
 
 **Output:**
-```
+```r
     Fisher's Exact Test for Count Data
 p-value = 0.2065
 95 percent confidence interval:
