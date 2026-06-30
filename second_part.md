@@ -594,7 +594,7 @@ $$0.4038 \pm 0.0943 = [0.3095, \ 0.4981]$$
 | Test/Interval | Formula | Standard Error uses... | Performance | When to use |
 | :--- | :--- | :--- | :--- | :--- |
 | **Wald Test / CI** | $\hat{p} \pm z \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$ | The estimated $\hat{p}$ | **Unreliable** for small $n$ or $p$ near 0/1. Sometimes gives impossible bounds (<0 or >1) | Quick, rough estimates with large $n$ and $p$ around 0.5 |
-| **Score Test / Wilson CI** | Complex (solve for $p$ where $|\hat{p}-p|$ $\leq z \sqrt{p(1-p)/n}$) | The null $p_0$ (for testing) or solves for $p$ (for CI) | **Excellent.** Works well for any $n$ and any $p$. Never gives impossible bounds | The **gold standard** for proportions. Use in scientific reporting |
+| **Score Test / Wilson CI** | Complex (solve for $p$ where $|\hat{p}-p$ | $\leq z \sqrt{p(1-p)/n}$) | The null $p_0$ (for testing) or solves for $p$ (for CI) | **Excellent.** Works well for any $n$ and any $p$. Never gives impossible bounds | The **gold standard** for proportions. Use in scientific reporting |
 | **Agresti-Coull CI** | $\tilde{p} \pm z \sqrt{\frac{\tilde{p}(1-\tilde{p})}{\tilde{n}}}$, with $\tilde{p} = \frac{x+2}{n+4}$ | The adjusted $\tilde{p}$ | **Very Good.** A simple hack that mimics the Wilson interval perfectly | Great for teaching, quick hand calculations, or when we want a simple formula that actually works |
 
 ---
