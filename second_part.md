@@ -2502,3 +2502,158 @@ For $Z = 0.91$, the two-sided p-value is about **0.36**.
 ### The One-Liner to Memorize
 
 > *"The Sign Test only counts who wins; the Signed-Rank Test weighs *how much* they win in paired data; and the Rank-Sum Test compares the rankings of two independent groups. All three are safe, non-parametric alternatives to t-tests when our data is skewed or has outliers."*
+
+## The Poisson Distribution: Likelihood, Hypothesis Tests, and Exact Inference
+
+We have just asked about the **Poisson distribution**—the mathematical engine for modeling **counts** of rare events over a fixed time or space.
+
+Whether we are counting sea lice on a salmon, phone calls to a call center, or traffic accidents at an intersection, the Poisson distribution is our go-to tool.
+
+Here is the complete, step-by-step guide to the **Poisson distribution**, its **likelihood function**, and how to calculate **exact Poisson p-values**.
+
+---
+
+### Part 1: The Poisson Distribution (The "Rare Event" Model)
+
+**Definition:**
+
+The Poisson distribution models the probability of observing exactly $x$ events in a fixed interval of time or space, given that events occur at a constant average rate $\lambda$ (lambda).
+
+**The Probability Mass Function (PMF):**
+
+$$P(X = x) = \frac{e^{-\lambda} \lambda^x}{x!} \quad \text{for } x = 0, 1, 2, \dots$$
+
+- **$\lambda$ (lambda):** The average number of events per interval. This is both the **mean** and the **variance** of the distribution.
+  - $E[X] = \lambda$
+  - $\text{Var}(X) = \lambda$
+
+**Salmon Example:**
+
+Sea lice attach to salmon at an average rate of **4 lice per fish**. What is the probability that a randomly selected fish has exactly 3 lice?
+
+$$P(X = 3) = \frac{e^{-4} 4^3}{3!} = \frac{0.0183 \times 64}{6} = \frac{1.171}{6} \approx 0.195$$
+
+**Interpretation:** There is a 19.5% chance of finding exactly 3 lice on a fish.
+
+---
+
+### Part 2: The Poisson Likelihood Function (Estimating $\lambda$)
+
+The **likelihood function** tells us how *plausible* different values of $\lambda$ are, given our observed data.
+
+**Scenario:**
+
+We sample $n = 10$ salmon and count the lice on each. We observe:
+
+$$[3, 4, 5, 2, 6, 3, 4, 5, 2, 6]$$
+
+The total count is $\sum x_i = 40$.
+
+**The Likelihood Function:**
+
+The joint likelihood of observing these 10 independent counts is the product of their individual Poisson probabilities:
+
+$$\mathcal{L}(\lambda) = \prod_{i=1}^{n} \frac{e^{-\lambda} \lambda^{x_i}}{x_i!}$$
+
+**Simplify using algebra:**
+
+$$\mathcal{L}(\lambda) = \frac{e^{-n\lambda} \lambda^{\sum x_i}}{\prod x_i!}$$
+
+**The Log-Likelihood (easier to work with):**
+
+$$\ell(\lambda) = -n\lambda + \left( \sum x_i \right) \log(\lambda) - \sum \log(x_i!)$$
+
+---
+
+**Step 1: Find the Maximum Likelihood Estimate (MLE) of $\lambda$.**
+
+Take the derivative of $\ell(\lambda)$ with respect to $\lambda$, set to zero, and solve:
+
+$$\frac{d\ell}{d\lambda} = -n + \frac{\sum x_i}{\lambda} = 0$$
+
+$$\hat{\lambda} = \frac{\sum x_i}{n} = \bar{x}$$
+
+**Interpretation:** The MLE for the Poisson rate is simply the **sample mean**!
+
+In our example: $\hat{\lambda} = 40 / 10 = 4.0$. The average number of lice per fish is 4.
+
+---
+
+### Part 3: Poisson Hypothesis Testing (Exact P-values)
+
+A common question is: *"Is our observed count significantly higher or lower than a known historical rate?"*
+
+**Scenario:**
+
+Historically, the average lice count per fish is $\lambda_0 = 3$. We sample 1 fish and find **6 lice**. Is this evidence of an outbreak?
+
+**Step 1: State the hypotheses.**
+
+- **Null ($H_0$):** $\lambda = 3$ (No increase)
+- **Alternative ($H_A$):** $\lambda > 3$ (One-sided: rates have increased)
+
+**Step 2: Calculate the p-value.**
+
+The p-value is the probability of observing **6 or more** lice, given the null hypothesis $\lambda = 3$.
+
+$$P(X \geq 6 \mid \lambda = 3) = 1 - P(X \leq 5)$$
+
+**Step 3: Calculate using the Poisson PMF.**
+
+| $x$ | $P(X = x)$ |
+| :--- | :--- |
+| 0 | $\frac{e^{-3} 3^0}{0!} = 0.0498$ |
+| 1 | $\frac{e^{-3} 3^1}{1!} = 0.1494$ |
+| 2 | $\frac{e^{-3} 3^2}{2!} = 0.2240$ |
+| 3 | $\frac{e^{-3} 3^3}{3!} = 0.2240$ |
+| 4 | $\frac{e^{-3} 3^4}{4!} = 0.1680$ |
+| 5 | $\frac{e^{-3} 3^5}{5!} = 0.1008$ |
+
+$$P(X \leq 5) = 0.0498 + 0.1494 + 0.2240 + 0.2240 + 0.1680 + 0.1008 = 0.9160$$
+
+**Step 4: Calculate the p-value.**
+
+$$P(X \geq 6) = 1 - 0.9160 = 0.0840$$
+
+**Conclusion:** The p-value is **0.084**. At $\alpha = 0.05$, we fail to reject the null hypothesis. There is not enough evidence to declare an outbreak based on a single fish.
+
+---
+
+### Part 4: Exact Poisson Confidence Interval for $\lambda$
+
+If we have a sample of $n$ fish with total count $\sum x_i$, we can build an exact confidence interval for $\lambda$ using the Chi-Squared distribution.
+
+**The Formula for a 95% CI for $\lambda$:**
+
+$$\left( \frac{\chi^2_{2T, \alpha/2}}{2n}, \ \frac{\chi^2_{2T + 2, 1 - \alpha/2}}{2n} \right)$$
+
+Where $T = \sum x_i$ (the total count across all fish).
+
+**Salmon Example:**
+
+We sample $n = 5$ fish and find a total of $T = 20$ lice. ($\bar{x} = 4.0$).
+
+- Lower bound: $\chi^2_{40, 0.025} \approx 24.43$ → $24.43 / (2 \times 5) = 24.43 / 10 = 2.44$
+- Upper bound: $\chi^2_{42, 0.975} \approx 60.48$ → $60.48 / 10 = 6.05$
+
+**95% CI:** $[2.44, 6.05]$. We are 95% confident the true rate is between 2.44 and 6.05 lice per fish.
+
+---
+
+### Summary Cheat Sheet
+
+| Concept | Definition | Salmon Example |
+| :--- | :--- | :--- |
+| **Poisson Distribution** | Models count of rare events over time/space | Number of lice per fish |
+| **Mean & Variance** | Both equal to $\lambda$ | If $\lambda = 4$, average = 4, variance = 4 |
+| **Poisson PMF** | $P(X=x) = \frac{e^{-\lambda} \lambda^x}{x!}$ | $P(X=3 \mid \lambda=4) = 0.195$ |
+| **Poisson Likelihood** | $\mathcal{L}(\lambda) \propto e^{-n\lambda} \lambda^{\sum x_i}$ | Used to estimate $\lambda$ from data |
+| **MLE for $\lambda$** | $\hat{\lambda} = \bar{x} = \frac{\sum x_i}{n}$ | If total lice = 40 over 10 fish, $\hat{\lambda} = 4.0$ |
+| **One-sided p-value** | $P(X \geq x_{\text{obs}} \mid \lambda_0)$ | $P(X \geq 6 \mid \lambda=3) = 0.084$ |
+| **Exact CI for $\lambda$** | Based on Chi-Squared distribution | For $T = 20, n=5$: 95% CI = [2.44, 6.05] |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Poisson distribution models rare counts with a single parameter $\lambda$, which is both the mean and variance. The MLE for $\lambda$ is simply the sample mean. For hypothesis tests, exact p-values are calculated directly from the Poisson PMF, and exact confidence intervals come from the Chi-Squared distribution."*
