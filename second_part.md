@@ -2102,14 +2102,15 @@ In R, we would run:
 ```r
 matrix <- matrix(c(4,1,1,4), nrow=2)
 fisher.test(matrix, alternative="two.sided")
+```
 
+**Output:**
 	Fisher's Exact Test for Count Data
 p-value = 0.2065
 95 percent confidence interval:
   0.6229 745.1493
 sample estimates:
 odds ratio: 11.248
-
 
 
 
