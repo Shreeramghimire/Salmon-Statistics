@@ -1283,3 +1283,144 @@ The OR interval is much wider and more skewed. This is because the OR is always 
 ### The One-Liner to Memorize
 
 > *"Odds Ratios and Relative Risks are highly skewed. To build a proper confidence interval, we must convert them to logs, calculate the standard error, add/subtract 1.96, and then exponentiate the bounds. If the final interval doesn't contain 1, we have a significant result."*
+
+## The Delta Method: The Grand Unification of Asymptotic Statistics
+
+This is the **grand unification** of asymptotic statistics! We are asking for the mathematical engine that allows us to approximate the distribution of almost any complicated statistic—the **Delta Method**.
+
+Let's break this down into four parts: **What the Delta Method is**, **the mathematical derivation**, and **how we apply it to two-sample binomial statistics (like Risk Difference, Relative Risk, and Odds Ratio)**.
+
+---
+
+### Part 1: What is the Delta Method? (The Intuition)
+
+The Delta Method is a mathematical trick that says:
+
+> *"If we have a statistic that is Normally distributed (like $\hat{p}$), then any smooth function of that statistic (like $\log(\hat{p})$, or $\hat{p}_1 / \hat{p}_2$) is also approximately Normally distributed, as long as our sample size is large enough."*
+
+**The Analogy:**
+
+Imagine we are looking at a curved mountain slope through a microscope. If we zoom in close enough to any single point on the curve, the curved line starts to look perfectly **straight** (a tangent line). The Delta Method uses this tangent line to approximate the variance of a transformed statistic.
+
+---
+
+### Part 2: The Mathematical Derivation (The "Slope" Trick)
+
+Let's say we have a statistic $\hat{\theta}$ that is asymptotically Normal:
+
+$$\sqrt{n}(\hat{\theta} - \theta) \xrightarrow{d} N(0, \sigma^2)$$
+
+Now we want to know the distribution of a transformed version $g(\hat{\theta})$.
+
+**Step 1: The Taylor Expansion (First-Order).**
+
+We expand $g(\hat{\theta})$ around the true value $\theta$:
+
+$$g(\hat{\theta}) \approx g(\theta) + g'(\theta)(\hat{\theta} - \theta)$$
+
+**Step 2: Subtract the true transformed value.**
+
+$$g(\hat{\theta}) - g(\theta) \approx g'(\theta)(\hat{\theta} - \theta)$$
+
+**Step 3: Scale by $\sqrt{n}$ and find the variance.**
+
+If $\text{Var}(\hat{\theta}) = \sigma^2$, then:
+
+$$\text{Var}(g(\hat{\theta})) \approx \left( g'(\theta) \right)^2 \times \text{Var}(\hat{\theta})$$
+
+**The Delta Method Formula (Asymptotic Variance):**
+
+$$\boxed{\text{Var}(g(\hat{\theta})) \approx \left( g'(\theta) \right)^2 \times \sigma^2}$$
+
+---
+
+### Part 3: The Delta Method applied to Two Binomial Proportions
+
+We have two independent groups:
+
+- Group 1: $\hat{p}_1$ with variance $\frac{p_1(1-p_1)}{n_1}$
+- Group 2: $\hat{p}_2$ with variance $\frac{p_2(1-p_2)}{n_2}$
+
+Because they are independent, the variance of the difference (or any combination) is the sum of their individual variances.
+
+---
+
+### A. Risk Difference (RD = $p_1 - p_2$)
+
+This is the easiest because it is a **linear** function. The derivative of $g(p_1, p_2) = p_1 - p_2$ is 1 for both variables.
+
+| Component | Formula |
+| :--- | :--- |
+| **Point Estimate** | $\hat{p}_1 - \hat{p}_2$ |
+| **Asymptotic SE** | $SE(\hat{p}_1 - \hat{p}_2) = \sqrt{ \frac{p_1(1-p_1)}{n_1} + \frac{p_2(1-p_2)}{n_2} }$ *(We estimate $p_1$ and $p_2$ with $\hat{p}_1$ and $\hat{p}_2$)* |
+| **95% CI** | $(\hat{p}_1 - \hat{p}_2) \pm 1.96 \times SE$ |
+
+---
+
+### B. Log Relative Risk (log RR = $\log(p_1 / p_2)$)
+
+This is a non-linear function. We need the derivative of $g(p) = \log(p)$, which is $1/p$.
+
+The variance of the log of a single proportion is:
+
+$$\text{Var}(\log(\hat{p})) \approx \left( \frac{1}{p} \right)^2 \times \frac{p(1-p)}{n} = \frac{1-p}{n p}$$
+
+Because $\log(p_1/p_2) = \log(p_1) - \log(p_2)$, the variance of the difference is the sum of the two variances:
+
+| Component | Formula |
+| :--- | :--- |
+| **Asymptotic Variance** | $\text{Var}(\log RR) = \frac{1-p_1}{n_1 p_1} + \frac{1-p_2}{n_2 p_2}$ |
+| **Asymptotic SE** (plugging in estimates) | $SE(\log RR) = \sqrt{ \frac{1-\hat{p}_1}{n_1 \hat{p}_1} + \frac{1-\hat{p}_2}{n_2 \hat{p}_2} }$ |
+| **95% CI for log RR** | $\log(RR) \pm 1.96 \times SE(\log RR)$ |
+| **95% CI for RR** | Exponentiate the bounds |
+
+*(Note: This matches the exact formula we derived in the previous question!)*
+
+---
+
+### C. Log Odds Ratio (log OR = $\log \left( \frac{p_1/(1-p_1)}{p_2/(1-p_2)} \right)$)
+
+This is the most common use of the Delta Method in logistic regression.
+
+For a single proportion, the variance of the log-odds $\log\left( \frac{p}{1-p} \right)$ is derived using the Delta Method with $g(p) = \log(p) - \log(1-p)$. The derivative is $\frac{1}{p(1-p)}$.
+
+- **Variance of log-odds for one group:**
+
+$$\text{Var}\left( \log\left( \frac{\hat{p}}{1-\hat{p}} \right) \right) \approx \frac{1}{n p (1-p)}$$
+
+Since the log OR is the difference of the two log-odds, its variance is the sum of the two:
+
+| Component | Formula |
+| :--- | :--- |
+| **Asymptotic Variance** | $\text{Var}(\log OR) = \frac{1}{n_1 p_1 (1-p_1)} + \frac{1}{n_2 p_2 (1-p_2)}$ |
+| **Asymptotic SE** (plugging in estimates) | $SE(\log OR) = \sqrt{ \frac{1}{n_1 \hat{p}_1 (1-\hat{p}_1)} + \frac{1}{n_2 \hat{p}_2 (1-\hat{p}_2)} }$ |
+| **Classic Formula** (using cell counts) | $SE(\log OR) = \sqrt{ \frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d} }$ *(Where $a, b, c, d$ are the cell counts in the 2x2 table)* |
+| **95% CI for log OR** | $\log(OR) \pm 1.96 \times SE(\log OR)$ |
+| **95% CI for OR** | Exponentiate the bounds |
+
+---
+
+### Part 4: Summary Table – Two-Sample Binomial Methods
+
+| Measure | Transformation $g(p_1, p_2)$ | **Asymptotic Variance (Delta Method)** | **Asymptotic SE (Plug-in)** |
+| :--- | :--- | :--- | :--- |
+| **Risk Difference (RD)** | $p_1 - p_2$ | $\frac{p_1(1-p_1)}{n_1} + \frac{p_2(1-p_2)}{n_2}$ | $\sqrt{ \frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2(1-\hat{p}_2)}{n_2} }$ |
+| **Log Relative Risk (log RR)** | $\log(p_1) - \log(p_2)$ | $\frac{1-p_1}{n_1 p_1} + \frac{1-p_2}{n_2 p_2}$ | $\sqrt{ \frac{1-\hat{p}_1}{n_1 \hat{p}_1} + \frac{1-\hat{p}_2}{n_2 \hat{p}_2} }$ |
+| **Log Odds Ratio (log OR)** | $\log\left( \frac{p_1}{1-p_1} \right) - \log\left( \frac{p_2}{1-p_2} \right)$ | $\frac{1}{n_1 p_1(1-p_1)} + \frac{1}{n_2 p_2(1-p_2)}$ | $\sqrt{ \frac{1}{a} + \frac{1}{b} + \frac{1}{c} + \frac{1}{d} }$ |
+
+---
+
+### The "Asymptotic" Conditions (The Fine Print)
+
+| Condition | Requirement |
+| :--- | :--- |
+| **Asymptotic Mean** | The mean of the transformed statistic is approximately $g(\theta)$. This means $\log RR$ is approximately unbiased for the true log RR |
+| **Asymptotic Variance** | The variance we derived above |
+| **When is it valid?** | The Delta Method requires **large sample sizes** |
+| **Critical Failure** | If $p_1$ or $p_2$ is exactly 0 or 1, or the cell counts are zero, the asymptotic variance blows up to infinity. This is why we often add 0.5 to all cells (the "Haldane" correction) before calculating logs! |
+
+---
+
+### The One-Liner to Memorize
+
+> *"The Delta Method draws a straight tangent line to a curved function. It tells us that the variance of a transformed statistic is approximately the variance of the original statistic multiplied by the square of the slope ($g'(\theta)^2$). This gives us the standard errors for logs, odds, and risks without doing any complex calculus."*
