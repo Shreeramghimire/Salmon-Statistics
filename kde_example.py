@@ -39,5 +39,5 @@ axes[1].legend(fontsize=10, loc="upper right")
 plt.tight_layout()
 plt.show()
 
-
+# This can be run on Jupyter Notebook, and the result can be seen easily.
 
