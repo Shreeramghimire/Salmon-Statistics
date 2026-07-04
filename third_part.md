@@ -20,7 +20,7 @@ Imagine we are trying to guess a salmon's weight. We have a **digital scale** (t
 
 Nature is noisy. If we put the exact same weight on a scale 10 times, we get 10 slightly different readings.
 
-**Least Squares** is the mathematical way of saying: *"Find the multipliers ($$\beta) that make the total guessing error as small as possible."*
+**Least Squares** is the mathematical way of saying: *"Find the multipliers ($ \beta $) that make the total guessing error as small as possible."*
 
 When we write it in **matrix form**, we are just compressing thousands of fish measurements into a single, elegant equation so a computer can calculate the answer in milliseconds.
 
