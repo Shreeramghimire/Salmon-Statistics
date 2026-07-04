@@ -1,6 +1,6 @@
 ## Linear Regression and Least Squares in Matrix Form: A Salmon Farm Example
 
-This is a fantastic question because **salmon farming** (aquaculture) is a perfect real-world example for regression! It involves biology, environment, and economics—all of which are messy and require mathematical modeling.
+This is a fantastic question because **salmon farming** (aquaculture) is a perfect real-world example for regression! It involves biology, environment, and economics all of which are messy and require mathematical modeling.
 
 Here is a step-by-step **"Concept to Farm"** guide to understanding regression and least squares using matrices, tailored specifically to how it is used in the salmon industry.
 
