@@ -319,7 +319,7 @@ $$\text{Minimize } e^T e = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
 
 The matrix shuffles the numbers for $\beta_0, \beta_1, \beta_2$ millions of times until it finds the combination where:
 
-> *(Underperformers)$$^2$$ + (Overperformers)$$^2$$* is at its absolute minimum.
+> $$(\text{Underperformers})^2 + (\text{Overperformers})^2$$ is at its absolute minimum.
 
 **Why square them?**
 
