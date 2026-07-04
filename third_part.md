@@ -192,6 +192,8 @@ new_fish = np.array([1, 68, 13])
 predicted_weight = new_fish @ beta_hat
 print("Predicted weight:", predicted_weight, "kg")
 
+´´´
+
 ## Fitted Values and Residuals: The "Signal" vs. "Noise" of Regression
 
 This is the absolute heart of understanding regression! If we understand fitted values and residuals, we truly understand what regression is doing.
