@@ -121,7 +121,27 @@ Given our observed salmon data $\mathbf{Y}$, what are the most likely values for
 
 For $n$ independent observations, the likelihood is the product of the individual MVN densities:
 
-$$L(\boldsymbol{\mu}, \boldsymbol{\Sigma}) \propto |\boldsymbol{\Sigma}|^{-n/2} \exp\left\{ -\frac{1}{2} \sum_{i=1}^n (\mathbf{y}_i - \boldsymbol{\mu})^t \boldsymbol{\Sigma}^{-1} (\mathbf{y}_i - \boldsymbol{\mu}) \right\}$$
+\begin{aligned}
+\mathbf{S} &= 
+\begin{bmatrix}
+s_{11} & s_{12} & s_{13} \\
+s_{12} & s_{22} & s_{23} \\
+s_{13} & s_{23} & s_{33}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\mathrm{Var}(\text{Weight}) &
+\mathrm{Cov}(\text{Weight}, \text{Length}) &
+\mathrm{Cov}(\text{Weight}, \text{Fat}) \\
+\mathrm{Cov}(\text{Length}, \text{Weight}) &
+\mathrm{Var}(\text{Length}) &
+\mathrm{Cov}(\text{Length}, \text{Fat}) \\
+\mathrm{Cov}(\text{Fat}, \text{Weight}) &
+\mathrm{Cov}(\text{Fat}, \text{Length}) &
+\mathrm{Var}(\text{Fat})
+\end{bmatrix} \\[2em]
+L(\boldsymbol{\mu}, \boldsymbol{\Sigma}) &\propto |\boldsymbol{\Sigma}|^{-n/2} \exp\left\{ -\frac{1}{2} \sum_{i=1}^n (\mathbf{y}_i - \boldsymbol{\mu})^t \boldsymbol{\Sigma}^{-1} (\mathbf{y}_i - \boldsymbol{\mu}) \right\}
+\end{aligned}
 
 ### The Maximum Likelihood Estimates (MLE)
 
