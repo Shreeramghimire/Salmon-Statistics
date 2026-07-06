@@ -623,3 +623,17 @@ The model predicts **6.01 kg** at harvest.
 
 ---
 
+### Part 7: The Matrix Properties in Salmon Terms
+
+| Matrix Concept | What It Represents | Salmon Example |
+|----------------|-------------------|----------------|
+| **Design Matrix $X$** | Our farm logbook (all data collected) | Every measurement across all pens |
+| **Coefficient $\beta$** | The "prices" of each factor | How much weight each variable adds |
+| **Fitted $\hat{y}$** | Our best predictions | Expected harvest weights |
+| **Residuals $e$** | The "mystery factor" | Unexplained variation (genetics, disease, measurement error) |
+| **Hat Matrix $\mathbf{H}$** | "Leverage" of each observation | Pens with unusual conditions that strongly influence our model |
+| **Projection** | Fitting the model geometrically | Finding the sweet spot that minimizes all errors at once |
+| **$X^t X$** | Sum of squares and cross-products | How variables relate to each other (e.g., feed and temperature correlation) |
+| **$(X^t X)^{-1}$** | The "scale" of uncertainty | How precise our estimates are (used for confidence intervals) |
+
+---
