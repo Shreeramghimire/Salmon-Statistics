@@ -400,7 +400,7 @@ Where $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + ... + \hat{\beta}_p x_
 
 Let's build the matrix form step by step.
 
-### Step 1: Define the Matrices
+#### Step 1: Define the Matrices
 
 **Design Matrix ($X$):** $n \times (p+1)$ matrix
 
@@ -425,7 +425,7 @@ $$\beta = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_p \end{bmatrix}$
 
 $$e = y - X\beta$$
 
-### Step 2: The OLS Objective in Matrix Form
+#### Step 2: The OLS Objective in Matrix Form
 
 The sum of squared residuals:
 
@@ -435,7 +435,7 @@ Expanding:
 
 $$S(\beta) = y^t y - 2\beta^t X^t y + \beta^t X^t X \beta$$
 
-### Step 3: Finding the Minimum (Calculus)
+#### Step 3: Finding the Minimum (Calculus)
 
 Take the derivative with respect to $\beta$:
 
@@ -525,11 +525,11 @@ And $(I - \mathbf{H})$ is also a projection matrix—it projects onto the space 
 
 Now let's bring this to life with a real aquaculture scenario!
 
-### The Problem
+#### The Problem
 
 We manage a salmon farm with 100 pens. We want to predict harvest weight to optimize feeding schedules.
 
-### Step 1: Define Our Variables
+#### Step 1: Define Our Variables
 
 **Outcome ($y$):**
 
@@ -543,7 +543,7 @@ We manage a salmon farm with 100 pens. We want to predict harvest weight to opti
 - $x_4$: Oxygen level (mg/L)
 - Column of 1s for intercept
 
-### Step 2: Collect Data
+#### Step 2: Collect Data
 
 | Pen | Weight (kg) | Feed (kg) | Temp (°C) | Density | O₂ (mg/L) |
 |-----|-------------|-----------|-----------|---------|-----------|
@@ -553,7 +553,7 @@ We manage a salmon farm with 100 pens. We want to predict harvest weight to opti
 | ... | ...         | ...       | ...       | ...     | ...       |
 | 100 | 4.5         | 2.7       | 13        | 14      | 8.2       |
 
-### Step 3: Set Up the Matrices
+#### Step 3: Set Up the Matrices
 
 $$X = \begin{bmatrix}
 1 & 2.5 & 12 & 15 & 8.5 \\
@@ -566,7 +566,7 @@ y = \begin{bmatrix}
 4.2 \\ 3.8 \\ 5.1 \\ \vdots \\ 4.5
 \end{bmatrix}$$
 
-### Step 4: Compute OLS Coefficients
+#### Step 4: Compute OLS Coefficients
 
 $$\hat{\beta} = (X^t X)^{-1} X^t y$$
 
@@ -586,7 +586,7 @@ $$\hat{\beta} = \begin{bmatrix}
 0.35
 \end{bmatrix}$$
 
-### Step 5: Interpret the Results (The "Farm Translation")
+#### Step 5: Interpret the Results (The "Farm Translation")
 
 | Coefficient | Value | Interpretation |
 |-------------|-------|----------------|
@@ -596,7 +596,7 @@ $$\hat{\beta} = \begin{bmatrix}
 | $\hat{\beta}_3$ (Density) | **-0.08 kg per fish/m³** | **Higher density reduces growth** → Tells us optimal stocking levels |
 | $\hat{\beta}_4$ (O₂) | **0.35 kg per mg/L** | **More oxygen boosts growth** → Justifies aeration system investments |
 
-### Step 6: Make Predictions
+#### Step 6: Make Predictions
 
 A new pen has:
 - Feed: 2.8 kg/day
