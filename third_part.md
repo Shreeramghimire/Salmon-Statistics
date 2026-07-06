@@ -434,3 +434,44 @@ $$S(\beta) = e^t e = (y - X\beta)^t (y - X\beta)$$
 Expanding:
 
 $$S(\beta) = y^t y - 2\beta^t X^t y + \beta^t X^t X \beta$$
+
+### Step 3: Finding the Minimum (Calculus)
+
+Take the derivative with respect to $\beta$:
+
+$$\frac{\partial S}{\partial \beta} = -2X^t y + 2X^t X \beta = 0$$
+
+Set to zero and solve:
+
+$$X^t X \beta = X^t y$$
+
+**The Normal Equations:**
+
+$$\boxed{\hat{\beta} = (X^t X)^{-1} X^t y}$$
+
+---
+
+## Part 4: Geometric Interpretation in Vector Space
+
+This is where the magic happens! Let's visualize what's actually going on.
+
+### The Column Space Perspective
+
+Think of the columns of $X$ as arrows (vectors) in an $n$-dimensional space:
+
+- Column 1: The intercept (all 1s) → points straight up along the diagonal
+- Column 2: The predictor $x_1$
+- Column 3: The predictor $x_2$
+- etc.
+
+**The Goal:**
+
+Find the linear combination of these column vectors that comes **closest** to the actual $y$ vector.
+
+**The Solution:**
+
+The OLS estimate $\hat{\beta}$ finds the combination:
+
+$$\hat{y} = X\hat{\beta}$$
+
+This $\hat{y}$ is the **orthogonal projection** of $y$ onto the column space of $X$.
