@@ -521,3 +521,105 @@ $$e = y - \hat{y} = (I - \mathbf{H})y$$
 And $(I - \mathbf{H})$ is also a projection matrix—it projects onto the space **orthogonal** to the column space of $X$.
 
 ---
+### Part 6: Full Salmon Farming Application
+
+Now let's bring this to life with a real aquaculture scenario!
+
+### The Problem
+
+We manage a salmon farm with 100 pens. We want to predict harvest weight to optimize feeding schedules.
+
+### Step 1: Define Our Variables
+
+**Outcome ($y$):**
+
+- Final weight of salmon at harvest (kg)
+
+**Predictors ($X$):**
+
+- $x_1$: Feed amount (kg per day)
+- $x_2$: Water temperature (°C)
+- $x_3$: Stocking density (fish per m³)
+- $x_4$: Oxygen level (mg/L)
+- Column of 1s for intercept
+
+### Step 2: Collect Data
+
+| Pen | Weight (kg) | Feed (kg) | Temp (°C) | Density | O₂ (mg/L) |
+|-----|-------------|-----------|-----------|---------|-----------|
+| 1   | 4.2         | 2.5       | 12        | 15      | 8.5       |
+| 2   | 3.8         | 2.3       | 11        | 18      | 7.8       |
+| 3   | 5.1         | 3.0       | 14        | 12      | 9.0       |
+| ... | ...         | ...       | ...       | ...     | ...       |
+| 100 | 4.5         | 2.7       | 13        | 14      | 8.2       |
+
+### Step 3: Set Up the Matrices
+
+$$X = \begin{bmatrix}
+1 & 2.5 & 12 & 15 & 8.5 \\
+1 & 2.3 & 11 & 18 & 7.8 \\
+1 & 3.0 & 14 & 12 & 9.0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 2.7 & 13 & 14 & 8.2
+\end{bmatrix}, \quad
+y = \begin{bmatrix}
+4.2 \\ 3.8 \\ 5.1 \\ \vdots \\ 4.5
+\end{bmatrix}$$
+
+### Step 4: Compute OLS Coefficients
+
+$$\hat{\beta} = (X^t X)^{-1} X^t y$$
+
+Let's say the results are:
+
+$$\hat{\beta} = \begin{bmatrix}
+\beta_0 \\
+\beta_1 \\
+\beta_2 \\
+\beta_3 \\
+\beta_4
+\end{bmatrix} = \begin{bmatrix}
+-2.5 \\
+1.8 \\
+0.15 \\
+-0.08 \\
+0.35
+\end{bmatrix}$$
+
+### Step 5: Interpret the Results (The "Farm Translation")
+
+| Coefficient | Value | Interpretation |
+|-------------|-------|----------------|
+| $\hat{\beta}_0$ | -2.5 kg | Baseline weight when all predictors are 0 (not realistic, but mathematically necessary) |
+| $\hat{\beta}_1$ (Feed) | **1.8 kg per kg feed** | **Every extra kg of feed adds 1.8 kg to harvest weight** → Critical for feeding decisions! |
+| $\hat{\beta}_2$ (Temp) | **0.15 kg per °C** | **Warmer water increases growth** → Helps plan optimal harvest seasons |
+| $\hat{\beta}_3$ (Density) | **-0.08 kg per fish/m³** | **Higher density reduces growth** → Tells us optimal stocking levels |
+| $\hat{\beta}_4$ (O₂) | **0.35 kg per mg/L** | **More oxygen boosts growth** → Justifies aeration system investments |
+
+### Step 6: Make Predictions
+
+A new pen has:
+- Feed: 2.8 kg/day
+- Temperature: 13°C
+- Density: 16 fish/m³
+- O₂: 8.0 mg/L
+
+**Predicted weight:**
+
+$$\hat{y} = -2.5 + 1.8(2.8) + 0.15(13) - 0.08(16) + 0.35(8.0)$$
+
+$$= -2.5 + 5.04 + 1.95 - 1.28 + 2.8 = 6.01 \text{ kg}$$
+
+The model predicts **6.01 kg** at harvest.
+
+### Step 7: The Business Impact
+
+| OLS Finding | Business Decision |
+|-------------|-------------------|
+| Feed has the biggest impact (1.8 kg/kg) | Invest in precision feeding systems |
+| Temperature matters (0.15 kg/°C) | Use warmer sites or adjust harvest timing |
+| Density hurts growth (-0.08 kg per fish) | Reduce stocking density to improve profits |
+| Oxygen helps (0.35 kg per mg/L) | Install emergency aeration to prevent losses |
+
+---
+
