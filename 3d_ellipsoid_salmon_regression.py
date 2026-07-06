@@ -325,6 +325,4 @@ Key insights:
 3. The ellipse is {'larger' if radius > 1 else 'compact'}, indicating 
    {'high' if radius > 1 else 'low'} uncertainty in our estimates.
 
-Recommendation: Use this ellipse to make joint decisions about 
-feed and temperature management, rather than looking at them separately!
-""")
+
