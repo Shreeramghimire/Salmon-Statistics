@@ -612,7 +612,7 @@ $$= -2.5 + 5.04 + 1.95 - 1.28 + 2.8 = 6.01 \text{ kg}$$
 
 The model predicts **6.01 kg** at harvest.
 
-### Step 7: The Business Impact
+#### Step 7: The Business Impact
 
 | OLS Finding | Business Decision |
 |-------------|-------------------|
