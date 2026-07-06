@@ -28,7 +28,8 @@ $$\mathbf{S} = \frac{1}{n-1} \mathbf{Y}_c^t \mathbf{Y}_c$$
 
 Let's expand this for our 3 variables:
 
-$$\mathbf{S} = 
+$$
+S =
 \begin{bmatrix}
 s_{11} & s_{12} & s_{13} \\
 s_{12} & s_{22} & s_{23} \\
@@ -36,10 +37,17 @@ s_{13} & s_{23} & s_{33}
 \end{bmatrix}
 =
 \begin{bmatrix}
-\text{Var(Weight)} & \text{Cov(Weight, Length)} & \text{Cov(Weight, Fat)} \\
-\text{Cov(Length, Weight)} & \text{Var(Length)} & \text{Cov(Length, Fat)} \\
-\text{Cov(Fat, Weight)} & \text{Cov(Fat, Length)} & \text{Var(Fat)}
-\end{bmatrix}$$
+\operatorname{Var}(\text{Weight}) &
+\operatorname{Cov}(\text{Length}, \text{Weight}) &
+\operatorname{Cov}(\text{Fat}, \text{Weight}) \\
+\operatorname{Cov}(\text{Weight}, \text{Length}) &
+\operatorname{Var}(\text{Length}) &
+\operatorname{Cov}(\text{Fat}, \text{Length}) \\
+\operatorname{Cov}(\text{Weight}, \text{Fat}) &
+\operatorname{Cov}(\text{Length}, \text{Fat}) &
+\operatorname{Var}(\text{Fat})
+\end{bmatrix}
+$$
 
 **The Salmon Farm Translation:**
 
