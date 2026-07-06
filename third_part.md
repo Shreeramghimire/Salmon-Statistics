@@ -346,3 +346,30 @@ Because if we just added them up normally, a -1.7 and a +1.7 would cancel out to
 | **Sum of Squared Residuals** | $e^T e$ | The **Total Farm Mistake**. Least Squares finds the multipliers ($\beta$) that make this number as tiny as possible |
 
 If we understand that **Fitted Values = The Rule**, and **Residuals = The Exceptions to the Rule**, we understand 90% of regression!
+
+## Ordinary Least Squares (OLS) Regression: From Intuition to Matrix Algebra
+
+This is the ultimate question that ties everything together! Let's build this from the ground up—from the intuitive farm-level concept all the way to the elegant matrix algebra.
+
+---
+
+## Part 1: What is OLS (Ordinary Least Squares)?
+
+**The One-Sentence Definition:**
+
+> OLS is a mathematical method that finds the line (or hyperplane) that minimizes the sum of the squared vertical distances between our actual data points and our predicted values.
+
+**The "Ordinary" Part:**
+
+- "Ordinary" means we're using the basic version—no fancy weighting, no regularization, just pure, classic regression.
+
+**The Core Idea:**
+
+Imagine we're drawing a line through a scatterplot of salmon weights vs. feed amounts. OLS finds the **one specific line** where:
+
+- The total error (distance from each point to the line) is as small as possible
+- Big errors are heavily penalized (because we square them)
+- Positive and negative errors don't cancel out (again, because we square them)
+
+---
+
