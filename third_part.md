@@ -353,7 +353,7 @@ This is the ultimate question that ties everything together! Let's build this fr
 
 ---
 
-## Part 1: What is OLS (Ordinary Least Squares)?
+### Part 1: What is OLS (Ordinary Least Squares)?
 
 **The One-Sentence Definition:**
 
@@ -373,3 +373,64 @@ Imagine we're drawing a line through a scatterplot of salmon weights vs. feed am
 
 ---
 
+### Part 2: The OLS Model
+
+**The Statistical Model:**
+
+$$y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + ... + \beta_p x_{ip} + \epsilon_i$$
+
+Where:
+
+| Symbol | Meaning |
+|--------|---------|
+| $y_i$ | Outcome for observation $i$ (e.g., salmon weight) |
+| $x_{ij}$ | Predictor $j$ for observation $i$ (e.g., feed, temperature, density) |
+| $\beta_j$ | Unknown coefficients we want to estimate |
+| $\epsilon_i$ | Random error (the "noise") |
+
+**The OLS Objective:**
+
+$$\text{Minimize } S = \sum_{i=1}^n (y_i - \hat{y}_i)^2 = \sum_{i=1}^n e_i^2$$
+
+Where $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_{i1} + ... + \hat{\beta}_p x_{ip}$
+
+---
+
+### Part 3: OLS in Vector Notation
+
+Let's build the matrix form step by step.
+
+### Step 1: Define the Matrices
+
+**Design Matrix ($X$):** $n \times (p+1)$ matrix
+
+$$X = \begin{bmatrix}
+1 & x_{11} & x_{12} & \cdots & x_{1p} \\
+1 & x_{21} & x_{22} & \cdots & x_{2p} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_{n1} & x_{n2} & \cdots & x_{np}
+\end{bmatrix}$$
+
+*(The column of 1s captures the intercept $\beta_0$)*
+
+**Outcome Vector ($y$):** $n \times 1$
+
+$$y = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}$$
+
+**Coefficient Vector ($\beta$):** $(p+1) \times 1$
+
+$$\beta = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_p \end{bmatrix}$$
+
+**Residual Vector ($e$):** $n \times 1$
+
+$$e = y - X\beta$$
+
+### Step 2: The OLS Objective in Matrix Form
+
+The sum of squared residuals:
+
+$$S(\beta) = e^t e = (y - X\beta)^t (y - X\beta)$$
+
+Expanding:
+
+$$S(\beta) = y^t y - 2\beta^t X^t y + \beta^t X^t X \beta$$
