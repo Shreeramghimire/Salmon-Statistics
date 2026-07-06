@@ -121,6 +121,7 @@ Given our observed salmon data $\mathbf{Y}$, what are the most likely values for
 
 For $n$ independent observations, the likelihood is the product of the individual MVN densities:
 
+```math
 \begin{aligned}
 \mathbf{S} &= 
 \begin{bmatrix}
@@ -142,6 +143,7 @@ s_{13} & s_{23} & s_{33}
 \end{bmatrix} \\[2em]
 L(\boldsymbol{\mu}, \boldsymbol{\Sigma}) &\propto |\boldsymbol{\Sigma}|^{-n/2} \exp\left\{ -\frac{1}{2} \sum_{i=1}^n (\mathbf{y}_i - \boldsymbol{\mu})^t \boldsymbol{\Sigma}^{-1} (\mathbf{y}_i - \boldsymbol{\mu}) \right\}
 \end{aligned}
+```
 
 ### The Maximum Likelihood Estimates (MLE)
 
