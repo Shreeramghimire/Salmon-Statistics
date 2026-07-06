@@ -3,7 +3,6 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from scipy.stats import f
-from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 
 # ============================================
@@ -72,120 +71,84 @@ print(f"R²:        {1 - np.sum(residuals**2)/np.sum((Y - Y.mean())**2):.4f}")
 print(f"Sigma:     {np.sqrt(sigma_hat_sq):.4f}\n")
 
 # ============================================
-# 3. GENERATE THE 3D CONFIDENCE ELLIPSOID
+# 3. GENERATE THE 2D CONFIDENCE ELLIPSE
 # ============================================
 
-def get_confidence_ellipsoid(beta_hat, cov_beta, alpha=0.05, n_points=50):
+def get_confidence_ellipse(beta_hat, cov_beta, alpha=0.05, n_points=100):
     """
-    Generate points on the surface of the confidence ellipsoid.
+    Generate points on the 2D confidence ellipse for Feed and Temp coefficients.
     
     Returns:
-        ellipsoid_points: numpy array of shape (n_points**2, 3)
+        ellipse_points: numpy array of shape (n_points, 2)
+        f_crit: F-distribution critical value
+        radius: Ellipse radius
     """
-    p = len(beta_hat) - 1  # number of predictors (excluding intercept)
+    # Number of predictors (excluding intercept)
+    p_pred = len(beta_hat) - 1  # 2 predictors: Feed and Temp
     n = len(Y)
     
     # F-distribution critical value
-    f_crit = f.ppf(1 - alpha, p, n - p - 1)
+    f_crit = f.ppf(1 - alpha, p_pred, n - p_pred - 1)
     
     # Radius of the ellipsoid
-    radius = np.sqrt(p * f_crit * sigma_hat_sq)
+    radius = np.sqrt(p_pred * f_crit * sigma_hat_sq)
     
-    # Eigen-decomposition of the covariance matrix (for predictors only)
-    cov_pred = cov_beta[1:, 1:]  # exclude intercept
+    # Covariance matrix for predictors only (exclude intercept)
+    cov_pred = cov_beta[1:, 1:]  # 2x2 matrix
+    
+    # Eigen-decomposition of the covariance matrix
     eigvals, eigvecs = np.linalg.eigh(cov_pred)
     
     # Scale eigenvectors by sqrt of eigenvalues and radius
     D = np.diag(np.sqrt(eigvals))
-    A = eigvecs @ D * radius
+    A = eigvecs @ D * radius  # 2x2 transformation matrix
     
-    # Generate points on a unit sphere
-    u = np.linspace(0, 2 * np.pi, n_points)
-    v = np.linspace(0, np.pi, n_points)
+    # Generate points on a unit circle (2D, not 3D!)
+    theta = np.linspace(0, 2 * np.pi, n_points)
     
-    points = []
-    for theta in u:
-        for phi in v:
-            # Unit sphere point
-            x = np.sin(phi) * np.cos(theta)
-            y = np.sin(phi) * np.sin(theta)
-            z = np.cos(phi)
-            
-            # Transform to ellipsoid
-            sphere_point = np.array([x, y, z])
-            ellipsoid_point = A @ sphere_point + beta_hat[1:]
-            points.append(ellipsoid_point)
+    ellipse_points = []
+    for t in theta:
+        # Unit circle point (2D)
+        unit_circle = np.array([np.cos(t), np.sin(t)])
+        # Transform to ellipse and center at beta_hat
+        ellipse_point = A @ unit_circle + beta_hat[1:]
+        ellipse_points.append(ellipse_point)
     
-    return np.array(points), f_crit, radius
+    return np.array(ellipse_points), f_crit, radius
 
-# Generate ellipsoid points
+# Generate ellipse points
 alpha = 0.05  # 95% confidence
-ellipsoid_points, f_crit, radius = get_confidence_ellipsoid(beta_hat, cov_beta, alpha)
+ellipse_points, f_crit, radius = get_confidence_ellipse(beta_hat, cov_beta, alpha)
 
 # Extract coordinates
-feed_ellipse = ellipsoid_points[:, 0]
-temp_ellipse = ellipsoid_points[:, 1]
+feed_ellipse = ellipse_points[:, 0]
+temp_ellipse = ellipse_points[:, 1]
 
 # ============================================
-# 4. INTERACTIVE 3D VISUALIZATION WITH PLOTLY
+# 4. INTERACTIVE 2D VISUALIZATION WITH PLOTLY
 # ============================================
 
 fig = make_subplots(
     rows=1, cols=2,
-    specs=[[{'type': 'scatter3d'}, {'type': 'scatter'}]],
-    subplot_titles=('3D Confidence Ellipsoid', '2D Projection (Feed vs Temp)')
+    specs=[[{'type': 'scatter'}, {'type': 'scatter'}]],
+    subplot_titles=('95% Confidence Ellipse', 'Zoomed View with Marginal CIs')
 )
 
-# --- 3D Ellipsoid ---
-fig.add_trace(
-    go.Scatter3d(
-        x=ellipsoid_points[:, 0],
-        y=ellipsoid_points[:, 1],
-        z=ellipsoid_points[:, 2],
-        mode='markers',
-        marker=dict(
-            size=2,
-            color='rgba(31, 119, 180, 0.6)',
-            opacity=0.5
-        ),
-        name='95% Confidence Ellipsoid'
-    ),
-    row=1, col=1
-)
-
-# Add the estimated coefficients as a point
-fig.add_trace(
-    go.Scatter3d(
-        x=[beta_hat[1]],
-        y=[beta_hat[2]],
-        z=[0],
-        mode='markers',
-        marker=dict(
-            size=10,
-            color='red',
-            symbol='x'
-        ),
-        name='Estimated Coefficients'
-    ),
-    row=1, col=1
-)
-
-# --- 2D Projection (Feed vs Temp) ---
+# --- Ellipse ---
 fig.add_trace(
     go.Scatter(
         x=feed_ellipse,
         y=temp_ellipse,
-        mode='markers',
-        marker=dict(
-            size=3,
-            color='rgba(31, 119, 180, 0.5)'
-        ),
-        name='2D Projection'
+        mode='lines',
+        line=dict(color='blue', width=2),
+        fill='toself',
+        fillcolor='rgba(31, 119, 180, 0.2)',
+        name='95% Confidence Ellipse'
     ),
-    row=1, col=2
+    row=1, col=1
 )
 
-# Add the estimated coefficients as a point
+# Estimated coefficients
 fig.add_trace(
     go.Scatter(
         x=[beta_hat[1]],
@@ -195,33 +158,98 @@ fig.add_trace(
             size=12,
             color='red',
             symbol='x',
-            line=dict(width=2)
+            line=dict(width=3)
         ),
         name='Estimated Coefficients'
     ),
+    row=1, col=1
+)
+
+# True coefficients (for comparison - only known in simulation!)
+fig.add_trace(
+    go.Scatter(
+        x=[beta_1_true],
+        y=[beta_2_true],
+        mode='markers',
+        marker=dict(
+            size=12,
+            color='green',
+            symbol='star',
+            line=dict(width=2)
+        ),
+        name='True Coefficients'
+    ),
+    row=1, col=1
+)
+
+# --- Zoomed view with marginal CIs ---
+# Same ellipse
+fig.add_trace(
+    go.Scatter(
+        x=feed_ellipse,
+        y=temp_ellipse,
+        mode='lines',
+        line=dict(color='blue', width=2),
+        fill='toself',
+        fillcolor='rgba(31, 119, 180, 0.15)',
+        name='95% Ellipse'
+    ),
     row=1, col=2
+)
+
+# Estimated coefficients
+fig.add_trace(
+    go.Scatter(
+        x=[beta_hat[1]],
+        y=[beta_hat[2]],
+        mode='markers',
+        marker=dict(size=12, color='red', symbol='x'),
+        name='Estimate'
+    ),
+    row=1, col=2
+)
+
+# Marginal confidence intervals (vertical and horizontal lines)
+t_crit = 1.96  # approximate for large n
+ci_feed_lower = beta_hat[1] - t_crit * se_beta[1]
+ci_feed_upper = beta_hat[1] + t_crit * se_beta[1]
+ci_temp_lower = beta_hat[2] - t_crit * se_beta[2]
+ci_temp_upper = beta_hat[2] + t_crit * se_beta[2]
+
+# Horizontal lines (Feed CI)
+fig.add_hline(
+    y=ci_temp_upper, line_dash="dash", line_color="orange",
+    annotation_text="Temp CI upper", row=1, col=2
+)
+fig.add_hline(
+    y=ci_temp_lower, line_dash="dash", line_color="orange",
+    annotation_text="Temp CI lower", row=1, col=2
+)
+
+# Vertical lines (Temp CI)
+fig.add_vline(
+    x=ci_feed_upper, line_dash="dash", line_color="orange",
+    annotation_text="Feed CI upper", row=1, col=2
+)
+fig.add_vline(
+    x=ci_feed_lower, line_dash="dash", line_color="orange",
+    annotation_text="Feed CI lower", row=1, col=2
 )
 
 # Update layout
 fig.update_layout(
     title=dict(
-        text=f'95% Confidence Ellipsoid for Salmon Regression Coefficients<br>'
+        text=f'95% Confidence Ellipse for Salmon Regression Coefficients<br>'
              f'F-critical = {f_crit:.3f}, Radius = {radius:.3f}',
         font=dict(size=16)
     ),
     width=1200,
     height=600,
-    showlegend=True,
-    scene=dict(
-        xaxis_title='Feed Coefficient (β₁)',
-        yaxis_title='Temperature Coefficient (β₂)',
-        zaxis_title='Dummy (for 3D effect)',
-        camera=dict(
-            eye=dict(x=1.5, y=1.5, z=1.5)
-        )
-    )
+    showlegend=True
 )
 
+fig.update_xaxes(title_text='Feed Coefficient (β₁)', row=1, col=1)
+fig.update_yaxes(title_text='Temperature Coefficient (β₂)', row=1, col=1)
 fig.update_xaxes(title_text='Feed Coefficient (β₁)', row=1, col=2)
 fig.update_yaxes(title_text='Temperature Coefficient (β₂)', row=1, col=2)
 
@@ -229,7 +257,7 @@ fig.update_yaxes(title_text='Temperature Coefficient (β₂)', row=1, col=2)
 fig.show()
 
 # ============================================
-# 5. ADD MARGINAL CONFIDENCE INTERVALS
+# 5. MARGINAL CONFIDENCE INTERVALS
 # ============================================
 
 print("=== 95% Marginal Confidence Intervals ===")
@@ -248,17 +276,18 @@ print(f"  - For every 1°C increase in temperature, weight increases between {be
 # 6. CHECK IF A SPECIFIC POINT IS INSIDE
 # ============================================
 
-def is_inside_ellipsoid(beta_point, beta_hat, cov_beta, alpha=0.05):
+def is_inside_ellipse(beta_point, beta_hat, cov_beta, alpha=0.05):
     """
-    Check if a given point is inside the confidence ellipsoid.
+    Check if a given point is inside the confidence ellipse.
     """
-    p = len(beta_point)
+    p_pred = len(beta_point)
     n = len(Y)
-    f_crit = f.ppf(1 - alpha, p, n - p - 1)
+    f_crit = f.ppf(1 - alpha, p_pred, n - p_pred - 1)
     
     diff = beta_point - beta_hat[1:]
-    mahalanobis = diff @ np.linalg.inv(cov_beta[1:, 1:]) @ diff
-    threshold = p * f_crit * sigma_hat_sq
+    cov_pred = cov_beta[1:, 1:]
+    mahalanobis = diff @ np.linalg.inv(cov_pred) @ diff
+    threshold = p_pred * f_crit * sigma_hat_sq
     
     return mahalanobis <= threshold
 
@@ -266,9 +295,36 @@ def is_inside_ellipsoid(beta_point, beta_hat, cov_beta, alpha=0.05):
 test_point_1 = np.array([1.7, 0.30])  # plausible: feed=1.7, temp=0.30
 test_point_2 = np.array([2.5, 0.70])  # extreme: feed=2.5, temp=0.70
 
-inside_1 = is_inside_ellipsoid(test_point_1, beta_hat, cov_beta)
-inside_2 = is_inside_ellipsoid(test_point_2, beta_hat, cov_beta)
+inside_1 = is_inside_ellipse(test_point_1, beta_hat, cov_beta)
+inside_2 = is_inside_ellipse(test_point_2, beta_hat, cov_beta)
 
-print(f"\n=== Point-in-Ellipsoid Test ===")
+print(f"\n=== Point-in-Ellipse Test ===")
 print(f"Point (β₁=1.7, β₂=0.30): {'INSIDE' if inside_1 else 'OUTSIDE'} the 95% ellipse")
 print(f"Point (β₁=2.5, β₂=0.70): {'INSIDE' if inside_2 else 'OUTSIDE'} the 95% ellipse")
+
+# ============================================
+# 7. INTERPRETATION SUMMARY
+# ============================================
+
+print("\n" + "="*60)
+print("FARM INTERPRETATION")
+print("="*60)
+print(f"""
+The 95% confidence ellipse shows the joint uncertainty in our estimates:
+- Feed coefficient: {beta_hat[1]:.3f} ± {t_crit*se_beta[1]:.3f} kg/kg
+- Temperature coefficient: {beta_hat[2]:.3f} ± {t_crit*se_beta[2]:.3f} kg/°C
+
+Key insights:
+1. The ellipse is {'tilted' if abs(cov_beta[1,2]) > 0.1 else 'not tilted'}, 
+   indicating that Feed and Temperature effects are {'correlated' if abs(cov_beta[1,2]) > 0.1 else 'independent'}.
+
+2. If you see the ellipse oriented along the diagonal, it means:
+   - Pens with high feed also tend to have higher temperatures
+   - Or: overestimating one coefficient likely means overestimating the other
+
+3. The ellipse is {'larger' if radius > 1 else 'compact'}, indicating 
+   {'high' if radius > 1 else 'low'} uncertainty in our estimates.
+
+Recommendation: Use this ellipse to make joint decisions about 
+feed and temperature management, rather than looking at them separately!
+""")
