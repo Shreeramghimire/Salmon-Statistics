@@ -720,32 +720,33 @@ Where:
 
 #### Expanded Form
 
-$$\begin{bmatrix}
+
+$$\underset{n \times q}{\begin{bmatrix}
 y_{11} & y_{12} & \cdots & y_{1q} \\
 y_{21} & y_{22} & \cdots & y_{2q} \\
 \vdots & \vdots & \ddots & \vdots \\
 y_{n1} & y_{n2} & \cdots & y_{nq}
-\end{bmatrix}
+\end{bmatrix}}
 =
-\begin{bmatrix}
+\underset{n \times (p+1)}{\begin{bmatrix}
 1 & x_{11} & \cdots & x_{1p} \\
 1 & x_{21} & \cdots & x_{2p} \\
 \vdots & \vdots & \ddots & \vdots \\
 1 & x_{n1} & \cdots & x_{np}
-\end{bmatrix}
-\begin{bmatrix}
+\end{bmatrix}}
+\underset{(p+1) \times q}{\begin{bmatrix}
 \beta_{01} & \beta_{02} & \cdots & \beta_{0q} \\
 \beta_{11} & \beta_{12} & \cdots & \beta_{1q} \\
 \vdots & \vdots & \ddots & \vdots \\
 \beta_{p1} & \beta_{p2} & \cdots & \beta_{pq}
-\end{bmatrix}
+\end{bmatrix}}
 +
-\begin{bmatrix}
+\underset{n \times q}{\begin{bmatrix}
 \epsilon_{11} & \epsilon_{12} & \cdots & \epsilon_{1q} \\
 \epsilon_{21} & \epsilon_{22} & \cdots & \epsilon_{2q} \\
 \vdots & \vdots & \ddots & \vdots \\
 \epsilon_{n1} & \epsilon_{n2} & \cdots & \epsilon_{nq}
-\end{bmatrix}$$
+\end{bmatrix}}$$
 ---
 
 ### Part 3: The OLS Solution (Matrix Form)
