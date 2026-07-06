@@ -451,7 +451,7 @@ $$\boxed{\hat{\beta} = (X^t X)^{-1} X^t y}$$
 
 ---
 
-## Part 4: Geometric Interpretation in Vector Space
+### Part 4: Geometric Interpretation in Vector Space
 
 This is where the magic happens! Let's visualize what's actually going on.
 
@@ -475,3 +475,49 @@ The OLS estimate $\hat{\beta}$ finds the combination:
 $$\hat{y} = X\hat{\beta}$$
 
 This $\hat{y}$ is the **orthogonal projection** of $y$ onto the column space of $X$.
+
+### Visual Analogy (2D)
+
+Imagine shining a flashlight straight down onto a table:
+
+- $y$ = The actual point in 3D space (floating above the table)
+- Column space of $X$ = The table surface
+- $\hat{y}$ = The shadow of $y$ on the table
+- $e = y - \hat{y}$ = The vertical distance from the point to the table (perpendicular!)
+
+**Key Properties:**
+
+1. The residual $e$ is **perpendicular** to every column of $X$
+2. $X^t e = 0$ (orthogonality condition)
+3. This is exactly the same as the normal equations!
+
+---
+
+### Part 5: The Matrix Projection (The Hat Matrix)
+
+The fitted values can be written as:
+
+$$\hat{y} = X(X^t X)^{-1} X^t y$$
+
+Let $\mathbf{H} = X(X^t X)^{-1} X^t$
+
+**$\mathbf{H}$ is the "Hat Matrix"** because it puts the hat on $y$:
+
+$$\hat{y} = \mathbf{H}y$$
+
+**Properties of $\mathbf{H}$:**
+
+| Property | Description |
+|----------|-------------|
+| Symmetric | $\mathbf{H}^t = \mathbf{H}$ |
+| Idempotent | $\mathbf{H}^2 = \mathbf{H}$ |
+| Trace | $tr(\mathbf{H}) = p+1$ (number of parameters) |
+| Projection | It's a projection matrix! |
+
+**The Residuals:**
+
+$$e = y - \hat{y} = (I - \mathbf{H})y$$
+
+And $(I - \mathbf{H})$ is also a projection matrix—it projects onto the space **orthogonal** to the column space of $X$.
+
+---
