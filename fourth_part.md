@@ -28,7 +28,9 @@ $$\mathbf{S} = \frac{1}{n-1} \mathbf{Y}_c^t \mathbf{Y}_c$$
 
 Let's expand this for our 3 variables:
 
-$$
+The sample covariance matrix is
+
+```math
 S =
 \begin{bmatrix}
 s_{11} & s_{12} & s_{13} \\
@@ -38,17 +40,16 @@ s_{13} & s_{23} & s_{33}
 =
 \begin{bmatrix}
 \operatorname{Var}(\text{Weight}) &
-\operatorname{Cov}(\text{Length}, \text{Weight}) &
-\operatorname{Cov}(\text{Fat}, \text{Weight}) \\
-\operatorname{Cov}(\text{Weight}, \text{Length}) &
+\operatorname{Cov}(\text{Length},\text{Weight}) &
+\operatorname{Cov}(\text{Fat},\text{Weight}) \\
+\operatorname{Cov}(\text{Weight},\text{Length}) &
 \operatorname{Var}(\text{Length}) &
-\operatorname{Cov}(\text{Fat}, \text{Length}) \\
-\operatorname{Cov}(\text{Weight}, \text{Fat}) &
-\operatorname{Cov}(\text{Length}, \text{Fat}) &
+\operatorname{Cov}(\text{Fat},\text{Length}) \\
+\operatorname{Cov}(\text{Weight},\text{Fat}) &
+\operatorname{Cov}(\text{Length},\text{Fat}) &
 \operatorname{Var}(\text{Fat})
 \end{bmatrix}
-$$
-
+```
 **The Salmon Farm Translation:**
 
 | Component | Meaning |
