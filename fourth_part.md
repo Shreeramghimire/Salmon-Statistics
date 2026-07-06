@@ -1,11 +1,5 @@
 # Multivariate Statistics: From Covariance Matrices to Confidence Ellipsoids
 
-This is the **grand unification** of everything we've learned so far! We are now moving from *describing* data (means and variances) to *inferring* the truth about our salmon farm with proper statistical guarantees.
-
-Let's build this step-by-step, from the matrix math all the way to the confidence ellipsoids.
-
----
-
 ## Part 1: Matrix Operations for Multivariate Variance/Covariance
 
 ### The Data Setup
@@ -258,7 +252,7 @@ Imagine plotting Feed coefficient on the X-axis and Temp coefficient on the Y-ax
 
 ---
 
-## Part 10: The Grand Unified Summary Table
+## Part 10: Summary Table
 
 | Concept | Matrix Math | Salmon Farm Translation |
 | :--- | :--- | :--- |
@@ -271,19 +265,3 @@ Imagine plotting Feed coefficient on the X-axis and Temp coefficient on the Y-ax
 | **F-test** | $\frac{(SSE_R - SSE_F)/(df)}{\ SSE_F/(n-p)}$ | Do Feed *and* Temp jointly predict growth? |
 | **Prediction Interval** | $\hat{y} \pm t \cdot \hat{\sigma} \sqrt{1 + x^t(X^tX)^{-1}x}$ | This specific fish will weigh 5.5–6.5 kg |
 | **Confidence Ellipsoid** | $(\hat{\beta}-\beta)^tX^tX(\hat{\beta}-\beta) \leq p \hat{\sigma}^2 F$ | The tilted football of plausible Feed/Temp effects |
-
----
-
-## The Ultimate Salmon Farmer Takeaway
-
-By the end of this journey, we have moved from:
-
-1. **Guessing** the effect of feed (Descriptive Stats)
-2. **Calculating** the exact slope (OLS Matrix Algebra)
-3. **Quantifying** the uncertainty (Standard Errors)
-4. **Testing** if the slope is real (t-tests and F-tests)
-5. **Predicting** new pens (Prediction Intervals)
-6. **Visualizing** the joint uncertainty (Confidence Ellipsoids)
-
-We now have the complete statistical toolkit to run a data-driven salmon farm with mathematical confidence.
-
