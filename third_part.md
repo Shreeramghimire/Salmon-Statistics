@@ -674,3 +674,399 @@ The model predicts **6.01 kg** at harvest.
 
 ---
 
+## Multivariate Regression: The Complete Guide
+
+Now we're moving from **univariate** (one outcome) to **multivariate** (multiple outcomes)! This is a significant step up in power and complexity.
+
+---
+
+### Part 1: What is Multivariate Regression?
+
+**The One-Sentence Definition:**
+
+> Multivariate regression models **multiple outcome variables** simultaneously using the same set of predictors.
+
+**Univariate vs. Multivariate:**
+
+| | Univariate Regression | Multivariate Regression |
+|---|----------------------|------------------------|
+| **Outcomes** | 1 outcome variable | 2+ outcome variables |
+| **Predictors** | Multiple predictors | Multiple predictors |
+| **Coefficients** | 1 vector $\beta$ | A **matrix** $B$ |
+| **Example** | Predict salmon weight | Predict salmon weight, length, and fat content simultaneously |
+
+**The Key Insight:**
+
+Instead of fitting separate models for each outcome, multivariate regression fits them **together**, accounting for the **correlations between outcomes**.
+
+---
+
+### Part 2: The Multivariate Model
+
+#### Statistical Form
+
+For $n$ observations, $q$ outcomes, and $p$ predictors:
+
+$$\mathbf{Y} = \mathbf{X}\mathbf{B} + \mathbf{E}$$
+
+Where:
+
+| Symbol | Dimensions | Description |
+|--------|------------|-------------|
+| $\mathbf{Y}$ | $n \times q$ | Matrix of outcomes (each column is a different outcome) |
+| $\mathbf{X}$ | $n \times (p+1)$ | Design matrix (includes intercept) |
+| $\mathbf{B}$ | $(p+1) \times q$ | Matrix of coefficients |
+| $\mathbf{E}$ | $n \times q$ | Matrix of errors |
+
+#### Expanded Form
+
+$$\begin{bmatrix}
+y_{11} & y_{12} & \cdots & y_{1q} \\
+y_{21} & y_{22} & \cdots & y_{2q} \\
+\vdots & \vdots & \ddots & \vdots \\
+y_{n1} & y_{n2} & \cdots & y_{nq}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & x_{11} & \cdots & x_{1p} \\
+1 & x_{21} & \cdots & x_{2p} \\
+\vdots & \vdots & \ddots & \vdots \\
+1 & x_{n1} & \cdots & x_{np}
+\end{bmatrix}
+\begin{bmatrix}
+\beta_{01} & \beta_{02} & \cdots & \beta_{0q} \\
+\beta_{11} & \beta_{12} & \cdots & \beta_{1q} \\
+\vdots & \vdots & \ddots & \vdots \\
+\beta_{p1} & \beta_{p2} & \cdots & \beta_{pq}
+\end{bmatrix}
++
+\begin{bmatrix}
+\epsilon_{11} & \epsilon_{12} & \cdots & \epsilon_{1q} \\
+\epsilon_{21} & \epsilon_{22} & \cdots & \epsilon_{2q} \\
+\vdots & \vdots & \ddots & \vdots \\
+\epsilon_{n1} & \epsilon_{n2} & \cdots & \epsilon_{nq}
+\end{bmatrix}$$
+
+---
+
+### Part 3: The OLS Solution (Matrix Form)
+
+#### The Objective
+
+Minimize the **sum of squared errors** across ALL outcomes:
+
+$$S(\mathbf{B}) = \text{tr}\left[(\mathbf{Y} - \mathbf{X}\mathbf{B})^t(\mathbf{Y} - \mathbf{X}\mathbf{B})\right]$$
+
+Where $\text{tr}$ is the trace (sum of diagonal elements).
+
+#### The Solution
+
+$$\boxed{\hat{\mathbf{B}} = (\mathbf{X}^t\mathbf{X})^{-1}\mathbf{X}^t\mathbf{Y}}$$
+
+**Key Observation:**
+
+> The coefficients for each outcome are estimated **independently**! Column $j$ of $\hat{\mathbf{B}}$ is exactly the univariate OLS solution for outcome $j$.
+
+#### The Fitted Values
+
+$$\hat{\mathbf{Y}} = \mathbf{X}\hat{\mathbf{B}} = \mathbf{X}(\mathbf{X}^t\mathbf{X})^{-1}\mathbf{X}^t\mathbf{Y} = \mathbf{H}\mathbf{Y}$$
+
+---
+
+### Part 4: Salmon Farm Example
+
+#### The Problem
+
+We manage a salmon farm and want to predict **three outcomes** simultaneously:
+
+1. **Weight** (kg)
+2. **Length** (cm)
+3. **Fat content** (%)
+
+Using predictors:
+
+- Feed amount (kg/day)
+- Water temperature (°C)
+- Stocking density (fish/m³)
+
+#### Step 1: Set Up the Data
+
+| Pen | Weight (kg) | Length (cm) | Fat (%) | Feed (kg) | Temp (°C) | Density |
+|-----|-------------|-------------|---------|-----------|-----------|---------|
+| 1   | 4.2         | 65          | 18      | 2.5       | 12        | 15      |
+| 2   | 3.8         | 62          | 16      | 2.3       | 11        | 18      |
+| 3   | 5.1         | 72          | 22      | 3.0       | 14        | 12      |
+| 4   | 4.5         | 68          | 19      | 2.7       | 13        | 14      |
+| ... | ...         | ...         | ...     | ...       | ...       | ...     |
+
+#### Step 2: Define the Matrices
+
+**Outcome Matrix $\mathbf{Y}$ ($n \times 3$):**
+
+$$\mathbf{Y} = \begin{bmatrix}
+4.2 & 65 & 18 \\
+3.8 & 62 & 16 \\
+5.1 & 72 & 22 \\
+4.5 & 68 & 19 \\
+\vdots & \vdots & \vdots
+\end{bmatrix}$$
+
+**Design Matrix $\mathbf{X}$ ($n \times 4$):**
+
+$$\mathbf{X} = \begin{bmatrix}
+1 & 2.5 & 12 & 15 \\
+1 & 2.3 & 11 & 18 \\
+1 & 3.0 & 14 & 12 \\
+1 & 2.7 & 13 & 14 \\
+\vdots & \vdots & \vdots & \vdots
+\end{bmatrix}$$
+
+#### Step 3: Compute Coefficients
+
+$$\hat{\mathbf{B}} = (\mathbf{X}^t\mathbf{X})^{-1}\mathbf{X}^t\mathbf{Y}$$
+
+Results:
+
+$$\hat{\mathbf{B}} = \begin{bmatrix}
+\text{Intercept} & -2.5 & 20 & 5 \\
+\text{Feed} & 1.8 & 12 & 3 \\
+\text{Temp} & 0.15 & 0.8 & 0.2 \\
+\text{Density} & -0.08 & -0.3 & -0.1
+\end{bmatrix}$$
+
+#### Step 4: Interpretation
+
+| Predictor | Weight (kg) | Length (cm) | Fat (%) | Farm Meaning |
+|-----------|-------------|-------------|---------|--------------|
+| **Intercept** | -2.5 | 20 | 5 | Baseline when all predictors = 0 |
+| **Feed** | **+1.8** | **+12** | **+3** | More feed increases all three! |
+| **Temp** | **+0.15** | **+0.8** | **+0.2** | Warmer water improves all metrics |
+| **Density** | **-0.08** | **-0.3** | **-0.1** | Crowding hurts everything |
+
+#### Step 5: Make Predictions
+
+New pen: Feed = 2.8kg, Temp = 13°C, Density = 16
+
+$$\hat{\mathbf{y}}_{new} = \mathbf{x}_{new}^t \hat{\mathbf{B}}$$
+
+$$\mathbf{x}_{new}^t = \begin{bmatrix} 1 & 2.8 & 13 & 16 \end{bmatrix}$$
+
+**Weight:** $-2.5 + 1.8(2.8) + 0.15(13) - 0.08(16) = 6.01$ kg
+
+**Length:** $20 + 12(2.8) + 0.8(13) - 0.3(16) = 69.2$ cm
+
+**Fat:** $5 + 3(2.8) + 0.2(13) - 0.1(16) = 14.4$ %
+
+---
+
+### Part 5: Why Use Multivariate Regression?
+
+#### 1. Accounting for Correlations Between Outcomes
+
+| Aspect | Separate Models | Multivariate Model |
+|--------|----------------|-------------------|
+| Weight vs. Length | Ignored | Accounts for their correlation |
+| Confidence intervals | Separate | Joint confidence regions |
+| Hypothesis testing | Separate tests | **Multivariate tests** (MANOVA) |
+
+#### 2. Improved Efficiency
+
+When outcomes are correlated, multivariate models borrow strength across outcomes, yielding **more efficient estimates**.
+
+#### 3. Interpretability
+
+Instead of saying "feed affects weight, length, and fat separately," we can say "feed affects the **entire growth profile**."
+
+---
+
+### Part 6: The Residual Covariance Structure
+
+#### The Magic of Multivariate Regression
+
+The errors are assumed to be:
+
+$$\text{Var}(\boldsymbol{\epsilon}_i) = \boldsymbol{\Sigma}$$
+
+Where $\boldsymbol{\Sigma}$ is a $q \times q$ **covariance matrix** of the outcomes.
+
+$$\boldsymbol{\Sigma} = \begin{bmatrix}
+\sigma_1^2 & \sigma_{12} & \cdots & \sigma_{1q} \\
+\sigma_{12} & \sigma_2^2 & \cdots & \sigma_{2q} \\
+\vdots & \vdots & \ddots & \vdots \\
+\sigma_{1q} & \sigma_{2q} & \cdots & \sigma_q^2
+\end{bmatrix}$$
+
+**Estimated by:**
+
+$$\hat{\boldsymbol{\Sigma}} = \frac{1}{n - p - 1} (\mathbf{Y} - \mathbf{X}\hat{\mathbf{B}})^t(\mathbf{Y} - \mathbf{X}\hat{\mathbf{B}})$$
+
+**Salmon Farm Translation:**
+
+| Symbol | Meaning |
+|--------|---------|
+| $\sigma_1^2$ | Variance in weight |
+| $\sigma_2^2$ | Variance in length |
+| $\sigma_3^2$ | Variance in fat content |
+| $\sigma_{12}$ | Covariance between weight and length (bigger fish are longer) |
+| $\sigma_{13}$ | Covariance between weight and fat (bigger fish have more fat) |
+| $\sigma_{23}$ | Covariance between length and fat (longer fish have more fat) |
+
+---
+
+### Part 7: Hypothesis Testing in Multivariate Regression
+
+#### Test for Overall Significance (MANOVA)
+
+$$H_0: \mathbf{B}_{\text{predictors}} = \mathbf{0}$$
+
+**Test Statistics:**
+
+| Test | Formula |
+|------|---------|
+| **Wilks' Lambda** | $\Lambda = \frac{|\mathbf{E}|}{|\mathbf{H} + \mathbf{E}|}$ |
+| **Pillai's Trace** | $V = \text{tr}(\mathbf{H}(\mathbf{H} + \mathbf{E})^{-1})$ |
+| **Hotelling-Lawley Trace** | $T = \text{tr}(\mathbf{H}\mathbf{E}^{-1})$ |
+| **Roy's Largest Root** | $\lambda_{\text{max}}$ |
+
+Where:
+- $\mathbf{H}$ = Hypothesis sum of squares matrix
+- $\mathbf{E}$ = Error sum of squares matrix
+
+#### Salmon Farm Example
+
+**Question:** *Does feed, temperature, and density jointly affect weight, length, and fat?*
+
+Use MANOVA to test if the entire coefficient matrix $\mathbf{B}$ (excluding intercept) is zero.
+
+---
+
+### Part 8: Relationship to Univariate Models
+
+#### Important Result
+
+The coefficients for each outcome in a multivariate regression are **exactly the same** as fitting separate univariate regressions!
+
+$$\hat{\boldsymbol{\beta}}_j = (\mathbf{X}^t\mathbf{X})^{-1}\mathbf{X}^t\mathbf{y}_j$$
+
+**So why bother with multivariate?**
+
+| Reason | Benefit |
+|--------|---------|
+| **Joint inference** | Testing multiple outcomes together |
+| **Borrowing information** | Across outcomes (in some advanced methods) |
+| **Handling missing data** | Imputation using correlations |
+| **Dimension reduction** | Like Principal Component Analysis on outcomes |
+
+---
+
+### Part 9: Reduced Rank Regression
+
+#### Extension: Constraining the Coefficient Matrix
+
+Instead of estimating all $p \times q$ coefficients freely, we can impose a **rank constraint**:
+
+$$\hat{\mathbf{B}} = \mathbf{A}\mathbf{C}^t$$
+
+Where:
+- $\mathbf{A}$ is $p \times r$
+- $\mathbf{C}$ is $q \times r$
+- $r < \min(p, q)$
+
+**This reduces dimensionality and can improve predictions!**
+
+#### Salmon Farm Application
+
+Imagine we have 10 outcomes and 20 predictors. We believe there are only 2 underlying "factors" driving everything:
+
+1. **Growth factor** (affects weight, length, fat)
+2. **Health factor** (affects survival, disease resistance)
+
+Reduced rank regression finds these latent factors!
+
+---
+
+### Part 10: Full Matrix Math Summary
+
+#### The Model
+$$\mathbf{Y} = \mathbf{X}\mathbf{B} + \mathbf{E}$$
+
+#### The Solution
+$$\hat{\mathbf{B}} = (\mathbf{X}^t\mathbf{X})^{-1}\mathbf{X}^t\mathbf{Y}$$
+
+#### Fitted Values
+$$\hat{\mathbf{Y}} = \mathbf{X}\hat{\mathbf{B}} = \mathbf{H}\mathbf{Y}$$
+
+#### Residuals
+$$\mathbf{E} = \mathbf{Y} - \hat{\mathbf{Y}} = (\mathbf{I} - \mathbf{H})\mathbf{Y}$$
+
+#### Covariance Estimate
+$$\hat{\boldsymbol{\Sigma}} = \frac{1}{n - p - 1} \mathbf{E}^t\mathbf{E}$$
+
+#### Predictions for New Data
+$$\hat{\mathbf{y}}_{new} = \mathbf{x}_{new}^t \hat{\mathbf{B}}$$
+
+#### Variance of Predictions
+$$\text{Var}(\hat{\mathbf{y}}_{new}) = \mathbf{x}_{new}^t (\mathbf{X}^t\mathbf{X})^{-1} \mathbf{x}_{new} \cdot \hat{\boldsymbol{\Sigma}}$$
+
+---
+
+### Part 11: Quick Reference Card
+
+| Aspect | Univariate | Multivariate |
+|--------|-----------|--------------|
+| Outcomes | 1 ($n \times 1$) | Multiple ($n \times q$) |
+| Coefficients | Vector $\boldsymbol{\beta}$ | Matrix $\mathbf{B}$ |
+| Errors | Vector $\boldsymbol{\epsilon}$ | Matrix $\mathbf{E}$ |
+| Covariance | $\sigma^2$ (scalar) | $\boldsymbol{\Sigma}$ (matrix) |
+| OLS Solution | $(X^tX)^{-1}X^t y$ | $(X^tX)^{-1}X^t Y$ |
+| Hypothesis tests | t-test, F-test | Wilks' Lambda, Pillai's Trace |
+| R function | `lm()` | `lm()` (but with matrix Y!) |
+
+---
+
+### Part 12: R Code Example
+
+```r
+# Simulate salmon farm data
+n <- 100
+set.seed(123)
+
+# Predictors
+Feed <- rnorm(n, 2.5, 0.5)
+Temp <- rnorm(n, 12, 2)
+Density <- rnorm(n, 15, 3)
+
+# Create design matrix
+X <- cbind(1, Feed, Temp, Density)
+
+# True coefficients (3 outcomes: Weight, Length, Fat)
+B <- matrix(c(-2.5, 1.8, 0.15, -0.08,   # Weight
+              20,   12,  0.8,  -0.3,    # Length
+              5,    3,   0.2,  -0.1),   # Fat
+            nrow=4, ncol=3)
+
+# Generate outcomes with correlated errors
+library(MASS)
+Sigma <- matrix(c(0.25, 0.15, 0.05,   # Covariance matrix
+                  0.15, 0.30, 0.08,
+                  0.05, 0.08, 0.20), nrow=3)
+
+E <- mvrnorm(n, mu=c(0,0,0), Sigma=Sigma)
+Y <- X %*% B + E
+
+# Fit multivariate model
+library(mvtnorm)
+fit <- lm(Y ~ Feed + Temp + Density)
+
+# View coefficients
+summary(fit)
+
+# Predictions for new pen
+new_data <- data.frame(Feed=2.8, Temp=13, Density=16)
+predict(fit, newdata=new_data)
+
+# MANOVA test
+summary(manova(fit))
+
+# Extract coefficient matrix
+coef(fit)  # This gives B_hat!
