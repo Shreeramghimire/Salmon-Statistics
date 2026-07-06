@@ -64,9 +64,7 @@ $$\mathbf{Y} \sim N_p(\boldsymbol{\mu}, \boldsymbol{\Sigma})$$
 
 The PDF is:
 
-$$f(\mathbf{Y}) = \frac{1}{(2\pi)^{p/2} |\boldsymbol{\Sigma}|^{1/2}} \exp\left\{ -\frac{1}{2} (\mathbf{Y} - \boldsymbol{\mu})^t \boldsymbol{\Sigma}^{-1} (\mathbf{Y} - \boldsymbol{\mu}) \right\}$$
-
-Where:
+f(Y) = (2π)^(-p/2) × |Σ|^(-1/2) × exp{ -1/2 × (Y - μ)^T × Σ^(-1) × (Y - μ) }
 
 | Symbol | Description |
 |--------|-------------|
