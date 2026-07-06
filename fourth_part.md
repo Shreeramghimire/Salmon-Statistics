@@ -39,15 +39,15 @@ s_{13} & s_{23} & s_{33}
 \end{bmatrix}
 =
 \begin{bmatrix}
-\operatorname{Var}(\text{Weight}) &
-\operatorname{Cov}(\text{Length},\text{Weight}) &
-\operatorname{Cov}(\text{Fat},\text{Weight}) \\
-\operatorname{Cov}(\text{Weight},\text{Length}) &
-\operatorname{Var}(\text{Length}) &
-\operatorname{Cov}(\text{Fat},\text{Length}) \\
-\operatorname{Cov}(\text{Weight},\text{Fat}) &
-\operatorname{Cov}(\text{Length},\text{Fat}) &
-\operatorname{Var}(\text{Fat})
+\mathrm{Var}(\text{Weight}) &
+\mathrm{Cov}(\text{Length},\text{Weight}) &
+\mathrm{Cov}(\text{Fat},\text{Weight}) \\
+\mathrm{Cov}(\text{Weight},\text{Length}) &
+\mathrm{Var}(\text{Length}) &
+\mathrm{Cov}(\text{Fat},\text{Length}) \\
+\mathrm{Cov}(\text{Weight},\text{Fat}) &
+\mathrm{Cov}(\text{Length},\text{Fat}) &
+\mathrm{Var}(\text{Fat})
 \end{bmatrix}
 ```
 **The Salmon Farm Translation:**
