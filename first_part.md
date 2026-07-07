@@ -85,7 +85,7 @@ We have just derived the confidence interval!
 $P(\bar{x} - t \cdot SE \leq \mu \leq \bar{x} + t \cdot SE) = 0.95$
 
 ### Example: We will calculate a 95% confidence interval for the true average weight of Atlantic salmon in a massive net-pen, using a tiny sample of just 5 fish.
-The Scenario
+The Scenario: 
 You randomly catch 5 salmon, weigh them (in kg), and get the following results:
 
 Data: 
@@ -303,9 +303,9 @@ Here is the **golden rule**:
 Let's break down exactly why this happens using your salmon farm.
 ### 1. The Condition for df = n (We know the true mean $\mu$)
 
-Imagine you are a salmon farmer, and you have a magical, perfect scale that tells you the true average weight of every salmon in the ocean is exactly $\mu = 5.0$ kg.
+Imagine we are a salmon farmer, and you have a magical, perfect scale that tells you the true average weight of every salmon in the ocean is exactly $\mu = 5.0$ kg.
 
-You randomly catch $n = 5$ salmon to test how much their weights vary around this known 5.0 kg mark. You calculate the variance using this formula:
+We randomly catch $n = 5$ salmon to test how much their weights vary around this known 5.0 kg mark. We calculate the variance using this formula:
 
 $$\text{Variance} = \frac{\sum_{i=1}^n (X_i - \mu)^2}{n}$$
 
@@ -399,7 +399,7 @@ If the Chi-Squared distribution is a specific sports car, the Gamma distribution
 ### The Physical Meaning: "The Waiting Time" Distribution
 The Gamma distribution is the ultimate "waiting time" distribution.
 
-Imagine you are a salmon farmer, and you are waiting for sea lice to attach to a fish. Lice arrive randomly at a constant average rate (say, 2 lice per hour).
+Imagine we are salmon farmer, and are waiting for sea lice to attach to a fish. Lice arrive randomly at a constant average rate (say, 2 lice per hour).
 
 How long do you wait for exactly 1 louse to arrive? That follows an Exponential distribution.
 
@@ -407,7 +407,7 @@ How long do you wait for exactly 5 lice to arrive? That sum of 5 independent wai
 
 In fact, the Exponential distribution is just a special case of the Gamma distribution (when the "shape" parameter equals 1).
 
-### The Parameters (The "Knobs" we can turn)
+### The Parameters 
 
 The Gamma distribution has two parameters that control its shape, scale, and location. Statisticians use two different common parameterizations.
 
@@ -484,7 +484,7 @@ This means:
 
 If you collected thousands of salmon samples, calculated the variance for each, and plotted them, the histogram would perfectly match a Gamma curve (which is heavily right-skewed for small samples, but looks Normal for large samples).
 
-This perfectly explains why your confidence intervals for variance are so wide for small samples—the Gamma/Chi-Squared distribution has a long tail stretching out to the right, meaning your sample variance can occasionally be wildly larger than the true variance.
+This perfectly explains why your confidence intervals for variance are so wide for small samples, the Gamma/Chi-Squared distribution has a long tail stretching out to the right, meaning your sample variance can occasionally be wildly larger than the true variance.
 
 ### Real-World Uses of Gamma (Outside of Variance)
 
@@ -554,7 +554,7 @@ But here is the magic (and why we don't need to panic!):
 - Raw sea lice counts (non-Gaussian): Weird, slammed against zero.
 - The average lice count from 100 samples (Gaussian): Perfectly bell-shaped!
 
-Because of this, we don't actually require the raw data to be Gaussian for most tests—we just require the sample means to be Gaussian, which happens automatically when $n$ is large.
+Because of this, we don't actually require the raw data to be Gaussian for most tests, we just require the sample means to be Gaussian, which happens automatically when $n$ is large.
 
 ---
 
@@ -579,8 +579,8 @@ This is a formal hypothesis test.
 
 $$H_0: \text{The data is Gaussian}$$
 
-- If the p-value is high ($> 0.05$), we fail to reject the null—we assume it is Gaussian.
-- If the p-value is low ($< 0.05$), we reject the null—our data is not Gaussian.
+- If the p-value is high ($> 0.05$), we fail to reject the null; we assume it is Gaussian.
+- If the p-value is low ($< 0.05$), we reject the null; our data is not Gaussian.
 
 ---
 
@@ -673,7 +673,7 @@ Now, imagine we do this for 1,000 salmon. You plot the differences on a histogra
 
 If the new feed does absolutely nothing, the gains and losses will cancel out. The average of all these differences will be exactly 0.
 
-**In plain English:** A mean of 0 means that 0 is the "baseline" or "no-effect" point. Values above 0 represent an increase; values below 0 represent a decrease. The bell curve is perfectly centered right on that baseline.
+**In plain word:** A mean of 0 means that 0 is the "baseline" or "no-effect" point. Values above 0 represent an increase; values below 0 represent a decrease. The bell curve is perfectly centered right on that baseline.
 
 ---
 
@@ -713,7 +713,7 @@ What is its Z-score?
 
 $$Z = \frac{6.5 - 5.0}{1.5} = \frac{1.5}{1.5} = 1$$
 
-**Translation:** A 6.5 kg salmon is exactly 1 standard deviation above the average.
+**It says:** A 6.5 kg salmon is exactly 1 standard deviation above the average.
 
 Instead of carrying around the messy numbers "5.0" and "1.5" for every calculation, we just say it's a $Z$ of 1, and we look up "1" in our standard Normal table to find that about 84% of salmon are lighter than it.
 
@@ -807,11 +807,11 @@ It means our "signal" is 1.5 times bigger than the natural "noise." The effect i
 
 ---
 
-### 3. The Two Faces of this Ratio (The Catch!)
+### 3. The Two Faces of this Ratio 
 
 Here is where things get incredibly subtle. The exact same ratio $\mu/\sigma$ does two completely different jobs depending on how we use it:
 
-**Role 1: The Non-Centrality Parameter (Signal we expect to see)**
+**Role 1: The Non-Centrality Parameter**
 
 When we are designing an experiment (before we collect data), this ratio is the true, real-world effect we are trying to catch. We call this $\delta$.
 
@@ -823,7 +823,7 @@ When we are designing an experiment (before we collect data), this ratio is the 
 
 We use this to calculate **Statistical Power**: *"How many fish do we need to catch to be sure we detect this 0.5 effect?"*
 
-**Role 2: The "Z-score" (Signal we observed in our data)**
+**Role 2: The "Z-score"**
 
 When we have already collected our data, we calculate the sample mean ($\bar{x}$) and sample standard deviation ($s$). The ratio $\bar{x}/s$ tells us how many standard deviations our observed result is away from zero. This is our observed effect size.
 
@@ -836,7 +836,7 @@ When we have already collected our data, we calculate the sample mean ($\bar{x}$
 
 ---
 
-### 4. The Golden Rule of Statistics (Why this ratio saves us)
+### 4. The Golden Rule
 
 There is a famous saying in statistics: **"Statistical significance is not the same as practical significance."**
 
@@ -888,7 +888,7 @@ In the **Frequentist** school of statistics (which we have been learning with t-
 
 The true average weight of the salmon is 5.0 kg. It doesn't change. It is a single, solid rock of truth.
 
-The only reason we don't know it is because we can't catch all the salmon. The randomness comes from our **sampling**, not from the parameter itself. If we catch a different set of 20 fish, our statistic ($\bar{x}$) changes, but the parameter ($\mu$) stays exactly the same.
+The only reason we don't know it is that we can't catch all the salmon. The randomness comes from our **sampling**, not from the parameter itself. If we catch a different set of 20 fish, our statistic ($\bar{x}$) changes, but the parameter ($\mu$) stays exactly the same.
 
 When we use a statistic to guess a parameter, we put a **"hat"** (^) on the Greek letter to show it is an estimate.
 
@@ -938,19 +938,18 @@ We would point directly at the dart.
 
 ---
 
-### How MLE Works (The Step-by-Step Process)
-
+### How MLE Works 
 Let's say we catch 5 salmon and their average weight is 5.3 kg. We want to know the true population mean ($\mu$).
 
 **Step 1: Write the Likelihood Function**
 
-We write a mathematical formula that answers: *"If the true mean is $\mu$, how likely is it that I would get a sample average of 5.3 kg?"*
+We write a mathematical formula that answers: *"If the true mean is $\mu$ , how likely is it that I would get a sample average of 5.3 kg?"*
 
 This creates a curve (the Likelihood Function).
 
 **Step 2: Find the Peak (Maximize)**
 
-We use calculus (or a computer) to find the peak of that curve—the single value of $\mu$ that makes our observed 5.3 kg the most probable.
+We use calculus (or a computer) to find the peak of that curve; the single value of $\mu$ that makes our observed 5.3 kg the most probable.
 
 **Step 3: The Answer**
 
@@ -964,7 +963,7 @@ Formally, if we have a likelihood function $L(\theta \mid \text{data})$, the MLE
 
 $$\hat{\theta}_{MLE} = \underset{\theta}{\arg\max} \, L(\theta \mid \text{data})$$
 
-**Translation:** *"Find the value of $\theta$ that makes the likelihood function as big as possible."*
+**Translation:** *"Find the value of ($\theta$) that makes the likelihood function as big as possible."*
 
 ---
 
@@ -1113,8 +1112,6 @@ This is the tricky philosophical part.
 #### What does "95% confident" mean?
 
 It means that if we repeated this exact experiment 100 times (catching 5 new salmon each time, calculating the mean and standard deviation, and building a new interval each time), **95 of those 100 intervals** would successfully capture the true population mean, and **5 of them would miss it**.
-
-We don't know if this specific interval is one of the 95 that hit or the 5 that miss. But our method is reliable 95% of the time.
 
 ---
 
@@ -1276,7 +1273,7 @@ It is a **weighted average**.
 
 ---
 
-### 5. The Big Assumption (The Catch!)
+### 5. The Big Assumption 
 
 We can only use the pooled estimator if we are willing to assume that the two populations have **equal variances**.
 
@@ -1284,8 +1281,8 @@ In statistics, this is called the **assumption of homogeneity of variance**.
 
 | Situation | What to Do |
 |-----------|------------|
-| Variances are equal (e.g., 0.8 and 1.2) | **Use pooled estimator** ✅ |
-| Variances are wildly different (e.g., 5.0 and 0.5) | **Do NOT pool** ❌ |
+| Variances are equal (e.g., 0.8 and 1.2) | **Use pooled estimator**  |
+| Variances are wildly different (e.g., 5.0 and 0.5) | **Do NOT pool**  |
 
 If Pen A's fish weights vary wildly (variance = 5.0) and Pen B's fish weights are incredibly consistent (variance = 0.5), pooling them together into one single number would be mathematically wrong.
 
@@ -1391,7 +1388,7 @@ If the feed actually did nothing ($\delta = 0$), our t-statistic would be a rand
 
 The area under the non-central t-curve (with $\delta = -1.12$) that falls past the critical rejection region (e.g., $t < -2.10$) is our **statistical power**.
 
-Because $\delta$ is only -1.12, our power might be around **30%** — meaning we only have a 30% chance of actually catching this 0.5 kg difference with only 10 fish per pen.
+Because $\delta$ is only -1.12, our power might be around **30%**, meaning we only have a 30% chance of actually catching this 0.5 kg difference with only 10 fish per pen.
 
 ---
 
@@ -1530,7 +1527,7 @@ A test statistic is a single number calculated from our sample data that measure
 
 ## Bootstrapping
 
-Bootstrapping is the statistical magic trick that lets us create **"fake"** new samples from our single, real sample, allowing us to estimate how wrong our estimate might be—**without catching a single additional fish!**
+Bootstrapping is the statistical magic trick that lets us create **"fake"** new samples from our single, real sample, allowing us to estimate how wrong our estimate might be, **without catching a single additional fish!**
 
 To understand bootstrapping, imagine we are a salmon farmer who wants to know the true average weight of all 10,000 fish in our pen.
 
@@ -1542,7 +1539,7 @@ We calculate the average of those 20 fish (say, 5.2 kg). But we know that if we 
 
 ### The Name and the Idea
 
-The name comes from the old phrase **"to pull yourself up by your bootstraps"**—doing the impossible with nothing but what you already have.
+The name comes from the old phrase **"to pull yourself up by your bootstraps"**,doing the impossible with nothing but what you already have.
 
 In statistics, bootstrapping does exactly this. It uses our existing 20 fish as a **"pretend population."** Then, it reaches into this pretend population, pulls out a fish, records its weight, puts it back, and pulls again. This is called **sampling with replacement**.
 
@@ -1568,7 +1565,7 @@ We randomly select 20 fish **with replacement** from our original 20. Because of
 
 **Step 3: Repeat, Repeat, Repeat**
 
-We do Step 2 a massive number of times—say, **10,000 times**. We now have 10,000 different "fake" averages (5.1, 5.3, 4.9, 5.4, 5.0, ...).
+We do Step 2 a massive number of times, say, **10,000 times**. We now have 10,000 different "fake" averages (5.1, 5.3, 4.9, 5.4, 5.0, ...).
 
 **Step 4: Use the Fake Averages to Understand the Real One**
 
@@ -1815,7 +1812,7 @@ $$\text{Pseudo}_3 = 5 \times (5.54) - 4 \times (5.30)$$
 
 $$\text{Pseudo}_3 = 27.7 - 21.2 = 6.5$$
 
-**Look at that!** The pseudo-observation for Fish 3 is exactly **6.5 kg**—which is its actual weight!
+**Look at that!** The pseudo-observation for Fish 3 is exactly **6.5 kg**, which is its actual weight!
 
 ---
 
@@ -1867,7 +1864,7 @@ Here is the genius part: **These pseudo-values behave like independent, identica
 
 | Application | How It Works |
 |-------------|--------------|
-| **Calculate the Standard Error** | Take the standard deviation of the pseudo-values and divide by $\sqrt{n}$ to get a standard error for any statistic—without using complicated calculus! |
+| **Calculate the Standard Error** | Take the standard deviation of the pseudo-values and divide by $\sqrt{n}$ to get a standard error for any statistic, without using complicated calculus! |
 | **Detect Outliers** | If one pseudo-observation is wildly different from the others, that data point is exerting outsized leverage on our result. |
 | **Regression Analysis** | Run a linear regression on the pseudo-values to see which variables (like fish length or water temperature) are driving our statistic. |
 
@@ -1900,7 +1897,7 @@ This is the final piece of the puzzle!
 | **Jackknife SE** | Standard error from pseudo-values | $SE = \sqrt{\frac{1}{n(n-1)} \sum (\text{Pseudo}_i - \bar{\text{Pseudo}})^2}$ |
 | **Interpretation** | Each pseudo-value represents the contribution of one observation | High leverage = pseudo-value far from others |
 
-**The Bottom Line:** Pseudo-observations let us see the **hidden influence** of each data point on any statistic—mean, median, variance, correlation, or regression slope—without complex math!
+**The Bottom Line:** Pseudo-observations let us see the **hidden influence** of each data point on any statistic—mean, median, variance, correlation, or regression slope without complex math!
 
 ## Confidence Intervals for Binomial Proportions
 
@@ -1945,7 +1942,7 @@ $$0.20 \pm 1.96 \times \sqrt{\frac{0.20 \times 0.80}{20}} = 0.20 \pm 1.96 \times
 
 If $p$ is near 0 or 1, or if $n$ is small, this interval **fails miserably**. The Normal approximation breaks down.
 
-**Example:** If we sample 10 fish and find 0 lice ($\hat{p} = 0$), the Wald interval gives $0 \pm 0$, which is $[0, 0]$. That implies we are 100% certain there are no lice in the entire pen—**which is nonsense!**
+**Example:** If we sample 10 fish and find 0 lice ($\hat{p} = 0$), the Wald interval gives $0 \pm 0$, which is $[0, 0]$. That implies we are 100% certain there are no lice in the entire pen, **which is nonsense!**
 
 ---
 
@@ -2048,7 +2045,7 @@ Let's say we want to know the true proportion ($p$) of salmon in a pen that are 
 
 ---
 
-**Step 1: The Prior (Our initial belief)**
+**Step 1: The Prior (initial belief)**
 
 We have farmed this pen for years. Historically, the infection rate is around 10%. We are fairly confident it's near 10%, but we aren't 100% sure.
 
@@ -2064,7 +2061,7 @@ We calculate the likelihood: *"Given a true infection rate of $p$, how likely is
 
 ---
 
-**Step 3: The Posterior (Our updated belief)**
+**Step 3: The Posterior (updated belief)**
 
 We plug the Prior and the Likelihood into Bayes' Theorem. The math is beautifully simple for the Beta distribution:
 
@@ -2078,7 +2075,7 @@ $$\text{Posterior} = \text{Beta}(1 + 4, 9 + 16) = \text{Beta}(5, 25)$$
 
 Our prior (centered at 10%) and our data (showing 20%) combine to give a posterior distribution centered around **16.7%**.
 
-Instead of saying, *"There is a 95% confidence interval between X and Y,"* we can say: *"There is a 95% probability that the true infection rate is between 6% and 32%."* This is a **direct, probabilistic statement** about our parameter—which Frequentist statistics strictly forbids!
+Instead of saying, *"There is a 95% confidence interval between X and Y,"* we can say: *"There is a 95% probability that the true infection rate is between 6% and 32%."* This is a **direct, probabilistic statement** about our parameter, which Frequentist statistics strictly forbids!
 
 ---
 
@@ -2094,7 +2091,7 @@ Instead of saying, *"There is a 95% confidence interval between X and Y,"* we ca
 
 ---
 
-### 4. The "Priors" Controversy (The Catch)
+### 4. The "Priors" Controversy 
 
 The biggest criticism of Bayesian statistics is the **Prior**.
 
@@ -2216,7 +2213,7 @@ Here is where it gets fun. Depending on the values of $\alpha$ and $\beta$, the 
 
 ### 4. A Step-by-Step Salmon Example (Bayesian Update)
 
-Let's put this into action using our salmon farm.
+Let's put this into action using a salmon farm scenario.
 
 ---
 
@@ -2318,7 +2315,7 @@ Notice the beautiful symmetry:
 
 ### The One-Liner to Memorize
 
-> *"The Beta distribution is the ultimate 'belief barometer.' It uses two knobs—$\alpha$ and $\beta$—to flexibly model any probability between 0 and 1, making it the perfect tool for updating our beliefs about proportions when we see new data."*
+> *"The Beta distribution is the ultimate 'belief barometer.' It uses two knobs $\alpha$ and $\beta$ to flexibly model any probability between 0 and 1, making it the perfect tool for updating our beliefs about proportions when we see new data."*
 
 ---
 ## The Beta Prior and Beta Posterior
@@ -2341,7 +2338,7 @@ But because the Beta and Binomial are **"conjugate,"** the integral is already s
 
 Here is the cheat code:
 
-> **If our Prior is Beta($\alpha, \beta$) and we observe $x$ successes and $n-x$ failures, our Posterior is simply Beta($\alpha + x, \ \beta + (n-x)$).**
+> **If our Prior is Beta($\alpha, \beta$) and we observe $x$ successes and $n-x$ failures, our Posterior is simply Beta($\alpha + x,\\beta + (n-x)$).**
 
 We just **add** the new successes to $\alpha$, and the new failures to $\beta$.
 
@@ -2428,7 +2425,7 @@ Once we have our Posterior Beta distribution, we can answer direct probability q
 
 > *"What is the probability that the infection rate is between 8% and 15%?"*
 
-To answer this, we simply calculate the area under our Beta(13, 97) curve between 0.08 and 0.15. In R or Python, this is one line of code. The result is a **direct, intuitive probability**—no confusing "95% confidence" jargon!
+To answer this, we simply calculate the area under our Beta(13, 97) curve between 0.08 and 0.15. In R or Python, this is one line of code. The result is a **direct, intuitive probability**, no confusing "95% confidence" jargon!
 
 ---
 
@@ -2436,9 +2433,9 @@ To answer this, we simply calculate the area under our Beta(13, 97) curve betwee
 
 | Concept | Formula | Salmon Example |
 |---------|---------|----------------|
-| **Prior** | Beta($\alpha, \beta$) | Beta(9, 81) — Strong belief that rate is 10% |
+| **Prior** | Beta($\alpha, \beta$) | Beta(9, 81): Strong belief that rate is 10% |
 | **Data** | $x$ successes, $n-x$ failures | 4 successes, 16 failures |
-| **Posterior** | Beta($\alpha + x, \ \beta + n - x$) | Beta(13, 97) — Updated belief is 11.8% |
+| **Posterior** | Beta($\alpha + x, \ \beta + n - x$) | Beta(13, 97): Updated belief is 11.8% |
 | **Prior Strength** | $\alpha + \beta$ (imaginary sample size) | 90 imaginary fish |
 | **Posterior Mean** | $\frac{\alpha + x}{\alpha + \beta + n}$ | $13 / 110 = 11.8\%$ |
 | **The Golden Rule** | The Posterior is a weighted average of the Prior and the Data. The weights are the imaginary sample size vs. the real sample size. | As we catch more fish, the data takes over! |
@@ -2482,7 +2479,7 @@ $$\text{Posterior Mean} = \left(\frac{\alpha + \beta}{\alpha + \beta + n}\right)
 |----------|--------------|
 | **Strong prior** (large $\alpha + \beta$) + **little data** (small $n$) | The posterior mean stays **close to the prior mean** |
 | **Weak prior** (small $\alpha + \beta$) + **lots of data** (large $n$) | The posterior mean moves **toward the MLE** (the data) |
-| **As $n \to \infty$** | The posterior mean **converges to the MLE**—the prior gets completely washed out by the data |
+| **As $n \to \infty$** | The posterior mean **converges to the MLE**, the prior gets completely washed out by the data |
 
 ---
 
@@ -2522,7 +2519,7 @@ The credible interval is simply cut directly from this posterior distribution:
 3. The 95% of the distribution left in the middle is our **95% Credible Interval**.
 
 ---
-### Jeffreys' Prior
+## Jeffreys' Prior
 
 To understand **Jeffreys' prior**, we have to address a fundamental problem in Bayesian statistics: **What prior should we use when we know absolutely nothing about the parameter?**
 
