@@ -28,6 +28,14 @@ df = pd.DataFrame({
 
 df.head()
 
+angle_rad = np.radians(df["swim_angle_deg"])
+foreshortening_factor = np.cos(angle_rad)
 
+clean_noise = np.random.normal(0, 0.8, size=N)  # ordinary camera noise, cm
+df["measured_length_cm"] = df["true_length_cm"] * foreshortening_factor + clean_noise
+df["measured_weight_kg"] = (a * (df["measured_length_cm"] ** b)) / 1000
 
-
+print("Naive mean measured length:", df["measured_length_cm"].mean().round(2))
+print("True mean length:          ", df["true_length_cm"].mean().round(2))
+print("Naive mean measured weight:", df["measured_weight_kg"].mean().round(3))
+print("True mean weight:          ", df["true_weight_kg"].mean().round(3))
