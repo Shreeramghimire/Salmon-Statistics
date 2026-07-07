@@ -107,3 +107,37 @@ mode_day30 = x_grid2[np.argmax(kde_day30(x_grid2))]
 print(f"Day 1 KDE peak:  {mode_day1:.2f} cm")
 print(f"Day 30 KDE peak: {mode_day30:.2f} cm")
 print(f"Observed shift: {mode_day30 - mode_day1:+.2f} cm")
+
+# Real growth vs. camera drift
+peak_shift = mode_day30 - mode_day1
+expected_growth_cm = 3.0  # from an independent feed-intake / day-degree growth model
+unexplained_shift = peak_shift - expected_growth_cm
+
+ks_stat, ks_pvalue = stats.ks_2samp(measured_length_day1, measured_length_day30)
+
+print(f"Expected biological growth: +{expected_growth_cm:.2f} cm")
+print(f"Actual observed shift:      {peak_shift:+.2f} cm")
+print(f"Unexplained shift:          {unexplained_shift:+.2f} cm")
+print(f"KS test: stat={ks_stat:.4f}, p={ks_pvalue:.6f}")
+
+if abs(unexplained_shift) > 1.0 and ks_pvalue < 0.01:
+    print(">>> FLAG: shift exceeds what biology explains -> recommend camera check.")
+else:
+    print(">>> No flag: shift consistent with expected growth.")
+
+# Drift visualization
+fig, ax = plt.subplots(figsize=(9, 5))
+density_day1 = kde_day1(x_grid2)
+density_day30 = kde_day30(x_grid2)
+
+ax.plot(x_grid2, density_day1, color="steelblue", lw=2, label="Day 1 (baseline) KDE")
+ax.plot(x_grid2, density_day30, color="darkorange", lw=2, label="Day 30 KDE")
+ax.axvline(mode_day1, color="steelblue", ls="--", label=f"Day 1 peak = {mode_day1:.1f} cm")
+ax.axvline(mode_day30, color="darkorange", ls="--", label=f"Day 30 peak = {mode_day30:.1f} cm")
+ax.fill_between(x_grid2, density_day1, density_day30, color="red", alpha=0.08)
+ax.set_xlabel("Length (cm)")
+ax.set_ylabel("Density")
+ax.set_title("Problem #4: Comparing daily KDE distributions to flag camera drift")
+ax.legend()
+plt.tight_layout()
+plt.show()
