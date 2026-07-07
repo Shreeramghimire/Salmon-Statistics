@@ -971,7 +971,7 @@ $$\hat{\theta}_{MLE} = \underset{\theta}{\arg\max} \, L(\theta \mid \text{data})
 
 Because likelihood functions often involve multiplying many small probabilities (which creates tiny numbers), statisticians usually maximize the **Log-Likelihood** ($\log L$) instead.
 
-The logarithm turns multiplication into addition, making the math vastly easier—but it gives the exact same answer because the logarithm is a strictly increasing function.
+The logarithm turns multiplication into addition, making the math vastly easier but it gives the exact same answer because the logarithm is a strictly increasing function.
 
 $$\log L(\theta \mid \text{data}) = \sum_{i=1}^n \log f(x_i \mid \theta)$$
 
@@ -1342,8 +1342,8 @@ This non-centrality parameter ($\delta$) measures **how detectable our effect is
 
 | Effect Size | $\delta$ | Detectability |
 |-------------|----------|---------------|
-| **Large effect** (e.g., feed adds 2 kg) | $\delta$ is large | The non-central t-distribution is shoved far to the right, far away from the central t-distribution. **Power is HIGH** — we are very likely to detect the difference. |
-| **Small effect** (e.g., feed adds 0.1 kg) | $\delta$ is tiny | The non-central t-distribution sits almost exactly on top of the central t-distribution. **Power is LOW** — we are unlikely to detect the difference unless we have a massive sample size. |
+| **Large effect** (e.g., feed adds 2 kg) | $\delta$ is large | The non-central t-distribution is shoved far to the right, far away from the central t-distribution. **Power is HIGH** we are very likely to detect the difference. |
+| **Small effect** (e.g., feed adds 0.1 kg) | $\delta$ is tiny | The non-central t-distribution sits almost exactly on top of the central t-distribution. **Power is LOW** we are unlikely to detect the difference unless we have a massive sample size. |
 
 ---
 
@@ -1893,7 +1893,7 @@ This is the final piece of the puzzle!
 
 | Concept | Definition | Formula |
 |---------|------------|---------|
-| **Pseudo-Observation** | The "opinion" of a single data point about the parameter | $\text{Pseudo}_i = n\hat{\theta} - (n-1)\hat{\theta}_{(-i)}$ |
+| **Pseudo-Observation** | The "opinion" of a single data point about the parameter | Pseudoᵢ = n × θ̂ − (n − 1) × θ̂₍₋ᵢ₎ |
 | **Jackknife SE** | Standard error from pseudo-values | $SE = \sqrt{\frac{1}{n(n-1)} \sum (\text{Pseudo}_i - \bar{\text{Pseudo}})^2}$ |
 | **Interpretation** | Each pseudo-value represents the contribution of one observation | High leverage = pseudo-value far from others |
 
@@ -2057,7 +2057,7 @@ In Bayesian stats, we encode this belief as a **prior distribution**. We might u
 
 We catch 20 fish and find that 4 have lice (20% infection rate).
 
-We calculate the likelihood: *"Given a true infection rate of $p$, how likely is it that we would see 4 infected fish out of 20?"*
+We calculate the likelihood: Given a true infection rate of $p$, how likely is it that we would see 4 infected fish out of 20?
 
 ---
 
@@ -2315,7 +2315,7 @@ Notice the beautiful symmetry:
 
 ### The One-Liner to Memorize
 
-> *"The Beta distribution is the ultimate 'belief barometer.' It uses two knobs $\alpha$ and $\beta$ to flexibly model any probability between 0 and 1, making it the perfect tool for updating our beliefs about proportions when we see new data."*
+> *"The Beta distribution is the ultimate 'belief barometer.' It uses two knobs **α** and **β** to flexibly model any probability between 0 and 1, making it the perfect tool for updating our beliefs about proportions when we see new data."*
 
 ---
 ## The Beta Prior and Beta Posterior
@@ -2338,7 +2338,10 @@ But because the Beta and Binomial are **"conjugate,"** the integral is already s
 
 Here is the cheat code:
 
-> **If our Prior is Beta($\alpha, \beta$) and we observe $x$ successes and $n-x$ failures, our Posterior is simply Beta($\alpha + x,\\beta + (n-x)$).**
+> **If our Prior is Beta(α, β) and we observe x successes and n−x failures, our Posterior is simply:
+
+**Posterior = Beta(α + x, β + n − x)**
+.**
 
 We just **add** the new successes to $\alpha$, and the new failures to $\beta$.
 
@@ -2444,7 +2447,7 @@ To answer this, we simply calculate the area under our Beta(13, 97) curve betwee
 
 ### The One-Liner to Memorize
 
-> *"The Beta Prior is our opinion; the Beta Posterior is our updated opinion. Conjugacy gives us a cheat code: just add the new successes to $\alpha$ and the new failures to $\beta$. The Posterior is simply our old imaginary data combined with our new real data."*
+> *"The Beta Prior is our opinion; the Beta Posterior is our updated opinion. Conjugacy gives us a cheat code: just add the new successes to α and the new failures to β. The Posterior is simply our old imaginary data combined with our new real data."*
 
 ----
 ### The Posterior Mean as a Weighted Average
@@ -2883,7 +2886,7 @@ When researchers measure blood lead, they know the data is Log-Normal. If they t
 
 ### The One-Liner to Memorize
 
-> *"The Log-Normal distribution is the 'Multiplicative Normal.' If we take the logarithm of a Log-Normal variable, it magically turns into a perfect bell curve—which is exactly why we log-transform skewed data before running a t-test."*
+> *"The Log-Normal distribution is the 'Multiplicative Normal.' If we take the logarithm of a Log-Normal variable, it magically turns into a perfect bell curve, which is exactly why we log-transform skewed data before running a t-test."*
 
 ## Kernel Density Estimation (KDE)
 
