@@ -137,7 +137,7 @@ ax.axvline(mode_day30, color="darkorange", ls="--", label=f"Day 30 peak = {mode_
 ax.fill_between(x_grid2, density_day1, density_day30, color="red", alpha=0.08)
 ax.set_xlabel("Length (cm)")
 ax.set_ylabel("Density")
-ax.set_title("Problem #4: Comparing daily KDE distributions to flag camera drift")
+ax.set_title("Problem: Comparing daily KDE distributions to flag camera drift")
 ax.legend()
 plt.tight_layout()
 plt.show()
