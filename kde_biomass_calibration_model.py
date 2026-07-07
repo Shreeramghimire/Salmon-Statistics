@@ -1,4 +1,4 @@
-#In this example: we have 500 salmon being grown in a feed trial station located at west coast of Norway. This is a synthetic data.
+#In this example: we have 500 salmon being grown in a feed trial station located at west coast of Norway. This is synthetic data.
 
 import numpy as np
 import pandas as pd
@@ -32,7 +32,7 @@ angle_rad = np.radians(df["swim_angle_deg"])
 foreshortening_factor = np.cos(angle_rad)
 
 clean_noise = np.random.normal(0, 0.8, size=N)  # ordinary camera noise, cm
-df["measured_length_cm"] = df["true_length_cm"] * foreshortening_factor + clean_noise
+df["measured_length_cm"] = df["true_length_cm"]
 df["measured_weight_kg"] = (a * (df["measured_length_cm"] ** b)) / 1000
 
 print("Naive mean measured length:", df["measured_length_cm"].mean().round(2))
@@ -83,7 +83,7 @@ true_length_day30 = np.clip(true_length_day30 + GROWTH_CM, 45, 98)
 swim_angle_day30 = np.abs(np.random.normal(0, 15, size=N2))
 foreshortening_day30 = np.cos(np.radians(swim_angle_day30))
 
-DRIFT_BIAS_CM = -1.8  # unknown to the system: camera rig has physically shifted
+DRIFT_BIAS_CM = -1.8  
 clean_noise_day30 = np.random.normal(0, 0.8, size=N2)
 
 measured_length_day30 = (true_length_day30 * foreshortening_day30
@@ -110,7 +110,7 @@ print(f"Observed shift: {mode_day30 - mode_day1:+.2f} cm")
 
 # Real growth vs. camera drift
 peak_shift = mode_day30 - mode_day1
-expected_growth_cm = 3.0  # from an independent feed-intake / day-degree growth model
+expected_growth_cm = 3.0  
 unexplained_shift = peak_shift - expected_growth_cm
 
 ks_stat, ks_pvalue = stats.ks_2samp(measured_length_day1, measured_length_day30)
