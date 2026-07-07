@@ -72,3 +72,38 @@ ax.legend()
 plt.tight_layout()
 plt.show()
 
+#Simulate the drift
+np.random.seed(7)
+N2 = 3000
+
+true_length_day30 = np.random.normal(loc=68, scale=6, size=N2)
+GROWTH_CM = 3.0  # real biological growth over 30 days
+true_length_day30 = np.clip(true_length_day30 + GROWTH_CM, 45, 98)
+
+swim_angle_day30 = np.abs(np.random.normal(0, 15, size=N2))
+foreshortening_day30 = np.cos(np.radians(swim_angle_day30))
+
+DRIFT_BIAS_CM = -1.8  # unknown to the system: camera rig has physically shifted
+clean_noise_day30 = np.random.normal(0, 0.8, size=N2)
+
+measured_length_day30 = (true_length_day30 * foreshortening_day30
+                          + clean_noise_day30 + DRIFT_BIAS_CM)
+
+# Re-simulate day 1 at matching N for a fair comparison
+np.random.seed(42)
+true_length_day1 = np.clip(np.random.normal(68, 6, N2), 45, 95)
+swim_angle_day1 = np.abs(np.random.normal(0, 15, size=N2))
+foreshortening_day1 = np.cos(np.radians(swim_angle_day1))
+clean_noise_day1 = np.random.normal(0, 0.8, size=N2)
+measured_length_day1 = true_length_day1 * foreshortening_day1 + clean_noise_day1
+
+kde_day1 = stats.gaussian_kde(measured_length_day1, bw_method=0.25)
+kde_day30 = stats.gaussian_kde(measured_length_day30, bw_method=0.25)
+
+x_grid2 = np.linspace(40, 100, 3000)
+mode_day1 = x_grid2[np.argmax(kde_day1(x_grid2))]
+mode_day30 = x_grid2[np.argmax(kde_day30(x_grid2))]
+
+print(f"Day 1 KDE peak:  {mode_day1:.2f} cm")
+print(f"Day 30 KDE peak: {mode_day30:.2f} cm")
+print(f"Observed shift: {mode_day30 - mode_day1:+.2f} cm")
