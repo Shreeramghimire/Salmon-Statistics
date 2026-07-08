@@ -124,7 +124,7 @@ These three are locked in an eternal triangle:
 
 > *"Alpha is the risk of a false alarm (Type I), Beta is the risk of missing the truth (Type II). Increasing our sample size is the only cure to lower Beta without raising Alpha."*
 
-### Applying t critical value and p-value in testing hypothesis
+## Applying t critical value and p-value in testing hypothesis
 
 To understand how we use the **t-critical value** to decide whether to reject the null hypothesis, we have to look at the **"Courtroom Analogy"** of hypothesis testing.
 
@@ -155,7 +155,7 @@ Let's look at how this works in the two different scenarios.
 ---
 ### Scenario 1: The Two-Tailed Test (Checking for ANY difference)
 
-**The Question:** *"Does the new feed change weight? (It could be heavier OR lighter)."*
+**The Question:** *"Does the new feed change weight?"*
 
 | Component | Value |
 |-----------|-------|
@@ -184,7 +184,7 @@ Imagine a t-distribution (bell curve). We draw vertical lines at **-2.262** and 
 
 ---
 
-### Scenario 2: The One-Tailed Test (Checking if it is GREATER)
+### Scenario 2: The One-Tailed Test 
 
 **The Question:** *"Does the new feed make fish HEAVIER?"* (We only care about weight gain, not weight loss).
 
@@ -298,9 +298,9 @@ We compare the p-value to our pre-set **Alpha level ($\alpha$)**, which is our t
 
 ---
 
-### The Golden Rule of p-values (What they DO NOT mean)
+### The Golden Rule of p-values 
 
-This is the single most misunderstood concept in statistics. Memorize these:
+This is the single most misunderstood concept in statistics. 
 
 | **True Statement** | **False Statement (Common Misinterpretation)** |
 | :--- | :--- |
@@ -310,7 +310,7 @@ This is the single most misunderstood concept in statistics. Memorize these:
 
 ---
 
-### The "P-Value" Fallacy (A Cautionary Tale)
+### The "P-Value" Fallacy 
 
 Imagine we test a new feed on **1,000,000 salmon**. The feed increases weight by a microscopic **0.001 kg**.
 
@@ -361,13 +361,11 @@ The p-value is not a binary "significant / not significant" switch.
 
 > *"The p-value is a measure of surprise, not a measure of truth. It tells us how unlikely our data would be if nothing were really happening. The smaller the p-value, the louder our data screams, 'This is not a coincidence!'"*
 
-### The Score Statistic
+## The Score Statistic
 
 To understand the **Score Statistic**, we have to look under the hood of **Maximum Likelihood Estimation (MLE)**.
 
 Remember, the MLE finds the parameter value that makes our data the most likely. The **Score Statistic** is the mathematical "engine" that drives that search. It tells us **which direction to go** and **how steep the hill is** to reach the top of the likelihood mountain.
-
-Here is the intuitive, step-by-step breakdown.
 
 ---
 
@@ -444,7 +442,7 @@ Under the null hypothesis, this statistic follows a **Chi-squared distribution**
 
 ---
 
-### 5. The "Big Three" Hypothesis Tests (Where the Score fits in)
+### 5. The "Big Three" Hypothesis Tests 
 
 In statistics, there are three classic tests for evaluating parameters. They are mathematically equivalent in large samples, but they use different "views" of the likelihood:
 
@@ -487,7 +485,7 @@ Imagine we are testing whether a new gene is linked to sea lice resistance in sa
 
 ### The One-Liner to Memorize
 
-> *"The Score Statistic is the slope of the likelihood hill. If the slope at our null hypothesis is steep, the data is screaming that we are nowhere near the peak—so we reject the null."*
+> *"The Score Statistic is the slope of the likelihood hill. If the slope at our null hypothesis is steep, the data is screaming that we are nowhere near the peak,  we reject the null."*
 
 ## Hypothesis Testing for Binomial Proportions: Wald, Score, and Agresti-Coull
 
