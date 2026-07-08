@@ -610,6 +610,7 @@ $$0.4038 \pm 0.0943 = [0.3095, \ 0.4981]$$
 > *"The Wald test gambles by guessing the variance from the data; the Score test plays it safe by using the null hypothesis. And if we want a confidence interval that actually works, use the Wilson method or the Agresti-Coull quick-fix—never trust the Wald interval for proportions!"*
 
 ## Pearson Interval and Clopper-Pearson Interval
+
 ### The Pearson Interval (The "Classic" Wald Interval)
 
 **What it is:**
@@ -678,7 +679,7 @@ $$95\% \text{ CI: Approximately } [0.064, 0.414]$$
 **The Cons (The "Clopper-Pearson" Problem):**
 
 - It is **conservative** (overly wide). Because it uses discrete binomial probabilities, it forces the coverage to be at least 95%, which often means it is actually greater than 95%.
-- For small samples, this interval can be ridiculously wide. (If we flip a coin 3 times and get 0 heads, the 95% Clopper-Pearson CI for the true probability of heads is $[0, 0.708]$—a massive range!).
+- For small samples, this interval can be ridiculously wide. (If we flip a coin 3 times and get 0 heads, the 95% Clopper-Pearson CI for the true probability of heads is $[0, 0.708]$, a massive range!)
 
 ---
 
@@ -698,9 +699,8 @@ Let's compare them head-to-head for our salmon data ($n = 20$, $x = 4$):
 
 ---
 
-### The "Practical" Truth (What to actually use)
-
-**Forget the Pearson (Wald) interval for proportions.** It is dangerously misleading for small samples or extreme probabilities. Many statisticians argue it should never be taught.
+### The "Practical" Truth 
+It is dangerously misleading for small samples or extreme probabilities. Many statisticians argue than it should never be taught.
 
 | Recommendation | Method | Why |
 | :--- | :--- | :--- |
@@ -717,7 +717,7 @@ The Clopper-Pearson interval is exactly the Bayesian Credible Interval we get wh
 
 $$\text{Beta}(0.5, 0.5) + \text{Data} \rightarrow \text{Beta}(0.5 + x, 0.5 + n - x)$$
 
-The quantiles of this posterior distribution give us the exact Clopper-Pearson bounds!
+The quantiles of this posterior distribution give us the exact **Clopper-Pearson bounds**!
 
 ---
 
@@ -817,7 +817,7 @@ For Jeffreys prior ($\alpha = \beta = 0.5$):
 
 This is the tricky part. The difference of two Beta distributions does not have a simple closed-form formula.
 
-**How we do it today (MCMC):**
+**How we do it today:**
 
 We use a computer to take **thousands of random draws** from the posterior of $p_1$ and $p_2$, subtract them, and plot the histogram of the differences. This histogram is the **posterior distribution of $\delta$**.
 
@@ -833,7 +833,6 @@ The 95% credible interval for $\delta$ is approximately **[-0.023, 0.223]**.
 
 We can say: *"There is a 95% probability that the true difference in infection rates is between -2.3% and 22.3%."*
 
-*(Notice: this is a direct probabilistic statement, which is strictly forbidden in Frequentist statistics!)*
 
 ---
 
@@ -876,7 +875,7 @@ Here is where Bayesian inference shines (and gets criticized).
 
 ### The One-Liner to Memorize
 
-> *"Likelihood inference listens only to the data; Bayesian inference combines the data with prior knowledge. When we use a non-informative prior, they shake hands and give nearly identical results—but only Bayesian allows us to say, 'There is a 95% chance the true difference lies in this interval.'"*
+> *"Likelihood inference listens only to the data; Bayesian inference combines the data with prior knowledge. When we use a non-informative prior, they shake hands and give nearly identical results, but only Bayesian allows us to say, 'There is a 95% chance the true difference lies in this interval.'"*
 
 ## Monte Carlo Simulation for Bayesian Inference
 
@@ -902,7 +901,7 @@ That is Monte Carlo simulation: *"If we can't calculate the answer, we will just
 
 ### Part 2: How we use Monte Carlo for Bayesian Inference (The Step-by-Step)
 
-Let's walk through the exact computer code (in our head) for our salmon example.
+Let's walk through the exact computer code in the salmon example.
 
 **The Goal:** Find the 95% credible interval for the true difference in infection rates ($\delta = p_1 - p_2$).
 
@@ -1000,8 +999,6 @@ We want to know: *Does the new feed reduce the risk of sea lice?*
 
 These two numbers—Relative Risk and Odds Ratios—are the standard tools for answering this. They both measure the **strength of association** between an exposure (New Feed) and an outcome (Sea Lice). However, they do it in completely different ways, and one is vastly more popular in medical research.
 
-Here is the definitive guide.
-
 ---
 
 ### The Setup: A 2x2 Contingency Table
@@ -1078,7 +1075,7 @@ The odds of having sea lice are **2.67 times higher** on the old feed compared t
 
 ---
 
-### Part 3: Relative Risk vs. Odds Ratio (The Showdown)
+### Part 3: Relative Risk vs. Odds Ratio 
 
 Here is where it gets tricky. For rare diseases (e.g., less than 10% incidence), the Odds Ratio is a **very good approximation** of the Relative Risk.
 
@@ -1102,7 +1099,7 @@ They are different! The OR is always "further from 1" than the RR.
 
 ---
 
-### Part 4: The "Rare Disease" Rule (Crucial!)
+### Part 4: The "Rare Disease" Rule 
 
 Imagine sea lice is rare (say, 2% vs. 1%).
 
@@ -1138,7 +1135,7 @@ We will see Odds Ratios everywhere in advanced statistics (like Logistic Regress
 
 ### The One-Liner to Memorize
 
-> *"Relative Risk tells us how much more **likely** something is to happen; Odds Ratios tell us how much higher the **odds** are. For rare events, they are almost identical—but only the Odds Ratio can be used in case-control studies and logistic regression."*
+> *"Relative Risk tells us how much more **likely** something is to happen; Odds Ratios tell us how much higher the **odds** are. For rare events, they are almost identical, but only the Odds Ratio can be used in case-control studies and logistic regression."*
 
 ## Standard Error and Confidence Intervals for Log Odds Ratio and Log Relative Risk
 
@@ -1284,7 +1281,7 @@ The OR interval is much wider and more skewed. This is because the OR is always 
 
 ## The Delta Method: The Grand Unification of Asymptotic Statistics
 
-This is the **grand unification** of asymptotic statistics! We are asking for the mathematical engine that allows us to approximate the distribution of almost any complicated statistic—the **Delta Method**.
+This is the **grand unification** of asymptotic statistics! We are asking for the mathematical engine that allows us to approximate the distribution of almost any complicated statistic, the **Delta Method**.
 
 Let's break this down into four parts: **What the Delta Method is**, **the mathematical derivation**, and **how we apply it to two-sample binomial statistics (like Risk Difference, Relative Risk, and Odds Ratio)**.
 
@@ -1294,7 +1291,7 @@ Let's break this down into four parts: **What the Delta Method is**, **the mathe
 
 The Delta Method is a mathematical trick that says:
 
-> *"If we have a statistic that is Normally distributed (like $\hat{p}$), then any smooth function of that statistic (like $\log(\hat{p})$, or $\hat{p}_1 / \hat{p}_2$) is also approximately Normally distributed, as long as our sample size is large enough."*
+> *"If we have a statistic that is Normally distributed (like p̂), then any smooth function of that statistic (like log(p̂), or p̂₁ / p̂₂) is also approximately Normally distributed, as long as our sample size is large enough."*
 
 **The Analogy:**
 
@@ -1355,7 +1352,7 @@ This is the easiest because it is a **linear** function. The derivative of $g(p_
 
 ---
 
-### B. Log Relative Risk (log RR = $\log(p_1 / p_2)$)
+### B. Log Relative Risk ($log RR = log(p_1 / p_2)$)
 
 This is a non-linear function. We need the derivative of $g(p) = \log(p)$, which is $1/p$.
 
@@ -1371,8 +1368,6 @@ Because $\log(p_1/p_2) = \log(p_1) - \log(p_2)$, the variance of the difference 
 | **Asymptotic SE** (plugging in estimates) | $SE(\log RR) = \sqrt{ \frac{1-\hat{p}_1}{n_1 \hat{p}_1} + \frac{1-\hat{p}_2}{n_2 \hat{p}_2} }$ |
 | **95% CI for log RR** | $\log(RR) \pm 1.96 \times SE(\log RR)$ |
 | **95% CI for RR** | Exponentiate the bounds |
-
-*(Note: This matches the exact formula we derived in the previous question!)*
 
 ---
 
@@ -1408,7 +1403,7 @@ Since the log OR is the difference of the two log-odds, its variance is the sum 
 
 ---
 
-### The "Asymptotic" Conditions (The Fine Print)
+### The "Asymptotic" Conditions 
 
 | Condition | Requirement |
 | :--- | :--- |
@@ -1421,7 +1416,7 @@ Since the log OR is the difference of the two log-odds, its variance is the sum 
 
 ### The One-Liner to Memorize
 
-> *"The Delta Method draws a straight tangent line to a curved function. It tells us that the variance of a transformed statistic is approximately the variance of the original statistic multiplied by the square of the slope ($g'(\theta)^2$). This gives us the standard errors for logs, odds, and risks without doing any complex calculus."*
+> *"The Delta Method draws a straight tangent line to a curved function. It tells us that the variance of a transformed statistic is approximately the variance of the original statistic multiplied by the square of the slope. This gives us the standard errors for logs, odds, and risks without doing any complex calculus."*
 
 ## Fisher's Exact Test, Hypergeometric Distribution, and Monte Carlo Simulation
 
@@ -1493,8 +1488,6 @@ $$P = \frac{(a+b)! (c+d)! (a+c)! (b+d)!}{a! b! c! d! N!}$$
 Under the null hypothesis ($p = 0.5$), the probability of exactly 3 out of 4 choosing Coke is:
 
 $$P(X=3) = \frac{\binom{4}{3} \binom{0}{0}}{\binom{4}{3}} = \frac{4}{16} = 0.25$$
-
-*(The p-value is the probability of getting 3 or more out of 4 under $H_0$, which is 0.3125 for a one-sided test.)*
 
 ---
 
@@ -1752,8 +1745,8 @@ We test two treatments (New vs. Old) in **two different farms** (Cold Water vs. 
 
 | Farm | New Feed | Old Feed | Winner |
 | :--- | :--- | :--- | :--- |
-| **Cold Water** | 90% | 80% | **New Feed** ✅ |
-| **Warm Water** | 10% | 20% | **New Feed** ✅ |
+| **Cold Water** | 90% | 80% | **New Feed**  |
+| **Warm Water** | 10% | 20% | **New Feed**  |
 
 **Looking at the combined table (Collapsed):**
 
@@ -1788,7 +1781,7 @@ But what if the New Feed was tested on **150 fish in the cold farm** and **50 in
 
 ---
 
-### The Mantel-Haenszel Estimator (The "Grand Unifier")
+### The Mantel-Haenszel Estimator 
 
 **Definition:** The **Mantel-Haenszel (M-H) estimator** is a weighted average of the odds ratios (or risk ratios) across **multiple 2x2 tables** (strata). It is the gold-standard method for combining evidence from several stratified tables while controlling for a confounder.
 
@@ -1812,8 +1805,7 @@ Where $a, b, c, d$ are the cells of the 2x2 table for stratum $i$, and $N_i$ is 
 
 ---
 
-### The Grand Connection (Putting it all together)
-
+### The Grand Connection 
 | Concept | Definition | Salmon Example |
 | :--- | :--- | :--- |
 | **Confounding** | A third variable distorts the true relationship | Water temperature affects both feed choice and mortality |
@@ -1974,7 +1966,7 @@ They are two sides of the same coin. The M-H estimator tells us *how much*; the 
 
 ## Case-Control Studies: Odds Ratios, Exact Inference, and Fisher's Exact Test
 
-We have just stepped into the **heart of epidemiology**—the case-control study.
+We have just stepped into the **heart of epidemiology**; the case-control study.
 
 A **case-control study** is retrospective. We start with the *outcome* (e.g., "Has disease") and look *backward* to see who was exposed. Because we deliberately sample a fixed number of cases and a fixed number of controls, **we cannot calculate risk** (incidence). However, we **can** calculate the **Odds Ratio (OR)** to estimate the strength of association.
 
@@ -2143,7 +2135,7 @@ In the previous section, we discussed the **CMH test** for combining multiple 2x
 
 ### The One-Liner to Memorize
 
-> *"In a case-control study, we fix the number of cases and controls, so we can't calculate risk—only odds. When sample sizes are small, the Normal approximation fails, so we must use exact inference (Fisher's Exact Test) based on the Hypergeometric distribution to get honest p-values and confidence intervals."*
+> *"In a case-control study, we fix the number of cases and controls, so we can't calculate risk only odds. When sample sizes are small, the Normal approximation fails, so we must use exact inference (Fisher's Exact Test) based on the Hypergeometric distribution to get honest p-values and confidence intervals."*
 
 ## Matched Case-Control Studies and McNemar's Test
 
@@ -2310,7 +2302,7 @@ $$[e^{0.406}, \ e^{2.366}] = [1.50, \ 10.66]$$
 
 ### The One-Liner to Memorize
 
-> *"In matched 2x2 tables, we have pairs, not independent subjects. The only numbers that matter are the discordant pairs ($b$ and $c$): $b/c$ gives us the odds ratio, and McNemar's test tells us if $b$ and $c$ are significantly different."*
+> *"In matched 2x2 tables, we have pairs, not independent subjects. The only numbers that matter are the discordant pairs (b and c): b/c gives us the odds ratio, and McNemar's test tells us if $b$ and $c$ are significantly different."*
 
 ## Non-Parametric Tests: Sign Test, Wilcoxon Signed-Rank, and Wilcoxon Rank-Sum
 
@@ -2426,7 +2418,7 @@ For $n = 9$ (ignoring ties), the critical value for $\alpha = 0.05$ (two-sided) 
 
 ---
 
-### Part 3: The Wilcoxon Rank-Sum Test (Two Independent Groups)
+### Part 3: The Wilcoxon Rank-Sum Test 
 
 *Use this when: We have **two independent samples** (like a t-test for two groups), but the data is not Normal.*
 
@@ -2654,4 +2646,4 @@ We sample $n = 5$ fish and find a total of $T = 20$ lice. ($\bar{x} = 4.0$).
 
 ### The One-Liner to Memorize
 
-> *"The Poisson distribution models rare counts with a single parameter $\lambda$, which is both the mean and variance. The MLE for $\lambda$ is simply the sample mean. For hypothesis tests, exact p-values are calculated directly from the Poisson PMF, and exact confidence intervals come from the Chi-Squared distribution."*
+> *"The Poisson distribution models rare counts with a single parameter λ, which is both the mean and variance. The MLE for λ is simply the sample mean. For hypothesis tests, exact p-values are calculated directly from the Poisson PMF, and exact confidence intervals come from the Chi-Squared distribution."*
