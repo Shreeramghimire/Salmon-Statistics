@@ -35,7 +35,7 @@ There are exactly **three reasons** our sample mean differs from the population 
 | 2. **Bias in Sampling** | Our sampling method is flawed (e.g., we only caught fish near the feeder, which are heavier) | Might falsely reject $H_0$, but for the wrong reason |
 | 3. **A True Effect** | The feed actually works! The population mean has genuinely changed | **Correctly reject $H_0$** |
 
-Hypothesis testing is designed to distinguish between Reason 1 (luck) and Reason 3 (a real effect).
+Hypothesis testing is designed to distinguish between Reason 1 and Reason 3.
 
 ---
 
