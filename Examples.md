@@ -4,6 +4,7 @@ The PMF is the mathematical function that describes the probability that a singl
 If X = the number of adult female lice on a single fish, then the PMF is: P(X = k), where k = 0, 1, 2, 3, ...
 Because lice are randomly distributed across thousands of fish in a net pen, and the average is very low (≤ 0.5), biologists and statisticians almost always model this using the Poisson distribution.
 
+
 The Poisson PMF is perfect here because it models the probability of several events (lice) occurring in a fixed space (one fish) when the average rate is low. The PMF is:
 P(X = k) = (e^(-λ) * λ^k) / k!
 Where: λ (lambda) is the average number of lice per fish (which the regulation says must be ≤ 0.5).
