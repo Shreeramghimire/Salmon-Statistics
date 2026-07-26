@@ -852,7 +852,7 @@ Instead of saying "feed affects weight, length, and fat separately," we can say 
 
 ### Part 6: The Residual Covariance Structure
 
-#### The Magic of Multivariate Regression
+#### Multivariate Regression
 
 The errors are assumed to be:
 
