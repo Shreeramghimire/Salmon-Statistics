@@ -84,7 +84,7 @@ f(Y) = (2π)^(-p/2) × |Σ|^(-1/2) × exp{ -1/2 × (Y - μ)^T × Σ^(-1) × (Y -
 
 Imagine plotting Weight on the X-axis and Length on the Y-axis.
 
-- If $\text{Cov} = 0$: The cloud looks like a round circle (or a perfect ellipse aligned with the axes).
+- If $\text{Cov} = 0$: The cloud looks like a circle (or a perfect ellipse aligned with the axes).
 - If $\text{Cov} > 0$: The cloud is a tilted ellipse stretching from bottom-left to top-right (bigger fish are longer).
 
 **The Matrix $\boldsymbol{\Sigma}^{-1}$** (the precision matrix) literally defines the shape and orientation of this ellipse!
