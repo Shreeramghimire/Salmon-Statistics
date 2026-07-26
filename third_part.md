@@ -347,7 +347,7 @@ Because if we just added them up normally, a -1.7 and a +1.7 would cancel out to
 
 If we understand that **Fitted Values = The Rule**, and **Residuals = The Exceptions to the Rule**, we understand 90% of regression!
 
-## Ordinary Least Squares (OLS) Regression: From Intuition to Matrix Algebra
+## Ordinary Least Squares (OLS) Regression:
 
 This is the ultimate question that ties everything together! Let's build this from the ground up—from the intuitive farm-level concept all the way to the elegant matrix algebra.
 
