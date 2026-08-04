@@ -337,7 +337,7 @@ Because if we just added them up normally, a -1.7 and a +1.7 would cancel out to
 
 ---
 
-### The Ultimate Takeaway (Keep this in our heads)
+### The Ultimate Takeaway 
 
 | Term | Matrix Math | Farm Reality |
 | :--- | :--- | :--- |
@@ -529,7 +529,7 @@ Now let's bring this to life with a real aquaculture scenario!
 
 We manage a salmon farm with 100 pens. We want to predict harvest weight to optimize feeding schedules.
 
-#### Step 1: Define Our Variables
+#### Step 1: Define Variables
 
 **Outcome ($y$):**
 
