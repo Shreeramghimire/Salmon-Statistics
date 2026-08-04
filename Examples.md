@@ -1,4 +1,4 @@
-## Example 1. Sea-lice Count:
+## Example 1. Sea-lice Count
 The Norwegian Food Safety Authority records the weekly number of salmon lice in aquaculture facilities. Regulations require fish farms to maintain an average of 0.5 or fewer adult female lice per fish. To comply with this requirement, farms conduct weekly sampling of salmon from net pens and count the number of lice present. The number of adult female lice serves as the primary indicator in salmon lice monitoring and control programs, as it reflects the reproductive potential of the parasite population. This is an example of discrete data. And we use the Probability Mass Function (PMF) to calculate the probability of a specific count. 
 The PMF is the mathematical function that describes the probability that a single, randomly selected fish from that net pen will have exactly k lice on it.
 If X = the number of adult female lice on a single fish, then the PMF is: P(X = k), where k = 0, 1, 2, 3, ...
