@@ -57,7 +57,7 @@ $$z = \frac{5.3 - 5.0}{0.15} = \frac{0.3}{0.15} = 2.0$$
 **Translation:** Our sample mean is **2.0 standard errors** above the hypothesized mean.
 
 ---
-### The "Alpha" Level ($\alpha$) – Type I Error
+### The "Alpha" Level ($\alpha$) and Type I Error
 
 **Definition:** Alpha ($\alpha$) is the **threshold** we set for rejecting the null hypothesis. It is the probability of making a **Type I Error**.
 
