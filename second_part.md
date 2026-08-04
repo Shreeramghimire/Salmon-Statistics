@@ -128,7 +128,7 @@ These three are locked in an eternal triangle:
 
 To understand how we use the **t-critical value** to decide whether to reject the null hypothesis, we have to look at the **"Courtroom Analogy"** of hypothesis testing.
 
-We are the judge. The **Null Hypothesis ($H_0$)** is the defendant, who is presumed "innocent" (no effect). The **Alternative Hypothesis ($H_A$)** is the prosecutor, claiming "guilty" (there is an effect).
+The **Null Hypothesis ($H_0$)** is the defendant, who is presumed "innocent" (no effect). The **Alternative Hypothesis ($H_A$)** is the prosecutor, claiming "guilty" (there is an effect).
 
 The **t-critical value** is the **"burden of proof"** line. It is the minimum amount of evidence we need to convict the defendant.
 
