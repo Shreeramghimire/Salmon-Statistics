@@ -6,7 +6,7 @@ Here is a step-by-step **"Concept to Farm"** guide to understanding regression a
 
 ---
 
-### Part 1: The "Weight Scale" Concept (Understanding the Math)
+### Part 1: The "Weight Scale" Concept 
 
 Imagine we are trying to guess a salmon's weight. We have a **digital scale** (the environment) and a **set of weights** (the variables).
 
@@ -110,7 +110,7 @@ $$\hat{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \end{bmatrix} = \b
 
 ---
 
-### Part 5: Interpreting the Results (The Farm Insight)
+### Part 5: Interpreting the Results 
 
 Here is what these numbers mean for our salmon farm:
 
