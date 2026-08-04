@@ -1,7 +1,7 @@
 # Salmon-Statistics
 In this repository, statistical phenomena are explained in reference to metrics from aquaculture activities related to salmon.
 
-# Probability Functions
+## Probability Functions
 ## Random variable
 A random variable is a numerical value assigned to the outcome of a random experiment or phenomenon.
 1. A discrete random variable takes on a finite or countable number of possible values. The probability associated with each possible value is described by a Probability Mass Function (PMF), which assigns a probability to every individual outcome. In mathematical terms, probabilities are obtained by counting the number of occurrences of specific outcomes.
