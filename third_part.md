@@ -1358,7 +1358,7 @@ Let's translate the three pieces to our salmon farm:
 | **$\mathbf{D}$** | Singular Values (diagonal) | The "Importance" or "Strength" of each pattern | How much variance in growth each pattern explains |
 | **$\mathbf{V}$** | Right Singular Vectors | The "Recipe" across variables (columns) | How Feed, Temp, and Density combine to create each pattern |
 
-**The Visual Analogy (The Smoothie Maker):**
+**The Visual Analogy:**
 
 Imagine we run a salmon farm and we track 10 different health metrics (Weight, Length, Fat, Heart rate, etc.) for 1,000 fish. Our matrix $\mathbf{X}$ is $1,000 \times 10$.
 
