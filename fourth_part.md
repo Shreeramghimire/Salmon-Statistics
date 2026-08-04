@@ -1,4 +1,4 @@
-# Multivariate Statistics: From Covariance Matrices to Confidence Ellipsoids
+## Multivariate Statistics: From Covariance Matrices to Confidence Ellipsoids
 
 ## Part 1: Matrix Operations for Multivariate Variance/Covariance
 
