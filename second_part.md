@@ -122,7 +122,7 @@ These three are locked in an eternal triangle:
 
 ### The One-Liner to Memorize
 
-> *"Alpha is the risk of a false alarm (Type I), Beta is the risk of missing the truth (Type II). Increasing our sample size is the only cure to lower Beta without raising Alpha."*
+> *"Alpha is the risk of a false alarm (Type I); Beta is the risk of missing the truth (Type II). Increasing our sample size is the only cure to lower Beta without raising Alpha."*
 
 ## Applying t critical value and p-value in testing hypothesis
 
